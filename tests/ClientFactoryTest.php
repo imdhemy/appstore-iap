@@ -1,8 +1,8 @@
 <?php
 
-namespace Imdhemy\AppStore;
+namespace Imdhemy\AppStore\Tests;
 
-use Imdhemy\AppStore\Tests\TestCase;
+use Imdhemy\AppStore\ClientFactory;
 
 class ClientFactoryTest extends TestCase
 {
