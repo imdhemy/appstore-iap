@@ -1,0 +1,35 @@
+{
+    "name": "imdhemy/appstore-iap",
+    "description": "PHP Appstore In-App Purchase implementation",
+    "authors": [
+        {
+            "name": "imdhemy",
+            "email": "imdhemy@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5",
+        "symfony/var-dumper": "^5.1",
+        "vimeo/psalm": "^3.17",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "fzaninotto/faker": "^1.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Imdhemy\\AppStore\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Imdhemy\\AppStore\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "psalm": "vendor/bin/psalm",
+        "psalm-info": "vendor/bin/psalm --show-info=true",
+        "format": "vendor/bin/php-cs-fixer fix --allow-risky=yes"
+    }
+}
