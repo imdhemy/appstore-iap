@@ -4,11 +4,11 @@ namespace Imdhemy\AppStore\Tests\Receipts;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Imdhemy\AppStore\ClientFactory;
-use Imdhemy\AppStore\Receipts\Receipt;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
+use Imdhemy\AppStore\Receipts\Verifier;
 use Imdhemy\AppStore\Tests\TestCase;
 
-class ReceiptTest extends TestCase
+class VerifierTest extends TestCase
 {
     /**
      * @test
@@ -22,7 +22,7 @@ class ReceiptTest extends TestCase
         $password = getenv('PASSWORD');
 
         $receiptData = $iosReceipt['transactionReceipt'];
-        $receipt = new Receipt($client, $receiptData, $password);
+        $receipt = new Verifier($client, $receiptData, $password);
 
         // when
         $response = $receipt->verifyRenewable();

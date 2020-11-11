@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Imdhemy\AppStore\Receipts\Contracts\ReceiptContract;
 use Imdhemy\AppStore\Receipts\Contracts\ReceiptResponseContract;
 
-class Receipt implements ReceiptContract
+class Verifier implements ReceiptContract
 {
     /**
      * @var Client
