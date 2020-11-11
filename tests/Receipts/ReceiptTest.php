@@ -18,14 +18,14 @@ class ReceiptTest extends TestCase
     {
         // Given
         $iosReceipt = json_decode(file_get_contents(__DIR__ . '/../../iOS-receipt.json'), true);
-        $client = ClientFactory::create();
+        $client = ClientFactory::createSandbox();
         $password = getenv('PASSWORD');
-        
+
         $receiptData = $iosReceipt['transactionReceipt'];
         $receipt = new Receipt($client, $receiptData, $password);
 
         // when
-        $response = $receipt->verify(true);
+        $response = $receipt->verifyRenewable();
 
         // then
         $this->assertInstanceOf(ReceiptResponse::class, $response);
