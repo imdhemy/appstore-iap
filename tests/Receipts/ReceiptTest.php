@@ -18,9 +18,9 @@ class ReceiptTest extends TestCase
     {
         // Given
         $iosReceipt = json_decode(file_get_contents(__DIR__ . '/../../iOS-receipt.json'), true);
-        $client = ClientFactory::createSandbox();
-        $password = '6fd56c1676f04a2195349938ec7d2b5d';
-
+        $client = ClientFactory::create();
+        $password = getenv('PASSWORD');
+        
         $receiptData = $iosReceipt['transactionReceipt'];
         $receipt = new Receipt($client, $receiptData, $password);
 
