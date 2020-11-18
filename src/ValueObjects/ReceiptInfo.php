@@ -66,7 +66,7 @@ final class ReceiptInfo
     private $webOrderLineItemId;
 
     /**
-     * @var int|null
+     * @var Time|null
      */
     private $cancellationDate;
 
@@ -108,7 +108,152 @@ final class ReceiptInfo
         $receiptInfo->cancellationReason = $attributes['cancellation_reason'] ?? -1;
         $receiptInfo->offerCodeRefName = $attributes['offer_code_ref_name'] ?? null;
         $receiptInfo->promotionalOfferId = $attributes['promotional_offer_id'] ?? null;
+        $receiptInfo->isUpgraded = isset($attributes['is_upgraded']) && $attributes['is_upgraded'] === "true";
 
         return $receiptInfo;
+    }
+
+    /**
+     * @return Time
+     */
+    public function getExpiresDate(): Time
+    {
+        return $this->expiresDate;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isInIntroOfferPeriod(): bool
+    {
+        return $this->isInIntroOfferPeriod;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTrialPeriod(): bool
+    {
+        return $this->isTrialPeriod;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUpgraded(): bool
+    {
+        return $this->isUpgraded;
+    }
+
+    /**
+     * @return Time
+     */
+    public function getOriginalPurchaseDate(): Time
+    {
+        return $this->originalPurchaseDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalTransactionId(): string
+    {
+        return $this->originalTransactionId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getProductId(): string
+    {
+        return $this->productId;
+    }
+
+    /**
+     * @return Time
+     */
+    public function getPurchaseDate(): Time
+    {
+        return $this->purchaseDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubscriptionGroupIdentier(): string
+    {
+        return $this->subscriptionGroupIdentier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTransactionId(): string
+    {
+        return $this->transactionId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebOrderLineItemId(): string
+    {
+        return $this->webOrderLineItemId;
+    }
+
+    /**
+     * @return Time|null
+     */
+    public function getCancellationDate(): ?Time
+    {
+        return $this->cancellationDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCancellationReason(): int
+    {
+        return $this->cancellationReason;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPromotionalOfferId(): ?string
+    {
+        return $this->promotionalOfferId;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOfferCodeRefName(): ?string
+    {
+        return $this->offerCodeRefName;
+    }
+
+    /**
+     * @return Cancellation
+     */
+    public function getCancellation(): Cancellation
+    {
+        return new Cancellation($this->cancellationDate, $this->cancellationReason);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCancelled(): bool
+    {
+        return ! is_null($this->cancellationDate);
     }
 }

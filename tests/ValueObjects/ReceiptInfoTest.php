@@ -3,16 +3,20 @@
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
 use Imdhemy\AppStore\Tests\TestCase;
+use Imdhemy\AppStore\ValueObjects\Cancellation;
 use Imdhemy\AppStore\ValueObjects\ReceiptInfo;
 
 class ReceiptInfoTest extends TestCase
 {
     /**
-     * @test
+     * @var array
      */
-    public function test_it_can_be_created_from_array()
+    private $attributes;
+
+    protected function setUp(): void
     {
-        $attributes = [
+        parent::setUp();
+        $this->attributes = [
             "quantity" => "1",
             "product_id" => "month_premium",
             "transaction_id" => "1000000739326921",
@@ -31,7 +35,28 @@ class ReceiptInfoTest extends TestCase
             "is_in_intro_offer_period" => "false",
             "subscription_group_identifier" => "20667927",
         ];
+    }
 
-        $this->assertInstanceOf(ReceiptInfo::class, ReceiptInfo::fromArray($attributes));
+    /**
+     * @test
+     */
+    public function test_it_can_be_created_from_array()
+    {
+        $this->assertInstanceOf(ReceiptInfo::class, ReceiptInfo::fromArray($this->attributes));
+    }
+
+    /**
+     * @test
+     */
+    public function test_it_can_get_cancellation_data()
+    {
+        $attributes = $this->attributes;
+        $attributes['cancellation_date_ms'] = '1604862794000';
+        $attributes['cancellation_reason'] = '0';
+
+        $receiptInfo = ReceiptInfo::fromArray($attributes);
+
+        $this->assertTrue($receiptInfo->isCancelled());
+        $this->assertInstanceOf(Cancellation::class, $receiptInfo->getCancellation());
     }
 }
