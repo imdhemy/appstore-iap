@@ -5,10 +5,10 @@ namespace Imdhemy\AppStore\Receipts;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Imdhemy\AppStore\Receipts\Contracts\ReceiptContract;
 use Imdhemy\AppStore\Receipts\Contracts\ReceiptResponseContract;
+use Imdhemy\AppStore\Receipts\Contracts\VerifierContract;
 
-class Verifier implements ReceiptContract
+class Verifier implements VerifierContract
 {
     /**
      * @var Client
