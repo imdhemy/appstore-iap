@@ -4,10 +4,10 @@
 namespace Imdhemy\AppStore\Receipts\Contracts;
 
 /**
- * Interface ReceiptContract
+ * Interface VerifierContract
  * @package Imdhemy\AppStore\Receipts\Contracts
  */
-interface ReceiptContract
+interface VerifierContract
 {
     /**
      * @param bool $excludeOldTransactions
