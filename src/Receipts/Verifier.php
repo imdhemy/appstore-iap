@@ -5,10 +5,8 @@ namespace Imdhemy\AppStore\Receipts;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Imdhemy\AppStore\Receipts\Contracts\ReceiptResponseContract;
-use Imdhemy\AppStore\Receipts\Contracts\VerifierContract;
 
-class Verifier implements VerifierContract
+class Verifier
 {
     /**
      * @var Client
@@ -40,10 +38,10 @@ class Verifier implements VerifierContract
 
     /**
      * @param bool $excludeOldTransactions
-     * @return ReceiptResponseContract
+     * @return ReceiptResponse
      * @throws GuzzleException
      */
-    public function verify(bool $excludeOldTransactions = false): ReceiptResponseContract
+    public function verify(bool $excludeOldTransactions = false): ReceiptResponse
     {
         $options = [
             'json' => [
@@ -58,10 +56,10 @@ class Verifier implements VerifierContract
     }
 
     /**
-     * @return ReceiptResponseContract
+     * @return ReceiptResponse
      * @throws GuzzleException
      */
-    public function verifyRenewable(): ReceiptResponseContract
+    public function verifyRenewable(): ReceiptResponse
     {
         return $this->verify(true);
     }
