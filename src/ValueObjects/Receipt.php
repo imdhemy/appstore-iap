@@ -36,7 +36,7 @@ final class Receipt
     private $expirationDate;
 
     /**
-     * @var array
+     * @var array|ReceiptInfo[]
      */
     private $inApp;
 

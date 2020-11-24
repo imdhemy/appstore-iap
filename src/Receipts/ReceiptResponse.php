@@ -14,7 +14,7 @@ use Psr\Http\Message\ResponseInterface;
  * Class ReceiptResponse
  * @package Imdhemy\AppStore\Receipts
  */
-class ReceiptResponse implements ReceiptResponseContract
+class ReceiptResponse
 {
     /**
      * @var string
