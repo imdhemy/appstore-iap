@@ -26,7 +26,7 @@ class VerifierTest extends TestCase
 
         // when
         $response = $receipt->verifyRenewable();
-
+        
         // then
         $this->assertInstanceOf(ReceiptResponse::class, $response);
     }

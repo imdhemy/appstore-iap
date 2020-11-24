@@ -32,22 +32,22 @@ class ReceiptResponse implements ReceiptResponseContract
     protected $latestReceipt;
 
     /**
-     * @var array
+     * @var array|ReceiptInfo[]
      */
     protected $latestReceiptInfo;
 
     /**
-     * @var array|null
+     * @var array|PendingRenewal[]
      */
     protected $pendingRenewalInfo;
 
     /**
-     * @var array
+     * @var Receipt
      */
     protected $receipt;
 
     /**
-     * @var int
+     * @var Status
      */
     protected $status;
 
@@ -58,13 +58,24 @@ class ReceiptResponse implements ReceiptResponseContract
     public function __construct(ResponseInterface $response)
     {
         $body = json_decode((string)$response->getBody(), true);
+
         $this->environment = $body['environment'];
         $this->latestReceipt = $body['latest_receipt'];
-        $this->latestReceiptInfo = $body['latest_receipt_info'];
-        $this->receipt = $body['receipt'];
-        $this->status = $body['status'];
 
-        $this->pendingRenewalInfo = $body['pending_renewal_info'] ?? null;
+        $this->latestReceiptInfo = [];
+        foreach ($body['latest_receipt_info'] as $itemAttributes) {
+            $this->latestReceiptInfo = ReceiptInfo::fromArray($itemAttributes);
+        }
+
+        $this->receipt = Receipt::fromArray($body['receipt']);
+        $this->status = new Status($body['status']);
+
+        $body['pending_renewal_info'] = $body['pending_renewal_info'] ?? [];
+        $this->pendingRenewalInfo = [];
+        foreach ($body['pending_renewal_info'] as $item) {
+            $this->pendingRenewalInfo[] = PendingRenewal::fromArray($item);
+        }
+
         $this->isRetryable = $body['is-retryable'] ?? null;
     }
 
@@ -77,9 +88,9 @@ class ReceiptResponse implements ReceiptResponseContract
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
-    public function isRetryAble(): bool
+    public function getIsRetryable(): ?bool
     {
         return $this->isRetryable;
     }
@@ -93,19 +104,19 @@ class ReceiptResponse implements ReceiptResponseContract
     }
 
     /**
-     * @return ReceiptInfo
+     * @return array|ReceiptInfo[]
      */
-    public function getLatestReceiptInfo(): ReceiptInfo
+    public function getLatestReceiptInfo()
     {
-        return ReceiptInfo::fromArray($this->latestReceiptInfo);
+        return $this->latestReceiptInfo;
     }
 
     /**
-     * @return PendingRenewal
+     * @return array|PendingRenewal[]
      */
-    public function getPendingRenewalInfo(): PendingRenewal
+    public function getPendingRenewalInfo()
     {
-        return PendingRenewal::fromArray($this->pendingRenewalInfo);
+        return $this->pendingRenewalInfo;
     }
 
     /**
@@ -113,7 +124,7 @@ class ReceiptResponse implements ReceiptResponseContract
      */
     public function getReceipt(): Receipt
     {
-        return Receipt::fromArray($this->receipt);
+        return $this->receipt;
     }
 
     /**
@@ -121,6 +132,6 @@ class ReceiptResponse implements ReceiptResponseContract
      */
     public function getStatus(): Status
     {
-        return new Status($this->status);
+        return $this->status;
     }
 }

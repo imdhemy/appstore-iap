@@ -51,9 +51,9 @@ final class ReceiptInfo
     private $quantity;
 
     /**
-     * @var string
+     * @var string|null
      */
-    private $subscriptionGroupIdentier;
+    private $subscriptionGroupIdentifier;
 
     /**
      * @var string
@@ -102,7 +102,7 @@ final class ReceiptInfo
         $receiptInfo->webOrderLineItemId = $attributes['web_order_line_item_id'];
         $receiptInfo->isTrialPeriod = strtolower($attributes['is_trial_period']) === "true";
         $receiptInfo->isInIntroOfferPeriod = strtolower($attributes['is_in_intro_offer_period']) === "true";
-        $receiptInfo->subscriptionGroupIdentier = $attributes['subscription_group_identifier'];
+        $receiptInfo->subscriptionGroupIdentifier = $attributes['subscription_group_identifier'] ?? null;
 
         $receiptInfo->cancellationDate = isset($attributes['cancellation_date_ms']) ? new Time($attributes['cancellation_date_ms']) : null;
         $receiptInfo->cancellationReason = $attributes['cancellation_reason'] ?? -1;
@@ -186,11 +186,11 @@ final class ReceiptInfo
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getSubscriptionGroupIdentier(): string
+    public function getSubscriptionGroupIdentifier(): ?string
     {
-        return $this->subscriptionGroupIdentier;
+        return $this->subscriptionGroupIdentifier;
     }
 
     /**
