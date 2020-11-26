@@ -52,7 +52,7 @@ class Verifier
         ];
         $response = $this->client->post('/verifyReceipt', $options);
 
-        return new ReceiptResponse($response);
+        return new ReceiptResponse(json_decode((string)$response->getBody(), true));
     }
 
     /**

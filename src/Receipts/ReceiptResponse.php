@@ -3,12 +3,10 @@
 
 namespace Imdhemy\AppStore\Receipts;
 
-use Imdhemy\AppStore\Receipts\Contracts\ReceiptResponseContract;
 use Imdhemy\AppStore\ValueObjects\PendingRenewal;
 use Imdhemy\AppStore\ValueObjects\Receipt;
 use Imdhemy\AppStore\ValueObjects\ReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\Status;
-use Psr\Http\Message\ResponseInterface;
 
 /**
  * Class ReceiptResponse
@@ -42,7 +40,7 @@ class ReceiptResponse
     protected $pendingRenewalInfo;
 
     /**
-     * @var Receipt
+     * @var Receipt|null
      */
     protected $receipt;
 
@@ -53,30 +51,28 @@ class ReceiptResponse
 
     /**
      * ReceiptResponse constructor.
-     * @param ResponseInterface $response
+     * @param array $attributes
      */
-    public function __construct(ResponseInterface $response)
+    public function __construct(array $attributes)
     {
-        $body = json_decode((string)$response->getBody(), true);
-
-        $this->environment = $body['environment'];
-        $this->latestReceipt = $body['latest_receipt'];
+        $this->environment = $attributes['environment'];
+        $this->latestReceipt = $attributes['latest_receipt'];
 
         $this->latestReceiptInfo = [];
-        foreach ($body['latest_receipt_info'] as $itemAttributes) {
+        foreach ($attributes['latest_receipt_info'] as $itemAttributes) {
             $this->latestReceiptInfo = ReceiptInfo::fromArray($itemAttributes);
         }
 
-        $this->receipt = Receipt::fromArray($body['receipt']);
-        $this->status = new Status($body['status']);
+        $this->receipt = isset($attributes['receipt']) ? Receipt::fromArray($attributes['receipt']) : null;
+        $this->status = new Status($attributes['status']);
 
-        $body['pending_renewal_info'] = $body['pending_renewal_info'] ?? [];
+        $attributes['pending_renewal_info'] = $attributes['pending_renewal_info'] ?? [];
         $this->pendingRenewalInfo = [];
-        foreach ($body['pending_renewal_info'] as $item) {
+        foreach ($attributes['pending_renewal_info'] as $item) {
             $this->pendingRenewalInfo[] = PendingRenewal::fromArray($item);
         }
 
-        $this->isRetryable = $body['is-retryable'] ?? null;
+        $this->isRetryable = $attributes['is-retryable'] ?? null;
     }
 
     /**
@@ -120,9 +116,9 @@ class ReceiptResponse
     }
 
     /**
-     * @return Receipt
+     * @return Receipt|null
      */
-    public function getReceipt(): Receipt
+    public function getReceipt(): ?Receipt
     {
         return $this->receipt;
     }
