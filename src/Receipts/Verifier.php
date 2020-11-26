@@ -47,7 +47,7 @@ class Verifier
             'json' => [
                 'receipt-data' => $this->receiptData,
                 'password' => $this->password,
-                'exclude-old-transactions' => (string)$excludeOldTransactions,
+                'exclude-old-transactions' => $excludeOldTransactions,
             ],
         ];
         $response = $this->client->post('/verifyReceipt', $options);
