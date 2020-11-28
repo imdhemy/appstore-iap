@@ -60,7 +60,7 @@ class ReceiptResponse
 
         $this->latestReceiptInfo = [];
         foreach ($attributes['latest_receipt_info'] as $itemAttributes) {
-            $this->latestReceiptInfo = ReceiptInfo::fromArray($itemAttributes);
+            $this->latestReceiptInfo[] = ReceiptInfo::fromArray($itemAttributes);
         }
 
         $this->receipt = isset($attributes['receipt']) ? Receipt::fromArray($attributes['receipt']) : null;
@@ -102,7 +102,7 @@ class ReceiptResponse
     /**
      * @return array|ReceiptInfo[]
      */
-    public function getLatestReceiptInfo()
+    public function getLatestReceiptInfo(): array
     {
         return $this->latestReceiptInfo;
     }
@@ -110,7 +110,7 @@ class ReceiptResponse
     /**
      * @return array|PendingRenewal[]
      */
-    public function getPendingRenewalInfo()
+    public function getPendingRenewalInfo(): array
     {
         return $this->pendingRenewalInfo;
     }
