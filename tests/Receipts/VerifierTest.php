@@ -14,10 +14,10 @@ class VerifierTest extends TestCase
      * @test
      * @throws GuzzleException
      */
-    public function test_verify()
+    public function test_verify_subscription()
     {
         // Given
-        $iosReceipt = json_decode(file_get_contents(__DIR__ . '/../../iOS-receipt.json'), true);
+        $iosReceipt = json_decode(file_get_contents(__DIR__ . '/../subscription-receipt.json'), true);
         $client = ClientFactory::createSandbox();
         $password = getenv('PASSWORD');
 
@@ -26,7 +26,7 @@ class VerifierTest extends TestCase
 
         // when
         $response = $receipt->verifyRenewable();
-        
+
         // then
         $this->assertInstanceOf(ReceiptResponse::class, $response);
     }

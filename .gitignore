@@ -2,5 +2,4 @@
 .php_cs.cache
 .phpunit.result.cache
 phpunit.xml
-iOS-receipt.json
 server-notification.json

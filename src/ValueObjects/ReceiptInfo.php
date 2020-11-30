@@ -6,7 +6,7 @@ namespace Imdhemy\AppStore\ValueObjects;
 final class ReceiptInfo
 {
     /**
-     * @var Time
+     * @var Time|null
      */
     private $expiresDate;
 
@@ -61,7 +61,7 @@ final class ReceiptInfo
     private $transactionId;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $webOrderLineItemId;
 
@@ -98,10 +98,11 @@ final class ReceiptInfo
         $receiptInfo->originalTransactionId = $attributes['original_transaction_id'];
         $receiptInfo->purchaseDate = new Time($attributes['purchase_date_ms']);
         $receiptInfo->originalPurchaseDate = new Time($attributes['original_purchase_date_ms']);
-        $receiptInfo->expiresDate = new Time($attributes['expires_date_ms']);
-        $receiptInfo->webOrderLineItemId = $attributes['web_order_line_item_id'];
+        $receiptInfo->expiresDate = isset($attributes['expires_date_ms']) ? new Time($attributes['expires_date_ms'])
+            : null;
+        $receiptInfo->webOrderLineItemId = $attributes['web_order_line_item_id'] ?? null;
         $receiptInfo->isTrialPeriod = strtolower($attributes['is_trial_period']) === "true";
-        $receiptInfo->isInIntroOfferPeriod = strtolower($attributes['is_in_intro_offer_period']) === "true";
+        $receiptInfo->isInIntroOfferPeriod = isset($attributes['is_in_intro_offer_period']) && strtolower($attributes['is_in_intro_offer_period']) === "true";
         $receiptInfo->subscriptionGroupIdentifier = $attributes['subscription_group_identifier'] ?? null;
 
         $receiptInfo->cancellationDate = isset($attributes['cancellation_date_ms']) ? new Time($attributes['cancellation_date_ms']) : null;
@@ -114,10 +115,11 @@ final class ReceiptInfo
     }
 
     /**
-     * @return Time
+     * @return Time|null
      */
-    public function getExpiresDate(): Time
+    public function getExpiresDate(): ?Time
     {
+        TODO:// Throw product does not have an expiration date exception
         return $this->expiresDate;
     }
 
@@ -202,9 +204,9 @@ final class ReceiptInfo
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getWebOrderLineItemId(): string
+    public function getWebOrderLineItemId(): ?string
     {
         return $this->webOrderLineItemId;
     }
