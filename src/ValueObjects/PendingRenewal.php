@@ -60,7 +60,7 @@ final class PendingRenewal
 
         $obj->autoRenewProductId = $attributes['auto_renew_product_id'];
         $obj->autoRenewStatus = (int)$attributes['auto_renew_status'] === 1;
-        $obj->isInBillingRetryPeriod = (int)$attributes['is_in_billing_retry_period'] === 1;
+        $obj->isInBillingRetryPeriod = isset($attributes['is_in_billing_retry_period']) && (int)$attributes['is_in_billing_retry_period'] === 1;
         $obj->originalTransactionId = $attributes['original_transaction_id'];
         $obj->productId = $attributes['product_id'];
 
