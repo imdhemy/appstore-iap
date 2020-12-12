@@ -25,7 +25,7 @@ class ServerNotification
     protected $unifiedReceipt;
 
     /**
-     * @var Time
+     * @var Time|null
      */
     protected $autoRenewStatusChangeDate;
 
@@ -72,7 +72,7 @@ class ServerNotification
     {
         $obj = new self();
         $obj->unifiedReceipt = new ReceiptResponse($attributes['unified_receipt']);
-        $obj->autoRenewStatusChangeDate = new Time($attributes['auto_renew_status_change_date_ms']);
+        $obj->autoRenewStatusChangeDate = isset($attributes['auto_renew_status_change_date_ms']) ? new Time($attributes['auto_renew_status_change_date_ms']) : null;
         $obj->environment = $attributes['environment'];
         $obj->autoRenewStatus = $attributes['auto_renew_status'] === "true";
         $obj->bvrs = $attributes['bvrs'];
@@ -93,9 +93,9 @@ class ServerNotification
     }
 
     /**
-     * @return Time
+     * @return Time|null
      */
-    public function getAutoRenewStatusChangeDate(): Time
+    public function getAutoRenewStatusChangeDate(): ?Time
     {
         return $this->autoRenewStatusChangeDate;
     }
