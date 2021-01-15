@@ -5,9 +5,12 @@ namespace Imdhemy\AppStore\Receipts;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Imdhemy\AppStore\ClientFactory;
 
 class Verifier
 {
+    const TEST_ENV_CODE = 21007;
+    
     /**
      * @var Client
      */
@@ -43,16 +46,14 @@ class Verifier
      */
     public function verify(bool $excludeOldTransactions = false): ReceiptResponse
     {
-        $options = [
-            'json' => [
-                'receipt-data' => $this->receiptData,
-                'password' => $this->password,
-                'exclude-old-transactions' => $excludeOldTransactions,
-            ],
-        ];
-        $response = $this->client->post('/verifyReceipt', $options);
+        $responseBody = $this->sendVerifyRequest($excludeOldTransactions);
 
-        return new ReceiptResponse(json_decode((string)$response->getBody(), true));
+        if ($this->isFromTestEnv($responseBody['status'])) {
+            $this->client = ClientFactory::createSandbox();
+            $responseBody = $this->sendVerifyRequest($excludeOldTransactions);
+        }
+
+        return new ReceiptResponse($responseBody);
     }
 
     /**
@@ -62,5 +63,42 @@ class Verifier
     public function verifyRenewable(): ReceiptResponse
     {
         return $this->verify(true);
+    }
+
+    /**
+     * @param bool $excludeOldTransactions
+     * @return array
+     * @throws GuzzleException
+     */
+    protected function sendVerifyRequest(bool $excludeOldTransactions = false): array
+    {
+        $options = $this->buildRequestOptions($excludeOldTransactions);
+        $response = $this->client->post('/verifyReceipt', $options);
+
+        return json_decode((string)$response->getBody(), true);
+    }
+
+    /**
+     * @param bool $excludeOldTransactions
+     * @return array[]
+     */
+    protected function buildRequestOptions(bool $excludeOldTransactions): array
+    {
+        return [
+            'json' => [
+                'receipt-data' => $this->receiptData,
+                'password' => $this->password,
+                'exclude-old-transactions' => $excludeOldTransactions,
+            ],
+        ];
+    }
+
+    /**
+     * @param int $status
+     * @return bool
+     */
+    protected function isFromTestEnv(int $status): bool
+    {
+        return $status === self::TEST_ENV_CODE;
     }
 }

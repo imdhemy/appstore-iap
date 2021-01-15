@@ -30,4 +30,21 @@ class VerifierTest extends TestCase
         // then
         $this->assertInstanceOf(ReceiptResponse::class, $response);
     }
+
+    /**
+     * @test
+     * @throws GuzzleException
+     */
+    public function test_sandbox_receipt_with_only_one_receipt()
+    {
+        $iosReceipt = json_decode(file_get_contents(__DIR__ . '/../single-receipt.json'), true);
+        $receiptData = $iosReceipt['token'];
+        $client = ClientFactory::createSandbox();
+        $password = getenv('PASSWORD');
+
+        $receipt = new Verifier($client, $receiptData, $password);
+        $response = $receipt->verifyRenewable();
+
+        $this->assertInstanceOf(ReceiptResponse::class, $response);
+    }
 }
