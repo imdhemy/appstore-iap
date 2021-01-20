@@ -56,6 +56,7 @@ class Verifier
         if ($this->isFromTestEnv($status)) {
             $this->client = ClientFactory::createSandbox();
             $responseBody = $this->sendVerifyRequest($excludeOldTransactions);
+            $status = $responseBody['status'];
         }
 
         if ($this->isInvalid($status)) {
