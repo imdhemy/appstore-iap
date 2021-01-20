@@ -11,7 +11,7 @@ use Imdhemy\AppStore\Exceptions\InvalidReceiptException;
 class Verifier
 {
     const TEST_ENV_CODE = 21007;
-    const ERROR_STATUS_CODES = [21000, 21001, 21002, 21003, 21004, 21005, 21006, 21007, 21008, 21009, 21010];
+    const ERROR_STATUS_CODES = [21000, 21001, 21002, 21003, 21004, 21005, 21006, 21008, 21009, 21010];
 
     /**
      * @var Client
@@ -56,7 +56,6 @@ class Verifier
         if ($this->isFromTestEnv($status)) {
             $this->client = ClientFactory::createSandbox();
             $responseBody = $this->sendVerifyRequest($excludeOldTransactions);
-            $status = $responseBody['status'];
         }
 
         if ($this->isInvalid($status)) {
@@ -68,7 +67,7 @@ class Verifier
 
     /**
      * @return ReceiptResponse
-     * @throws GuzzleException
+     * @throws GuzzleException|InvalidReceiptException
      */
     public function verifyRenewable(): ReceiptResponse
     {
