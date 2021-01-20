@@ -4,6 +4,7 @@ namespace Imdhemy\AppStore\Tests\Receipts;
 
 use GuzzleHttp\Exception\GuzzleException;
 use Imdhemy\AppStore\ClientFactory;
+use Imdhemy\AppStore\Exceptions\InvalidReceiptException;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
 use Imdhemy\AppStore\Receipts\Verifier;
 use Imdhemy\AppStore\Tests\TestCase;
@@ -46,5 +47,20 @@ class VerifierTest extends TestCase
         $response = $receipt->verifyRenewable();
 
         $this->assertInstanceOf(ReceiptResponse::class, $response);
+    }
+
+    /**
+     * @test
+     * @throws GuzzleException
+     */
+    public function test_it_throws_exception_on_invalid_responses()
+    {
+        $this->expectException(InvalidReceiptException::class);
+
+        $iosReceipt = json_decode(file_get_contents(__DIR__ . '/../single-receipt.json'), true);
+        $receiptData = $iosReceipt['token'];
+        $client = ClientFactory::createSandbox();
+
+        (new Verifier($client, $receiptData, ''))->verifyRenewable();
     }
 }
