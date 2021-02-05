@@ -1,6 +1,7 @@
 {
   "name": "imdhemy/appstore-iap",
   "description": "PHP Appstore In-App Purchase implementation",
+  "license": "BSD-3-Clause",
   "authors": [
     {
       "name": "imdhemy",
