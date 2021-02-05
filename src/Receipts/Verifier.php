@@ -11,7 +11,6 @@ use Imdhemy\AppStore\Exceptions\InvalidReceiptException;
 class Verifier
 {
     const TEST_ENV_CODE = 21007;
-    const ERROR_STATUS_CODES = [21000, 21001, 21002, 21003, 21004, 21005, 21006, 21008, 21009, 21010];
 
     /**
      * @var Client
@@ -44,8 +43,7 @@ class Verifier
     /**
      * @param bool $excludeOldTransactions
      * @return ReceiptResponse
-     * @throws GuzzleException
-     * @throws InvalidReceiptException
+     * @throws GuzzleException|InvalidReceiptException
      */
     public function verify(bool $excludeOldTransactions = false): ReceiptResponse
     {
@@ -56,10 +54,6 @@ class Verifier
         if ($this->isFromTestEnv($status)) {
             $this->client = ClientFactory::createSandbox();
             $responseBody = $this->sendVerifyRequest($excludeOldTransactions);
-        }
-
-        if ($this->isInvalid($status)) {
-            throw InvalidReceiptException::create($status);
         }
 
         return new ReceiptResponse($responseBody);
@@ -109,14 +103,5 @@ class Verifier
     protected function isFromTestEnv(int $status): bool
     {
         return $status === self::TEST_ENV_CODE;
-    }
-
-    /**
-     * @param $status
-     * @return bool
-     */
-    protected function isInvalid($status): bool
-    {
-        return in_array($status, self::ERROR_STATUS_CODES);
     }
 }

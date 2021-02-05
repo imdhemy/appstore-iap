@@ -13,7 +13,7 @@ class VerifierTest extends TestCase
 {
     /**
      * @test
-     * @throws GuzzleException
+     * @throws GuzzleException|InvalidReceiptException
      */
     public function test_verify_subscription()
     {
@@ -34,7 +34,7 @@ class VerifierTest extends TestCase
 
     /**
      * @test
-     * @throws GuzzleException
+     * @throws GuzzleException|InvalidReceiptException
      */
     public function test_sandbox_receipt_with_only_one_receipt()
     {

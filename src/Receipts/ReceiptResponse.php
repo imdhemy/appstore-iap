@@ -3,6 +3,7 @@
 
 namespace Imdhemy\AppStore\Receipts;
 
+use Imdhemy\AppStore\Exceptions\InvalidReceiptException;
 use Imdhemy\AppStore\ValueObjects\PendingRenewal;
 use Imdhemy\AppStore\ValueObjects\Receipt;
 use Imdhemy\AppStore\ValueObjects\ReceiptInfo;
@@ -51,10 +52,16 @@ class ReceiptResponse
 
     /**
      * ReceiptResponse constructor.
+     * TODO: replace public constructor usage with a static factory method
      * @param array $attributes
+     * @throws InvalidReceiptException
      */
     public function __construct(array $attributes)
     {
+        if ($attributes['status'] !== 0) {
+            throw InvalidReceiptException::create($attributes['status']);
+        }
+
         $this->environment = $attributes['environment'];
         $this->latestReceipt = $attributes['latest_receipt'];
 
