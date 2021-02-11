@@ -26,7 +26,7 @@ class ReceiptResponse
     protected $isRetryable;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $latestReceipt;
 
@@ -63,7 +63,7 @@ class ReceiptResponse
         }
 
         $this->environment = $attributes['environment'];
-        $this->latestReceipt = $attributes['latest_receipt'] ?? '';
+        $this->latestReceipt = $attributes['latest_receipt'] ?? null;
 
         $this->latestReceiptInfo = [];
         foreach ($attributes['latest_receipt_info'] ?? [] as $itemAttributes) {
@@ -100,7 +100,7 @@ class ReceiptResponse
     /**
      * @return string
      */
-    public function getLatestReceipt(): string
+    public function getLatestReceipt(): ?string
     {
         return $this->latestReceipt;
     }
