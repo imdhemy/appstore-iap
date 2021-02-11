@@ -63,19 +63,18 @@ class ReceiptResponse
         }
 
         $this->environment = $attributes['environment'];
-        $this->latestReceipt = $attributes['latest_receipt'];
+        $this->latestReceipt = $attributes['latest_receipt'] ?? [];
 
         $this->latestReceiptInfo = [];
-        foreach ($attributes['latest_receipt_info'] as $itemAttributes) {
+        foreach ($attributes['latest_receipt_info'] ?? [] as $itemAttributes) {
             $this->latestReceiptInfo[] = ReceiptInfo::fromArray($itemAttributes);
         }
 
         $this->receipt = isset($attributes['receipt']) ? Receipt::fromArray($attributes['receipt']) : null;
         $this->status = new Status($attributes['status']);
 
-        $attributes['pending_renewal_info'] = $attributes['pending_renewal_info'] ?? [];
         $this->pendingRenewalInfo = [];
-        foreach ($attributes['pending_renewal_info'] as $item) {
+        foreach ($attributes['pending_renewal_info'] ?? [] as $item) {
             $this->pendingRenewalInfo[] = PendingRenewal::fromArray($item);
         }
 
