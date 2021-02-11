@@ -63,7 +63,7 @@ class ReceiptResponse
         }
 
         $this->environment = $attributes['environment'];
-        $this->latestReceipt = $attributes['latest_receipt'] ?? [];
+        $this->latestReceipt = $attributes['latest_receipt'] ?? '';
 
         $this->latestReceiptInfo = [];
         foreach ($attributes['latest_receipt_info'] ?? [] as $itemAttributes) {
