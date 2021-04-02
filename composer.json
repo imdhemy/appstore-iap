@@ -18,7 +18,7 @@
     "symfony/var-dumper": "^5.1",
     "vimeo/psalm": "^3.17",
     "friendsofphp/php-cs-fixer": "^2.16",
-    "fzaninotto/faker": "^1.9"
+    "fakerphp/faker": "^1.14"
   },
   "autoload": {
     "psr-4": {
