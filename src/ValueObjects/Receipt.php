@@ -161,9 +161,9 @@ final class Receipt
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOriginalApplicationVersion(): string
+    public function getOriginalApplicationVersion(): ?string
     {
         return $this->originalApplicationVersion;
     }

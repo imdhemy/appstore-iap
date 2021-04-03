@@ -35,6 +35,9 @@ class ReceiptTest extends TestCase
             // ^ Apple server notifications do not always include this attribute, so crash-test a simulated scenario
         ];
 
-        $this->assertInstanceOf(Receipt::class, Receipt::fromArray($receiptAttributes));
+        $actual = Receipt::fromArray($receiptAttributes);
+
+        $this->assertInstanceOf(Receipt::class, $actual);
+        $this->assertNull($actual->getOriginalApplicationVersion());
     }
 }
