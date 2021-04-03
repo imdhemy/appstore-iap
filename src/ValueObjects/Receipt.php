@@ -41,7 +41,7 @@ final class Receipt
     private $inApp;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $originalApplicationVersion;
 
@@ -93,7 +93,7 @@ final class Receipt
         foreach ($attributes['in_app'] as $receiptAttributes) {
             $obj->inApp[] = ReceiptInfo::fromArray($receiptAttributes);
         }
-        $obj->originalApplicationVersion = $attributes['original_application_version'];
+        $obj->originalApplicationVersion = $attributes['original_application_version'] ?? null;
         $obj->originalPurchaseDate = new Time($attributes['original_purchase_date_ms']);
         $obj->preOrderDate = isset($attributes['preorder_date_ms']) ? new Time($attributes['preorder_date_ms']) : null;
         $obj->receiptCreationDate = new Time($attributes['receipt_creation_date_ms']);
@@ -161,9 +161,9 @@ final class Receipt
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getOriginalApplicationVersion(): string
+    public function getOriginalApplicationVersion(): ?string
     {
         return $this->originalApplicationVersion;
     }
