@@ -18,6 +18,7 @@ class ServerNotification
     const INTERACTIVE_RENEWAL = 'INTERACTIVE_RENEWAL';
     const PRICE_INCREASE_CONSENT = 'PRICE_INCREASE_CONSENT';
     const REFUND = 'REFUND';
+    const REVOKE = 'REVOKE';
 
     /**
      * @var ReceiptResponse
@@ -72,7 +73,9 @@ class ServerNotification
     {
         $obj = new self();
         $obj->unifiedReceipt = new ReceiptResponse($attributes['unified_receipt']);
-        $obj->autoRenewStatusChangeDate = isset($attributes['auto_renew_status_change_date_ms']) ? new Time($attributes['auto_renew_status_change_date_ms']) : null;
+        $obj->autoRenewStatusChangeDate = isset($attributes['auto_renew_status_change_date_ms']) ? new Time(
+            $attributes['auto_renew_status_change_date_ms']
+        ) : null;
         $obj->environment = $attributes['environment'];
         $obj->autoRenewStatus = $attributes['auto_renew_status'] === "true";
         $obj->bvrs = $attributes['bvrs'];
