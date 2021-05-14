@@ -41,7 +41,7 @@ class ServerNotification
     protected $autoRenewStatus;
 
     /**
-     * @var int
+     * @var string
      */
     protected $bvrs;
 
@@ -120,9 +120,9 @@ class ServerNotification
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getBvrs(): int
+    public function getBvrs(): string
     {
         return $this->bvrs;
     }
