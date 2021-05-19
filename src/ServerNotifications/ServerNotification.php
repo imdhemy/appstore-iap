@@ -20,6 +20,9 @@ class ServerNotification
     const REFUND = 'REFUND';
     const REVOKE = 'REVOKE';
 
+    const ENV_PROD = 'PROD';
+    const ENV_SANDBOX = 'Sandbox';
+
     /**
      * @var ReceiptResponse
      */
@@ -157,5 +160,21 @@ class ServerNotification
     public function getNotificationType(): string
     {
         return $this->notificationType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isProd(): bool
+    {
+        return $this->environment === self::ENV_PROD;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSandbox(): bool
+    {
+        return $this->environment === self::ENV_SANDBOX;
     }
 }
