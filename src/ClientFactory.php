@@ -22,9 +22,11 @@ class ClientFactory
      */
     public static function create(bool $sandbox = false): Client
     {
-        return new Client([
-                            'base_uri' => $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI,
-                          ]);
+        return new Client(
+          [
+            'base_uri' => $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI,
+          ]
+        );
     }
 
     /**
