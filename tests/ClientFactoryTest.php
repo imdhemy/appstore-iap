@@ -70,9 +70,9 @@ class ClientFactoryTest extends TestCase
         $this->expectExceptionMessage($message);
 
         $error = new RequestException(
-          $message,
-          new Request('GET', '/admin'),
-          new Response(403, [], 'Forbidden')
+            $message,
+            new Request('GET', '/admin'),
+            new Response(403, [], 'Forbidden')
         );
         $client = ClientFactory::mockError($error);
 
