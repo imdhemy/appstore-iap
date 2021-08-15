@@ -5,18 +5,23 @@ namespace Imdhemy\AppStore\Tests;
 class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @return false|string
+     * @return string
      */
-    protected function getSubscriptionReceipt()
+    protected function getSubscriptionReceipt(): string
     {
-        return file_get_contents(__DIR__ . '/../fixtures/subscription_receipt.json');
+        return file_get_contents(__DIR__ . '/fixtures/subscription_receipt.json');
     }
 
+
     /**
-     * @return false|string
+     * @param array $override
+     * @return string
      */
-    protected function getVerifyReceiptResponse()
+    protected function getVerifyReceiptResponse(array $override = []): string
     {
-        return file_get_contents(__DIR__ . '/../fixtures/verify_receipt_response.json');
+        $contents = file_get_contents(__DIR__ . '/fixtures/verify_receipt_response.json');
+        $data = json_decode($contents, true);
+        $response = array_merge($data, $override);
+        return json_encode($response);
     }
 }

@@ -1,5 +1,5 @@
 {
-  "environment": "Sandbox",
+  "environment": "Production",
   "receipt": {
     "receipt_type": "ProductionSandbox",
     "adam_id": 0,
