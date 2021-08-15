@@ -11,7 +11,7 @@ use Exception;
  */
 class InvalidReceiptException extends Exception
 {
-    const ERROR_STATUS_MAP = [
+    public const ERROR_STATUS_MAP = [
         21000 => 'The request to the App Store was not made using the HTTP POST request method.',
         21001 => 'This status code is no longer sent by the App Store.',
         21002 => 'The data in the receipt-data property was malformed or the service experienced a temporary issue. Try again.',
