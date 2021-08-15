@@ -22,6 +22,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
         $contents = file_get_contents(__DIR__ . '/fixtures/verify_receipt_response.json');
         $data = json_decode($contents, true);
         $response = array_merge($data, $override);
+
         return json_encode($response);
     }
 }

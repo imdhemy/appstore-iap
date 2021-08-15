@@ -139,6 +139,7 @@ class ClientFactoryTest extends TestCase
 
         $error = new RequestException('Something went wrong', $request, $response);
         $client = ClientFactory::mockError($error, $transactions);
+
         try {
             $client->get('/admin');
         } catch (RequestException $exception) {
