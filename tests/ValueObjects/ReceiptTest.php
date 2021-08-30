@@ -116,7 +116,13 @@ class ReceiptTest extends TestCase
      */
     public function test_receipt_type()
     {
-        $value = Receipt::RECEIPT_TYPE_PRODUCTION;
+        $values = [
+            Receipt::RECEIPT_TYPE_PRODUCTION,
+            Receipt::RECEIPT_TYPE_PRODUCTION_VPP,
+            Receipt::RECEIPT_TYPE_PRODUCTION_VPP_SANDBOX,
+            Receipt::RECEIPT_TYPE_SANDBOX
+        ];
+        $value = $this->faker->randomElement($values);
         $receipt = Receipt::fromArray(['receipt_type' => $value]);
         $this->assertEquals($value, $receipt->getReceiptType());
         $this->assertNull(Receipt::fromArray([])->getReceiptType());
