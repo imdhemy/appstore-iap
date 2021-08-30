@@ -2,8 +2,21 @@
 
 namespace Imdhemy\AppStore\Tests;
 
+use Faker\Factory;
+
 class TestCase extends \PHPUnit\Framework\TestCase
 {
+    protected $faker;
+
+    /**
+     * @inheritDoc
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->faker = Factory::create();
+    }
+
     /**
      * @return string
      */

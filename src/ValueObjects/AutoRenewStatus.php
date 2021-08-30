@@ -32,4 +32,12 @@ final class AutoRenewStatus
     {
         return $this->value;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string)$this->getValue();
+    }
 }

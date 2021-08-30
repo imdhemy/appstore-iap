@@ -36,4 +36,12 @@ final class ExpirationIntent
     {
         return $this->value;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string)$this->getValue();
+    }
 }
