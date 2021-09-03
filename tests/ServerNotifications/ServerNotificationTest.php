@@ -30,7 +30,7 @@ class ServerNotificationTest extends TestCase
         $serverNotification = ServerNotification::fromArray(
             [
                 'unified_receipt' => $value,
-                'notification_type' => ServerNotification::CANCEL
+                'notification_type' => ServerNotification::CANCEL,
             ]
         );
 

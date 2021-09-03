@@ -11,6 +11,7 @@ use Exception;
  */
 class InvalidReceiptException extends Exception
 {
+//    @TODO: move error status map keys to Status class
     public const ERROR_STATUS_MAP = [
         21000 => 'The request to the App Store was not made using the HTTP POST request method.',
         21001 => 'This status code is no longer sent by the App Store.',

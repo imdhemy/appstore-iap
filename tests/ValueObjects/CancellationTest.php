@@ -38,4 +38,17 @@ class CancellationTest extends TestCase
             $this->assertFalse($cancellation->isDueAppIssue());
         }
     }
+
+    /**
+     * @test
+     * @throws Exception
+     */
+    public function test_instantiation_using_string_reason()
+    {
+        $time = new Time(time() * 1000);
+        $reason = (string)[Cancellation::REASON_OTHER, Cancellation::REASON_APP_ISSUE][random_int(0, 1)];
+
+        $cancellation = new Cancellation($time, $reason);
+        $this->assertInstanceOf(Cancellation::class, $cancellation);
+    }
 }
