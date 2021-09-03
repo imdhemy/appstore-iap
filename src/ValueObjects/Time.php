@@ -48,6 +48,14 @@ class Time
     }
 
     /**
+     * @return Carbon
+     */
+    public function toCarbon(): Carbon
+    {
+        return $this->carbon;
+    }
+
+    /**
      * @return DateTime
      */
     public function toDateTime(): DateTime
