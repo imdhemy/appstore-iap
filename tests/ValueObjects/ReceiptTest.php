@@ -79,7 +79,19 @@ class ReceiptTest extends TestCase
     public function test_in_app()
     {
         $this->assertIsArray(Receipt::fromArray(['in_app' => []])->getInApp());
-        $this->assertInstanceOf(LatestReceiptInfo::class, Receipt::fromArray(['in_app' => [[]]])->getInApp()[0]);
+        $this->assertInstanceOf(
+            LatestReceiptInfo::class,
+            Receipt::fromArray([
+                                   'in_app' => [
+                                       [
+                                           'original_transaction_id' => 'original_transaction_id',
+                                           'product_id' => 'product_id',
+                                           'quantity' => '1',
+                                           'transaction_id' => 'transaction_id'
+                                       ]
+                                   ]
+                               ])->getInApp()[0]
+        );
         $this->assertNull(Receipt::fromArray([])->getInApp());
     }
 
