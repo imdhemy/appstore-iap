@@ -3,9 +3,9 @@
 
 namespace Imdhemy\AppStore\Receipts;
 
+use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\PendingRenewal;
 use Imdhemy\AppStore\ValueObjects\Receipt;
-use Imdhemy\AppStore\ValueObjects\ReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\Status;
 
 /**
@@ -39,7 +39,7 @@ class ReceiptResponse
 
     /**
      * An array that contains all in-app purchase transactions.
-     * @var array|ReceiptInfo[]|null
+     * @var array|LatestReceiptInfo[]|null
      */
     protected $latestReceiptInfo;
 
@@ -127,7 +127,7 @@ class ReceiptResponse
     }
 
     /**
-     * @return array|ReceiptInfo[]
+     * @return array|LatestReceiptInfo[]
      */
     public function getLatestReceiptInfo(): ?array
     {
@@ -142,7 +142,7 @@ class ReceiptResponse
         $data = [];
 
         foreach ($this->latestReceiptInfo as $receiptInfo) {
-            $data[] = ReceiptInfo::fromArray($receiptInfo);
+            $data[] = LatestReceiptInfo::fromArray($receiptInfo);
         }
 
         $this->latestReceiptInfo = $data;
@@ -181,9 +181,9 @@ class ReceiptResponse
     public function getReceipt(): ?Receipt
     {
         return
-          is_array($this->receipt) ?
-            Receipt::fromArray($this->receipt) :
-            null;
+            is_array($this->receipt) ?
+                Receipt::fromArray($this->receipt) :
+                null;
     }
 
     /**

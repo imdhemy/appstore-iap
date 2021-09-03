@@ -4,9 +4,9 @@ namespace Imdhemy\AppStore\Tests\ValueObjects;
 
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\Cancellation;
-use Imdhemy\AppStore\ValueObjects\ReceiptInfo;
+use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 
-class ReceiptInfoTest extends TestCase
+class LatestReceiptInfoTest extends TestCase
 {
     /**
      * @var array
@@ -42,7 +42,7 @@ class ReceiptInfoTest extends TestCase
      */
     public function test_it_can_be_created_from_array()
     {
-        $this->assertInstanceOf(ReceiptInfo::class, ReceiptInfo::fromArray($this->attributes));
+        $this->assertInstanceOf(LatestReceiptInfo::class, LatestReceiptInfo::fromArray($this->attributes));
     }
 
     /**
@@ -54,7 +54,7 @@ class ReceiptInfoTest extends TestCase
         $attributes['cancellation_date_ms'] = '1604862794000';
         $attributes['cancellation_reason'] = '0';
 
-        $receiptInfo = ReceiptInfo::fromArray($attributes);
+        $receiptInfo = LatestReceiptInfo::fromArray($attributes);
 
         $this->assertTrue($receiptInfo->isCancelled());
         $this->assertInstanceOf(Cancellation::class, $receiptInfo->getCancellation());

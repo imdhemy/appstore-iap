@@ -195,7 +195,7 @@ final class Receipt
     }
 
     /**
-     * @return array|ReceiptInfo[]|null
+     * @return array|LatestReceiptInfo[]|null
      */
     public function getInApp(): ?array
     {
@@ -205,7 +205,7 @@ final class Receipt
 
         $data = [];
         foreach ($this->inApp as $receiptData) {
-            $data[] = ReceiptInfo::fromArray($receiptData);
+            $data[] = LatestReceiptInfo::fromArray($receiptData);
         }
 
         $this->inAppParsed = true;

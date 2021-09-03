@@ -1,9 +1,12 @@
 <?php
 
-
 namespace Imdhemy\AppStore\ValueObjects;
 
-final class ReceiptInfo
+/**
+ * LatestReceiptInfo class which contains in-app purchase transaction
+ * @link https://developer.apple.com/documentation/appstorereceipts/responsebody/latest_receipt_info
+ */
+final class LatestReceiptInfo
 {
     /**
      * @var Time|null
@@ -92,6 +95,9 @@ final class ReceiptInfo
     public static function fromArray(array $attributes): self
     {
         $receiptInfo = new self();
+
+        return $receiptInfo;
+
         $receiptInfo->quantity = intval($attributes['quantity']);
         $receiptInfo->productId = $attributes['product_id'];
         $receiptInfo->transactionId = $attributes['transaction_id'];
@@ -102,10 +108,14 @@ final class ReceiptInfo
             : null;
         $receiptInfo->webOrderLineItemId = $attributes['web_order_line_item_id'] ?? null;
         $receiptInfo->isTrialPeriod = strtolower($attributes['is_trial_period']) === "true";
-        $receiptInfo->isInIntroOfferPeriod = isset($attributes['is_in_intro_offer_period']) && strtolower($attributes['is_in_intro_offer_period']) === "true";
+        $receiptInfo->isInIntroOfferPeriod = isset($attributes['is_in_intro_offer_period']) && strtolower(
+                $attributes['is_in_intro_offer_period']
+            ) === "true";
         $receiptInfo->subscriptionGroupIdentifier = $attributes['subscription_group_identifier'] ?? null;
 
-        $receiptInfo->cancellationDate = isset($attributes['cancellation_date_ms']) ? new Time($attributes['cancellation_date_ms']) : null;
+        $receiptInfo->cancellationDate = isset($attributes['cancellation_date_ms']) ? new Time(
+            $attributes['cancellation_date_ms']
+        ) : null;
         $receiptInfo->cancellationReason = $attributes['cancellation_reason'] ?? -1;
         $receiptInfo->offerCodeRefName = $attributes['offer_code_ref_name'] ?? null;
         $receiptInfo->promotionalOfferId = $attributes['promotional_offer_id'] ?? null;
@@ -256,6 +266,6 @@ final class ReceiptInfo
      */
     public function isCancelled(): bool
     {
-        return ! is_null($this->cancellationDate);
+        return !is_null($this->cancellationDate);
     }
 }

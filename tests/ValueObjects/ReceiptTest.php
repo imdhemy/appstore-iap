@@ -3,8 +3,8 @@
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
 use Imdhemy\AppStore\Tests\TestCase;
+use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\Receipt;
-use Imdhemy\AppStore\ValueObjects\ReceiptInfo;
 
 class ReceiptTest extends TestCase
 {
@@ -79,7 +79,7 @@ class ReceiptTest extends TestCase
     public function test_in_app()
     {
         $this->assertIsArray(Receipt::fromArray(['in_app' => []])->getInApp());
-        $this->assertInstanceOf(ReceiptInfo::class, Receipt::fromArray(['in_app' => [[]]])->getInApp()[0]);
+        $this->assertInstanceOf(LatestReceiptInfo::class, Receipt::fromArray(['in_app' => [[]]])->getInApp()[0]);
         $this->assertNull(Receipt::fromArray([])->getInApp());
     }
 

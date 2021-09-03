@@ -4,9 +4,9 @@ namespace Imdhemy\AppStore\Tests\Receipts;
 
 use Exception;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
+use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\PendingRenewal;
 use Imdhemy\AppStore\ValueObjects\Receipt;
-use Imdhemy\AppStore\ValueObjects\ReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\Status;
 use PHPUnit\Framework\TestCase;
 
@@ -29,8 +29,8 @@ class ReceiptResponseTest extends TestCase
         $environments = [ReceiptResponse::ENV_PRODUCTION, ReceiptResponse::ENV_SANDBOX];
 
         $body = [
-          'status' => 0,
-          'environment' => $environments[array_rand($environments)],
+            'status' => 0,
+            'environment' => $environments[array_rand($environments)],
         ];
 
         $response = ReceiptResponse::fromArray($body);
@@ -83,7 +83,7 @@ class ReceiptResponseTest extends TestCase
 
         $valueWithSingleObject = [[]];
         $response = ReceiptResponse::fromArray(['latest_receipt_info' => $valueWithSingleObject, 'status' => 0]);
-        $this->assertInstanceOf(ReceiptInfo::class, $response->getLatestReceiptInfo()[0]);
+        $this->assertInstanceOf(LatestReceiptInfo::class, $response->getLatestReceiptInfo()[0]);
 
         $missingData = ReceiptResponse::fromArray(['status' => 0]);
         $this->assertNull($missingData->getLatestReceiptInfo());
