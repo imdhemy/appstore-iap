@@ -111,10 +111,10 @@ class Verifier
     }
 
     /**
-     * @param $status
+     * @param int $status
      * @return bool
      */
-    private function isInvalidReceiptStatus($status): bool
+    private function isInvalidReceiptStatus(int $status): bool
     {
         if ($status === self::TEST_ENV_CODE) {
             return false;
