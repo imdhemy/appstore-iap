@@ -24,7 +24,7 @@ class PendingRenewalTest extends TestCase
         $this->commonAttributes = [
             'auto_renew_product_id' => 'auto_renew_product_id',
             'original_transaction_id' => 'original_transaction_id',
-            'product_id' => 'product_id'
+            'product_id' => 'product_id',
         ];
     }
 

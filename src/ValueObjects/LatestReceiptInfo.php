@@ -312,7 +312,7 @@ final class LatestReceiptInfo
      */
     public function getCancellation(): ?Cancellation
     {
-        if (!is_null($this->cancellationDate) && !is_null($this->cancellationReason)) {
+        if (! is_null($this->cancellationDate) && ! is_null($this->cancellationReason)) {
             return new Cancellation($this->getCancellationDate(), $this->getCancellationReason());
         }
 

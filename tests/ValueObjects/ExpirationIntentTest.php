@@ -22,7 +22,7 @@ class ExpirationIntentTest extends TestCase
             ExpirationIntent::BILLING_ERROR,
             ExpirationIntent::DID_NOT_AGREE_PRICE_INCREASE,
             ExpirationIntent::PRODUCT_UNAVAILABLE,
-            ExpirationIntent::UNKNOWN_ERROR
+            ExpirationIntent::UNKNOWN_ERROR,
         ];
         $reason = $reasons[array_rand($reasons)];
 

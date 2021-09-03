@@ -98,7 +98,7 @@ class LatestReceiptInfoTest extends TestCase
     {
         $types = [
             LatestReceiptInfo::OWNERSHIP_TYPE_FAMILY_SHARED,
-            LatestReceiptInfo::OWNERSHIP_TYPE_PURCHASED
+            LatestReceiptInfo::OWNERSHIP_TYPE_PURCHASED,
         ];
         $value = $this->faker->randomElement($types);
         $attributes = array_merge($this->commonAttributes, ['in_app_ownership_type' => $value]);
@@ -216,13 +216,13 @@ class LatestReceiptInfoTest extends TestCase
             'getQuantity',
             'getProductId',
             'getTransactionId',
-            'getOriginalTransactionId'
+            'getOriginalTransactionId',
         ];
 
         $latestReceiptInfo = LatestReceiptInfo::fromArray($this->commonAttributes);
         $getters = array_filter(get_class_methods($latestReceiptInfo), function (string $method) use ($notNullGetters) {
             $isGetter = strpos($method, 'get') !== false;
-            $isNullGetter = !in_array($method, $notNullGetters);
+            $isNullGetter = ! in_array($method, $notNullGetters);
 
             return $isGetter && $isNullGetter;
         });

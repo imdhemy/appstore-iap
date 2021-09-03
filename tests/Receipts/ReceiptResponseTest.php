@@ -86,8 +86,8 @@ class ReceiptResponseTest extends TestCase
                 'original_transaction_id' => 'original_transaction_id',
                 'product_id' => 'product_id',
                 'quantity' => '1',
-                'transaction_id' => 'transaction_id'
-            ]
+                'transaction_id' => 'transaction_id',
+            ],
         ];
         $response = ReceiptResponse::fromArray(['latest_receipt_info' => $valueWithSingleObject, 'status' => 0]);
         $this->assertInstanceOf(LatestReceiptInfo::class, $response->getLatestReceiptInfo()[0]);
@@ -111,10 +111,10 @@ class ReceiptResponseTest extends TestCase
             [
                 'auto_renew_product_id' => 'auto_renew_product_id',
                 'original_transaction_id' => 'original_transaction_id',
-                'product_id' => 'product_id'
-            ]
+                'product_id' => 'product_id',
+            ],
         ];
-        
+
         $response = ReceiptResponse::fromArray(['pending_renewal_info' => $valueWithSingleObject, 'status' => 0]);
         $this->assertInstanceOf(PendingRenewal::class, $response->getPendingRenewalInfo()[0]);
 

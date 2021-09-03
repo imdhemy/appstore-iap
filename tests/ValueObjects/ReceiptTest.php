@@ -87,9 +87,9 @@ class ReceiptTest extends TestCase
                                            'original_transaction_id' => 'original_transaction_id',
                                            'product_id' => 'product_id',
                                            'quantity' => '1',
-                                           'transaction_id' => 'transaction_id'
-                                       ]
-                                   ]
+                                           'transaction_id' => 'transaction_id',
+                                       ],
+                                   ],
                                ])->getInApp()[0]
         );
         $this->assertNull(Receipt::fromArray([])->getInApp());
@@ -132,7 +132,7 @@ class ReceiptTest extends TestCase
             Receipt::RECEIPT_TYPE_PRODUCTION,
             Receipt::RECEIPT_TYPE_PRODUCTION_VPP,
             Receipt::RECEIPT_TYPE_PRODUCTION_VPP_SANDBOX,
-            Receipt::RECEIPT_TYPE_SANDBOX
+            Receipt::RECEIPT_TYPE_SANDBOX,
         ];
         $value = $this->faker->randomElement($values);
         $receipt = Receipt::fromArray(['receipt_type' => $value]);
