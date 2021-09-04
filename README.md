@@ -1,6 +1,6 @@
 <p align="center">
     <a href="https://imdhemy.com/laravel-iap-docs/docs/appstore-iap/intro">
-        <img src="logo.png"  alt="Appstore IAP documentation"/>
+        <img src="logo.png"  alt="Appstore IAP documentation" width="300"/>
     </a>
 </p>
 
