@@ -76,7 +76,7 @@ final class LatestReceiptInfo
     /**
      * An indicator that a subscription has been canceled due to an upgrade.
      * This field is only present for upgrade transactions.
-     * @var string|null
+     * @var bool|string|null
      */
     private $isUpgraded;
 
@@ -309,6 +309,7 @@ final class LatestReceiptInfo
 
     /**
      * @return Cancellation|null
+     * @psalm-suppress PossiblyNullArgument
      */
     public function getCancellation(): ?Cancellation
     {
@@ -368,6 +369,6 @@ final class LatestReceiptInfo
             return strtolower($this->isUpgraded) === self::TRUE;
         }
 
-        return $this->isTrialPeriod;
+        return $this->isUpgraded;
     }
 }

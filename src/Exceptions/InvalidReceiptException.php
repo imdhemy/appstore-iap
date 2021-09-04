@@ -16,7 +16,7 @@ class InvalidReceiptException extends Exception
 
     /**
      * @param int $status
-     * @return static
+     * @return InvalidReceiptException
      */
     public static function create(int $status): self
     {

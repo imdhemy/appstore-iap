@@ -151,7 +151,7 @@ class LatestReceiptInfoTest extends TestCase
     {
         $values = ['true', true];
         $value = $this->faker->randomElement($values);
-        $attributes = array_merge($this->commonAttributes, ['is_trial_period' => $value]);
+        $attributes = array_merge($this->commonAttributes, ['is_upgraded' => $value]);
         $latestReceiptInfo = LatestReceiptInfo::fromArray($attributes);
 
         if ($value === 'false' || $value === false) {

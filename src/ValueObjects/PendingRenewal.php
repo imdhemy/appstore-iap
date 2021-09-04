@@ -151,14 +151,6 @@ final class PendingRenewal
     }
 
     /**
-     * @return bool
-     */
-    public function isInBillingRetryPeriod(): bool
-    {
-        return $this->isInBillingRetryPeriod;
-    }
-
-    /**
      * @return string
      */
     public function getOriginalTransactionId(): string
@@ -172,14 +164,6 @@ final class PendingRenewal
     public function getProductId(): string
     {
         return $this->productId;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPriceConsentStatus(): bool
-    {
-        return $this->priceConsentStatus;
     }
 
     /**
@@ -202,7 +186,7 @@ final class PendingRenewal
     }
 
     /**
-     * @return ExpirationIntent|null
+     * @return int|null
      */
     public function getExpirationIntent(): ?int
     {

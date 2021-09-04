@@ -79,7 +79,7 @@ class ServerNotification
 
     /**
      * @param array $attributes
-     * @return static
+     * @return ServerNotification
      */
     public static function fromArray(array $attributes = []): self
     {
@@ -130,7 +130,7 @@ class ServerNotification
     {
         return $this->environment;
     }
-    
+
     /**
      * @return string|null
      */

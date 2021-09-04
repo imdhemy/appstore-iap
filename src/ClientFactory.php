@@ -39,6 +39,7 @@ class ClientFactory
      *
      * @param ResponseInterface $responseMock
      * @param array $transactions
+     * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */
     public static function mock(ResponseInterface $responseMock, array &$transactions = []): Client
@@ -55,6 +56,7 @@ class ClientFactory
      *
      * @param array|ResponseInterface[]|RequestExceptionInterface[] $responseQueue
      * @param array $transactions
+     * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */
     public static function mockQueue(array $responseQueue, array &$transactions = []): Client
@@ -71,6 +73,7 @@ class ClientFactory
      *
      * @param RequestExceptionInterface $error
      * @param array $transactions
+     * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */
     public static function mockError(RequestExceptionInterface $error, array &$transactions = []): Client

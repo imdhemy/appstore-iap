@@ -59,7 +59,7 @@ class ReceiptResponse
     /**
      * Either 0 if the receipt is valid, or a status code if there is an error.
      * @see https://developer.apple.com/documentation/appstorereceipts/status
-     * @var int|null
+     * @var int
      */
     protected $status;
 
@@ -86,7 +86,7 @@ class ReceiptResponse
     /**
      * Static factory method
      * @param array $body
-     * @return static
+     * @return ReceiptResponse
      */
     public static function fromArray(array $body): self
     {
