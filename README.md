@@ -12,11 +12,15 @@
 
 ## About App store IAP
 
+App Store IAP is a php package to handle App store In-app purchase verification and Server Notifications with expressive
+and elegant syntax. App Store takes the pain out of development by allowing backend developers to mock receipts and
+implement their business logic without using a real Ios receipts!
+
 ## Documentation
 
-## Contributing
-
-## Code of conduct
+The App Store IAP documentation can be found in the [App Store IAP manual](https://imdhemy.
+com/laravel-iap-docs/docs/appstore-iap/intro).
 
 ## License
 
+The App Store IAP is open-sourced software licensed under the MIT license.
