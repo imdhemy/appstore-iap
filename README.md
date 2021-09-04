@@ -18,8 +18,8 @@ implement their business logic without using a real Ios receipts!
 
 ## Documentation
 
-The App Store IAP documentation can be found in the [App Store IAP manual](https://imdhemy.
-com/laravel-iap-docs/docs/appstore-iap/intro).
+The App Store IAP documentation can be found in
+the [App Store IAP manual](https://imdhemy.com/laravel-iap-docs/docs/appstore-iap/intro) .
 
 ## License
 
