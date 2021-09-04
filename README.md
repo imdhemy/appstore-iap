@@ -23,4 +23,4 @@ the [App Store IAP manual](https://imdhemy.com/laravel-iap-docs/docs/appstore-ia
 
 ## License
 
-The App Store IAP is open-sourced software licensed under the MIT license.
+The App Store IAP is an open-sourced software licensed under the MIT license.
