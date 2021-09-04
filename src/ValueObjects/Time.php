@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Imdhemy\AppStore\ValueObjects;
 
 use Carbon\Carbon;

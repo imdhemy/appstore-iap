@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Imdhemy\AppStore\Receipts;
 
 use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Imdhemy\AppStore\Exceptions;
 
 use Exception;
