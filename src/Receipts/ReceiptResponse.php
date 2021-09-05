@@ -126,7 +126,7 @@ class ReceiptResponse
     }
 
     /**
-     * @return array|LatestReceiptInfo[]
+     * @return array|LatestReceiptInfo[]|null
      */
     public function getLatestReceiptInfo(): ?array
     {
