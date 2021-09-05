@@ -12,9 +12,9 @@
 
 ## About App store IAP
 
-App Store IAP is a php package to handle App store In-app purchase verification and Server Notifications with expressive
-and elegant syntax. App Store takes the pain out of development by allowing backend developers to mock receipts and
-implement their business logic without using a real Ios receipts!
+App Store IAP is a PHP package to handle App Store purchase verification and Server Notifications with expressive and
+elegant syntax. This package takes the pain out of development by allowing you to mock receipts and implement their
+business logic without actual iOS receipts!
 
 ## Documentation
 
