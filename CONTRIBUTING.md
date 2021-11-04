@@ -16,29 +16,35 @@ creating an issue or pull request.
   + [Viability](#viability)
 
 ## Procedure
+
 ### Bug report
+
 - Attempt to replicate the problem, to ensure that it wasn't a coincidental incident.
 - Search the reported issues to make sure your bug isn't previously reported.
 - Check the pull requests with `[WIP]` tag to ensure that the bug doesn't have a fix in progress.
 - Use the `bug_report` template and fill all fields that applies on your bug.
 
 ### Feature Request
+
 - Check to make sure your feature suggestion isn't already present within the project.
 - Check the pull requests with [WIP] tag to ensure that the feature isn't already in progress.
 - Use the feature_request template and fill all fields that applies on your bug.
 
 ### Ask a question
+
 - Check the [documentation](https://imdhemy.com/laravel-iap-docs/), may be your question is answered there.
 - Check the discussions board to ensure your questions is not already present.
 - Use the QA section to add yours.
 
 ## Code contribution
+
 - Check the open issues for issues related to your enhancement. It would be better to mention them on your commits.
 - If there is no feature or bug issue related to your new idea, either start an issue or a discussion describing it.
 - Submit a pull request immediately even before completing your code but, add the `[WIP]` tag to the title.
 - If you want to contribute, but don't know where to start? check the project board and grab your next task.
 
 ### Requirements
+
 Requirements related to code the code contribution listed below:
 
 - `PSR-12 `coding standard. Use `composer format` to apply conventions.
@@ -51,6 +57,7 @@ Requirements related to code the code contribution listed below:
 
 
 ### Submitting a PR
+
 **Work in progress:**
 
 Once you start to write code and created a feature branch submit a pull request with the following guidelines:
@@ -67,5 +74,18 @@ Use the pull request template and fill the `What` section for now.
 - Base your branch and the PR from the develop branch.
 
 ## Better world
+
 ### Etiquette
+
+This project is open-source, and as such, the maintainers give their free time to build and maintain the source code held within. They make the code freely available in the hope that it will be of use to other developers. It would be extremely unfair for them to suffer abuse or anger for their hard work.
+
+Please be considerate towards maintainers when raising issues or presenting pull requests. Let's show the world that developers are civilized and selfless people.
+
+It's the duty of the maintainer to ensure that all submissions to the project are of sufficient quality to benefit 
+the project. Many developers have different skill sets, strengths, and weaknesses. Respect the maintainer's decision, and do not be upset or abusive if your submission is not used.
+
 ### Viability
+
+When requesting or submitting new features, first consider whether it might be useful to others. Open source projects are used by many developers, who may have entirely different needs to your own. Think about whether or not your feature is likely to be used by other users of the project.
+
+**Happy coding! 🎉**
