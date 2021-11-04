@@ -11,7 +11,7 @@ creating an issue or pull request.
     + [Code contribution](#code-contribution)
       * [Requirements](#requirements)
       * [Submitting a PR](#submitting-a-pr)
-- [Better word](#better-world)
+- [Better world](#better-world)
   + [Etiquette](#etiquette)
   + [Viability](#viability)
 
@@ -33,8 +33,38 @@ creating an issue or pull request.
 - Use the QA section to add yours.
 
 ## Code contribution
+- Check the open issues for issues related to your enhancement. It would be better to mention them on your commits.
+- If there is no feature or bug issue related to your new idea, either start an issue or a discussion describing it.
+- Submit a pull request immediately even before completing your code but, add the `[WIP]` tag to the title.
+- If you want to contribute, but don't know where to start? check the project board and grab your next task.
+
 ### Requirements
+Requirements related to code the code contribution listed below:
+
+- `PSR-12 `coding standard. Use `composer format` to apply conventions.
+- Add tests! - Your patch won't be accepted if it does not have tests.
+- Document any change in behaviour - Make sure the README.md and any other relevant documentation are kept 
+  up-to-date.
+- One pull request per feature - If you want to do more than one thing, send multiple pull requests.
+- Send coherent history - Make sure each individual commit in your pull request is meaningful. If you had to make 
+  multiple intermediate commits while developing, please squash them before submitting.
+
+
 ### Submitting a PR
+**Work in progress:**
+
+Once you start to write code and created a feature branch submit a pull request with the following guidelines:
+
+- Base your branch and the PR from the develop branch.
+- Add `[WIP]` tag to the pull request title. Example: `[WIP] Feature: Allow the dolphin to dance in the sky.`
+Use the pull request template and fill the `What` section for now.
+
+**Work is finish:**
+
+- Ensure your code is fulfilling the requirements.
+- Ensure your code has no errors using the static analysis tool. `composer psalm`.
+- Update the created pull request to remove the [WIP] tag and fill all the pull request fields.
+- Base your branch and the PR from the develop branch.
 
 ## Better world
 ### Etiquette
