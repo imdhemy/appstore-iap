@@ -1,4 +1,4 @@
-name: Check code style
+name: 'Code Style:PSR12'
 
 on: [push]
 
