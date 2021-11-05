@@ -6,6 +6,9 @@
 <a href="https://packagist.org/packages/imdhemy/appstore-iap"><img src="https://img.shields.io/packagist/dt/imdhemy/appstore-iap" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/imdhemy/appstore-iap"><img src="https://img.shields.io/packagist/v/imdhemy/appstore-iap" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/imdhemy/appstore-iap"><img src="https://img.shields.io/packagist/l/imdhemy/appstore-iap" alt="License"></a>
+</p>
+
+<p align="center">
 <a href="https://github.com/imdhemy/appstore-iap/actions/workflows/code-style.yml"><img src="https://github.com/imdhemy/appstore-iap/actions/workflows/code-style.yml/badge.svg" alt="Code Style:PSR12"></a>
 <a href="https://github.com/imdhemy/appstore-iap/actions/workflows/code-analysis.yml"><img 
 src="https://github.com/imdhemy/appstore-iap/actions/workflows/code-analysis.yml/badge.svg" alt="Static analysis"></a>
