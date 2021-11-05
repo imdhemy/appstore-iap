@@ -31,7 +31,7 @@ the [App Store IAP manual](https://imdhemy.com/laravel-iap-docs/docs/appstore-ia
 
 ## Contributing
 
-Feel free to check the [contributing guide](./CONTRIBUTING.md).
+Feel free to check the [contributing guide](.github/CONTRIBUTING.md).
 
 ## License
 
