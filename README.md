@@ -10,6 +10,20 @@
 <a href="https://packagist.org/packages/imdhemy/appstore-iap"><img src="https://img.shields.io/packagist/l/imdhemy/appstore-iap" alt="License"></a>
 </p>
 
+<p align="center">
+<a href="https://github.com/imdhemy/appstore-iap/actions/workflows/code-style.yml"><img src="https://github.
+com/imdhemy/appstore-iap/actions/workflows/code-style.yml/badge.svg" alt="Code style:PSR12"></a>
+</p>
+
+<p align="center"><a href="https://github.com/imdhemy/appstore-iap/actions/workflows/code-analysis.yml"><img 
+src="https://github.
+com/imdhemy/appstore-iap/actions/workflows/code-analysis.yml/badge.svg" alt="Static analysis"></a></p>
+
+<p align="center"><a href="https://github.com/imdhemy/appstore-iap/actions/workflows/tests.yml"><img 
+src="https://github.
+com/imdhemy/appstore-iap/actions/workflows/tests.yml/badge.svg" alt="Tests"></a></p>
+
+
 ## About App store IAP
 
 App Store IAP is a PHP package to handle App Store purchase verification and Server Notifications with expressive and
