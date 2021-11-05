@@ -1,6 +1,6 @@
 name: Check code style
 
-on: [commit, push]
+on: [push]
 
 jobs:
   style:
