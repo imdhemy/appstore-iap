@@ -3,7 +3,7 @@ name: Check code style
 on: [push]
 
 jobs:
-  style:
+  check_code_style:
     runs-on: ubuntu-20.04
 
     steps:
