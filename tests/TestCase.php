@@ -4,7 +4,8 @@ namespace Imdhemy\AppStore\Tests;
 
 use Faker\Factory;
 
-class TestCase extends \PHPUnit\Framework\TestCase{
+class TestCase extends \PHPUnit\Framework\TestCase
+{
     protected $faker;
 
     /**
