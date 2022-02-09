@@ -148,4 +148,18 @@ class ReceiptResponseTest extends TestCase
         $this->assertInstanceOf(Status::class, $response->getStatus());
         $this->assertEquals($value, $response->getStatus()->getValue());
     }
+
+    /**
+     * @test
+     */
+    public function test_is_assoc_response()
+    {
+        $response = new ReceiptResponse(0, [], []);
+        dump($response);
+        $this->assertIsArray(
+            $response->getResponseAssocArr(),
+            "assert response is assoc array or not"
+        );
+
+    }
 }

@@ -83,6 +83,18 @@ class ReceiptResponse
     }
 
     /**
+     * @return array
+     */
+    public function getResponseAssocArr(): array
+    {
+        return [
+            'status' => $this->status,
+            'parsedLatestReceiptInfo' => $this->parsedLatestReceiptInfo,
+            'parsedPendingRenewalInfo' => $this->parsedPendingRenewalInfo,
+        ];
+    }
+
+    /**
      * Static factory method
      * @param array $body
      * @return ReceiptResponse
