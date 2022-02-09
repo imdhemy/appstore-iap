@@ -155,11 +155,10 @@ class ReceiptResponseTest extends TestCase
     public function test_is_assoc_response()
     {
         $response = new ReceiptResponse(0, [], []);
-        dump($response);
+
         $this->assertIsArray(
             $response->getResponseAssocArr(),
             "assert response is assoc array or not"
         );
-
     }
 }
