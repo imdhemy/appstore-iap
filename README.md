@@ -31,7 +31,7 @@ composer require imdhemy/appstore-iap
 ## Documentation
 
 The App Store IAP documentation can be found in
-the [App Store IAP manual](https://imdhemy.com/laravel-iap-docs/docs/appstore-iap/intro).
+the [App Store IAP manual](https://imdhemy.com/laravel-iap-docs/docs/category/app-store).
 
 # Versions and Changelog
 All notable changes to `imdhemy/appstore-iap` will be documented on [Changelog](.github/CHANGELOG.md).
