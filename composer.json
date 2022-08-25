@@ -10,10 +10,11 @@
   ],
   "require": {
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^6.0|^7.3",
+    "guzzlehttp/guzzle": "^6.5|^7.4",
     "nesbot/carbon": "^2.51"
   },
   "require-dev": {
+    "roave/security-advisories": "dev-latest",
     "phpunit/phpunit": "^9.5",
     "symfony/var-dumper": "^5.3",
     "vimeo/psalm": "^4.9",
