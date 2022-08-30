@@ -9,11 +9,19 @@ namespace Imdhemy\AppStore\ValueObjects;
  * The time and reason are received in two separate keys, but they are logically
  * related either coupled.
  *
+ * @deprecated
  * @see https://developer.apple.com/documentation/appstorereceipts/responsebody/latest_receipt_info
  */
 final class Cancellation
 {
+    /**
+     * @deprecated use \Imdhemy\AppStore\ValueObjects\LatestReceiptInfo::CANCELLATION_REASON_APP_ISSUE
+     */
     public const REASON_APP_ISSUE = 1;
+
+    /**
+     * @deprecated use \Imdhemy\AppStore\ValueObjects\LatestReceiptInfo::CANCELLATION_REASON_OTHER
+     */
     public const REASON_OTHER = 0;
 
     /**
@@ -61,6 +69,7 @@ final class Cancellation
     }
 
     /**
+     * @deprecated
      * @return bool
      */
     public function isDueAppIssue(): bool
@@ -69,6 +78,7 @@ final class Cancellation
     }
 
     /**
+     * @deprecated
      * @return bool
      */
     public function isDueAnotherReason(): bool

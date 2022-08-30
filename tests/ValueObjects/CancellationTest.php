@@ -7,6 +7,9 @@ use Imdhemy\AppStore\ValueObjects\Cancellation;
 use Imdhemy\AppStore\ValueObjects\Time;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @deprecated
+ */
 class CancellationTest extends TestCase
 {
     /**
