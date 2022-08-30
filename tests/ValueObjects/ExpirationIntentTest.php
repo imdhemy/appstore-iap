@@ -12,21 +12,32 @@ use PHPUnit\Framework\TestCase;
  */
 class ExpirationIntentTest extends TestCase
 {
+    private const REASONS = [
+        ExpirationIntent::VOLUNTARY_CANCEL,
+        ExpirationIntent::BILLING_ERROR,
+        ExpirationIntent::DID_NOT_AGREE_PRICE_INCREASE,
+        ExpirationIntent::PRODUCT_UNAVAILABLE,
+        ExpirationIntent::UNKNOWN_ERROR,
+    ];
+
+    public function test_basic_usage(): void
+    {
+        $reason = self::REASONS[array_rand(self::REASONS)];
+
+        $expirationIntent = new ExpirationIntent($reason);
+
+        $this->assertEquals($reason, $expirationIntent->getValue());
+    }
+
     /**
      * @test
      */
-    public function test_basic_usage()
+    public function it_should_be_stringable(): void
     {
-        $reasons = [
-            ExpirationIntent::VOLUNTARY_CANCEL,
-            ExpirationIntent::BILLING_ERROR,
-            ExpirationIntent::DID_NOT_AGREE_PRICE_INCREASE,
-            ExpirationIntent::PRODUCT_UNAVAILABLE,
-            ExpirationIntent::UNKNOWN_ERROR,
-        ];
-        $reason = $reasons[array_rand($reasons)];
+        $reason = self::REASONS[array_rand(self::REASONS)];
 
         $expirationIntent = new ExpirationIntent($reason);
-        $this->assertEquals($reason, $expirationIntent->getValue());
+
+        $this->assertEquals((string)$reason, (string)$expirationIntent);
     }
 }

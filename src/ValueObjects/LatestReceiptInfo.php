@@ -4,6 +4,7 @@ namespace Imdhemy\AppStore\ValueObjects;
 
 /**
  * LatestReceiptInfo class which contains in-app purchase transaction
+ *
  * @link https://developer.apple.com/documentation/appstorereceipts/responsebody/latest_receipt_info
  */
 final class LatestReceiptInfo
@@ -19,6 +20,16 @@ final class LatestReceiptInfo
     public const OWNERSHIP_TYPE_PURCHASED = 'PURCHASED';
 
     /**
+     * @const string cancellation reason - app issue
+     */
+    public const CANCELLATION_REASON_APP_ISSUE = '1';
+
+    /**
+     * @const string cancellation reason - other
+     */
+    public const CANCELLATION_REASON_OTHER = '0';
+
+    /**
      * @const string true string value
      */
     private const TRUE = 'true';
@@ -27,124 +38,138 @@ final class LatestReceiptInfo
      * A UUID that associates the transaction with a user on your own service.
      * This field is only present if your app supplied an appAccountToken(_:)
      * when the user made the purchase; it’s only present in the sandbox environment.
+     *
      * @see https://developer.apple.com/documentation/storekit/transaction/3749684-appaccounttoken?changes=latest_minor
      * @see https://developer.apple.com/documentation/storekit/product/purchaseoption/3749440-appaccounttoken?changes=latest_minor
      * @var string|null
      */
-    private $appAccountToken;
+    private ?string $appAccountToken;
 
     /**
-     * @see \Imdhemy\AppStore\ValueObjects\Cancellation::$time
      * @var int|null
      */
-    private $cancellationDate;
+    private ?int $cancellationDate;
 
     /**
-     * @see \Imdhemy\AppStore\ValueObjects\Cancellation::$reason
      * @var int|null
      */
-    private $cancellationReason;
+    private ?int $cancellationReason;
 
     /**
      * The time a subscription expires or when it will renew,
      * in UNIX epoch time format, in milliseconds.
+     *
      * @var int|null
      */
-    private $expiresDate;
+    private ?int $expiresDate;
 
     /**
      * The relationship of the user with the family-shared purchase to which they have access.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/in_app_ownership_type?changes=latest_minor
      * @var string|null
      */
-    private $inAppOwnershipType;
+    private ?string $inAppOwnershipType;
 
     /**
      * An indicator of whether an auto-renewable subscription is in the introductory price period.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/is_in_intro_offer_period?changes=latest_minor
-     * @var string|bool|null
+     * @var string|null
      */
-    private $isInIntroOfferPeriod;
+    private ?string $isInIntroOfferPeriod;
 
     /**
      * An indicator of whether an auto-renewable subscription is in the free trial period.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/is_trial_period?changes=latest_minor
-     * @var string|bool|null
+     * @var string|null
      */
-    private $isTrialPeriod;
+    private ?string $isTrialPeriod;
 
     /**
      * An indicator that a subscription has been canceled due to an upgrade.
      * This field is only present for upgrade transactions.
+     *
      * @var bool|string|null
      */
     private $isUpgraded;
 
     /**
      * The offer-reference name of the subscription offer code that the customer redeemed.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/offer_code_ref_name?changes=latest_minor
      * @var string|null
      */
-    private $offerCodeRefName;
+    private ?string $offerCodeRefName;
 
     /**
      * The time of the original app purchase, in UNIX epoch time format, in milliseconds.
+     *
      * @var int|null
      */
-    private $originalPurchaseDate;
+    private ?int $originalPurchaseDate;
 
     /**
      * The transaction identifier of the original purchase.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/original_transaction_id?changes=latest_minor
      * @var string
      */
-    private $originalTransactionId;
+    private string $originalTransactionId;
 
     /**
      * The unique identifier of the product purchased.
+     *
      * @var string
      */
-    private $productId;
+    private string $productId;
 
     /**
      * The identifier of the subscription offer redeemed by the user.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/promotional_offer_id?changes=latest_minor
      * @var string|null
      */
-    private $promotionalOfferId;
+    private ?string $promotionalOfferId;
 
     /**
      * The time the App Store charged the user’s account for a purchased or restored product
+     *
      * @var int|null
      */
-    private $purchaseDate;
+    private ?int $purchaseDate;
 
     /**
      * The number of consumable products purchased.
+     *
      * @var int
      */
-    private $quantity;
+    private int $quantity;
 
     /**
      * The identifier of the subscription group to which the subscription belongs.
+     *
      * @see https://developer.apple.com/documentation/storekit/skproduct/2981047-subscriptiongroupidentifier?changes=latest_minor
      * @var string|null
      */
-    private $subscriptionGroupIdentifier;
+    private ?string $subscriptionGroupIdentifier;
 
     /**
      * A unique identifier for purchase events across devices, including subscription-renewal events.
      * This value is the primary key for identifying subscription purchases.
+     *
      * @var string|null
      */
-    private $webOrderLineItemId;
+    private ?string $webOrderLineItemId;
 
     /**
      * A unique identifier for a transaction such as a purchase, restore, or renewal.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/transaction_id?changes=latest_minor
      * @var string
      */
-    private $transactionId;
+    private string $transactionId;
 
     /**
      * @param string $originalTransactionId
@@ -162,6 +187,7 @@ final class LatestReceiptInfo
 
     /**
      * @param array $attributes
+     *
      * @return static
      */
     public static function fromArray(array $attributes): self
@@ -310,6 +336,9 @@ final class LatestReceiptInfo
     /**
      * @return Cancellation|null
      * @psalm-suppress PossiblyNullArgument
+     * @deprecated     use \Imdhemy\AppStore\ValueObjects\LatestReceiptInfo::getCancellationReason()
+     *
+     * @deprecated     use \Imdhemy\AppStore\ValueObjects\LatestReceiptInfo::getCancellationDate()
      */
     public function getCancellation(): ?Cancellation
     {

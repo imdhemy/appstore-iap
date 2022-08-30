@@ -8,17 +8,14 @@ use Imdhemy\AppStore\ValueObjects\Time;
 use PHPUnit\Framework\TestCase;
 
 /**
- * It's obvious that there is no need to test getter method
- * but this test was added to maintain the convention of cover every class
- * with a unit test.
+ * @deprecated
  */
 class CancellationTest extends TestCase
 {
     /**
-     * @test
      * @throws Exception
      */
-    public function test_basic_usage()
+    public function test_basic_usage(): void
     {
         $time = new Time(time() * 1000);
         $reason = [Cancellation::REASON_OTHER, Cancellation::REASON_APP_ISSUE][random_int(0, 1)];
@@ -40,10 +37,9 @@ class CancellationTest extends TestCase
     }
 
     /**
-     * @test
      * @throws Exception
      */
-    public function test_instantiation_using_string_reason()
+    public function test_instantiation_using_string_reason(): void
     {
         $time = new Time(time() * 1000);
         $reason = (string)[Cancellation::REASON_OTHER, Cancellation::REASON_APP_ISSUE][random_int(0, 1)];

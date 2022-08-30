@@ -19,7 +19,7 @@ final class Receipt
      * @var string|null
      * @see \Imdhemy\AppStore\ValueObjects\Receipt::$appItemId
      */
-    private $adamId;
+    private ?string $adamId;
 
     /**
      * Originally, this is 64-bit long integer, so, let's treat is a string
@@ -29,86 +29,86 @@ final class Receipt
      * Apps are assigned this identifier only in production.
      * @var string|null
      */
-    private $appItemId;
+    private ?string $appItemId;
 
     /**
      * The app’s version number. In the sandbox, the value is always "1.0".
      * @var string|null
      */
-    private $applicationVersion;
+    private ?string $applicationVersion;
 
     /**
      * The bundle identifier for the app to which the receipt belongs.
      * @var string|null
      */
-    private $bundleId;
+    private ?string $bundleId;
 
     /**
      * A unique identifier for the app download transaction.
      * @var int|null
      */
-    private $downloadId;
+    private ?int $downloadId;
 
     /**
      * The time the receipt expires for apps purchased through the Volume Purchase Program
      * @var int|null
      */
-    private $expirationDate;
+    private ?int $expirationDate;
 
     /**
      * An array that contains the in-app purchase receipt fields for all in-app purchase transactions.
      * @var array|null
      */
-    private $inApp;
+    private ?array $inApp;
 
     /**
      * The version of the app that the user originally purchased.
      * @var string|null
      */
-    private $originalApplicationVersion;
+    private ?string $originalApplicationVersion;
 
     /**
      * The time of the original app purchase
      * @var int|null
      */
-    private $originalPurchaseDate;
+    private ?int $originalPurchaseDate;
 
     /**
      * The time the user ordered the app available for pre-order.
      * @var int|null
      */
-    private $preOrderDate;
+    private ?int $preOrderDate;
 
     /**
      * The time the App Store generated the receipt
      * @var int|null
      */
-    private $receiptCreationDate;
+    private ?int $receiptCreationDate;
 
     /**
      * The type of receipt generated.
      * The value corresponds to the environment in which the app or VPP purchase was made
      * @var string|null
      */
-    private $receiptType;
+    private ?string $receiptType;
 
     /**
      * The time the request to the verifyReceipt endpoint was processed and the response was generated
      * @var int|null
      */
-    private $requestDate;
+    private ?int $requestDate;
 
     /**
      * An arbitrary number that identifies a revision of your app.
      * In the sandbox, this key's value is “0”
      * @var int|null
      */
-    private $versionExternalIdentifier;
+    private ?int $versionExternalIdentifier;
 
     /**
      * @var bool
      */
-    private $inAppParsed;
+    private bool $inAppParsed;
 
     /**
      * Receipt Constructor
