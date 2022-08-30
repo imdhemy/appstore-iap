@@ -9,68 +9,77 @@ use Imdhemy\AppStore\ValueObjects\Status;
 
 /**
  * Class ReceiptResponse
+ *
+ * @see     https://developer.apple.com/documentation/appstorereceipts/responsebody
  * @package Imdhemy\AppStore\Receipts
- * @see https://developer.apple.com/documentation/appstorereceipts/responsebody
  */
 class ReceiptResponse
 {
     public const ENV_SANDBOX = 'Sandbox';
+
     public const ENV_PRODUCTION = 'Production';
 
     /**
      * The environment for which the receipt was generated.
+     *
      * @var string|null
      */
-    protected $environment;
+    protected ?string $environment;
 
     /**
      * An indicator that an error occurred during the request.
+     *
      * @var bool|null
      */
-    protected $isRetryable;
+    protected ?bool $isRetryable;
 
     /**
      * The latest Base64 encoded app receipt.
      * Only returned for receipts that contain auto-renewable subscriptions.
+     *
      * @var string|null
      */
-    protected $latestReceipt;
+    protected ?string $latestReceipt;
 
     /**
      * An array that contains all in-app purchase transactions.
+     *
      * @var array|LatestReceiptInfo[]|null
      */
-    protected $latestReceiptInfo;
+    protected ?array $latestReceiptInfo;
 
     /**
      * In the JSON file, an array where each element contains the pending renewal information
      * for each auto-renewable subscription identified by the product_id.
+     *
      * @var array|PendingRenewal[]|null
      */
-    protected $pendingRenewalInfo;
+    protected ?array $pendingRenewalInfo;
 
     /**
      * the receipt that was sent for verification.
+     *
      * @var array|null
      */
-    protected $receipt;
+    protected ?array $receipt;
 
     /**
-     * Either 0 if the receipt is valid, or a status code if there is an error.
+     * Either `0` if the receipt is valid, or a status code if there is an error.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/status
      * @var int
      */
-    protected $status;
+    protected int $status;
 
     /**
      * @var bool
      */
-    private $parsedLatestReceiptInfo;
+    private bool $parsedLatestReceiptInfo;
 
     /**
      * @var bool
      */
-    private $parsedPendingRenewalInfo;
+    private bool $parsedPendingRenewalInfo;
 
     /**
      * ReceiptResponse Constructor
@@ -84,7 +93,9 @@ class ReceiptResponse
 
     /**
      * Static factory method
+     *
      * @param array $body
+     *
      * @return ReceiptResponse
      */
     public static function fromArray(array $body): self

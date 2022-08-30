@@ -7,7 +7,6 @@ use Imdhemy\AppStore\Receipts\ReceiptResponse;
 use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\PendingRenewal;
 use Imdhemy\AppStore\ValueObjects\Receipt;
-use Imdhemy\AppStore\ValueObjects\Status;
 use PHPUnit\Framework\TestCase;
 
 class ReceiptResponseTest extends TestCase
@@ -15,7 +14,7 @@ class ReceiptResponseTest extends TestCase
     /**
      * @test
      */
-    public function test_all_attributes_are_optional_except_status()
+    public function all_attributes_are_optional_except_status(): void
     {
         $response = new ReceiptResponse(0);
         $this->assertInstanceOf(ReceiptResponse::class, $response);
@@ -24,7 +23,7 @@ class ReceiptResponseTest extends TestCase
     /**
      * @test
      */
-    public function test_environment_attribute()
+    public function environment_attribute(): void
     {
         $environments = [ReceiptResponse::ENV_PRODUCTION, ReceiptResponse::ENV_SANDBOX];
 
@@ -44,7 +43,7 @@ class ReceiptResponseTest extends TestCase
      * @test
      * @throws Exception
      */
-    public function test_is_retryable()
+    public function is_retryable(): void
     {
         $value = random_int(0, 1);
         $body = ['is-retryable' => $value, 'status' => 0];
@@ -59,7 +58,7 @@ class ReceiptResponseTest extends TestCase
     /**
      * @test
      */
-    public function test_latest_receipt()
+    public function latest_receipt(): void
     {
         $value = base64_decode("fake_receipt_content");
         $response = ReceiptResponse::fromArray(['latest_receipt' => $value, 'status' => 0]);
@@ -73,7 +72,7 @@ class ReceiptResponseTest extends TestCase
     /**
      * @test
      */
-    public function test_latest_receipt_info()
+    public function latest_receipt_info(): void
     {
         $value = [];
         $response = ReceiptResponse::fromArray(['latest_receipt_info' => $value, 'status' => 0]);
@@ -99,7 +98,7 @@ class ReceiptResponseTest extends TestCase
     /**
      * @test
      */
-    public function test_pending_renewal_info()
+    public function pending_renewal_info(): void
     {
         $value = [];
         $response = ReceiptResponse::fromArray(['pending_renewal_info' => $value, 'status' => 0]);
@@ -125,7 +124,7 @@ class ReceiptResponseTest extends TestCase
     /**
      * @test
      */
-    public function test_receipt()
+    public function receipt(): void
     {
         $value = [];
         $response = ReceiptResponse::fromArray(['receipt' => $value, 'status' => 0]);
@@ -139,13 +138,12 @@ class ReceiptResponseTest extends TestCase
     /**
      * @test
      */
-    public function test_status()
+    public function status(): void
     {
         $statusList = array_merge([0], range(21000, 21010));
         $value = $statusList[array_rand($statusList)];
 
         $response = ReceiptResponse::fromArray(['status' => $value,]);
-        $this->assertInstanceOf(Status::class, $response->getStatus());
         $this->assertEquals($value, $response->getStatus()->getValue());
     }
 }
