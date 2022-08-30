@@ -3,7 +3,6 @@
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
 use Imdhemy\AppStore\Tests\TestCase;
-use Imdhemy\AppStore\ValueObjects\Cancellation;
 use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\Time;
 
@@ -19,7 +18,7 @@ class LatestReceiptInfoTest extends TestCase
      */
     public function trueOrNullDataProvider(): array
     {
-        return[
+        return [
             'true' => ['true', true],
             'null' => [null, null],
         ];
@@ -85,7 +84,7 @@ class LatestReceiptInfoTest extends TestCase
      */
     public function cancellation_reason(): void
     {
-        $reasons = [Cancellation::REASON_OTHER, Cancellation::REASON_APP_ISSUE];
+        $reasons = [LatestReceiptInfo::CANCELLATION_REASON_APP_ISSUE, LatestReceiptInfo::CANCELLATION_REASON_OTHER];
         $value = $this->faker->randomElement($reasons);
         $attributes = array_merge($this->commonAttributes, ['cancellation_reason' => (string)$value]);
         $latestReceiptInfo = LatestReceiptInfo::fromArray($attributes);
@@ -211,12 +210,15 @@ class LatestReceiptInfoTest extends TestCase
         ];
 
         $latestReceiptInfo = LatestReceiptInfo::fromArray($this->commonAttributes);
-        $getters = array_filter(get_class_methods($latestReceiptInfo), static function (string $method) use ($notNullGetters) {
-            $isGetter = strpos($method, 'get') !== false;
-            $isNullGetter = ! in_array($method, $notNullGetters);
+        $getters = array_filter(
+            get_class_methods($latestReceiptInfo),
+            static function (string $method) use ($notNullGetters) {
+                $isGetter = strpos($method, 'get') !== false;
+                $isNullGetter = ! in_array($method, $notNullGetters);
 
-            return $isGetter && $isNullGetter;
-        });
+                return $isGetter && $isNullGetter;
+            }
+        );
 
         foreach ($getters as $getter) {
             $this->assertNull($latestReceiptInfo->$getter());
