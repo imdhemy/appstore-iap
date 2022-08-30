@@ -83,6 +83,11 @@ class ReceiptResponse implements Arrayable
     private bool $parsedPendingRenewalInfo;
 
     /**
+     * @var array The raw data from the response.
+     */
+    private array $body;
+
+    /**
      * ReceiptResponse Constructor
      */
     private function __construct(int $status)
@@ -102,6 +107,7 @@ class ReceiptResponse implements Arrayable
     public static function fromArray(array $body): self
     {
         $obj = new self($body['status']);
+        $obj->body = $body;
 
         $obj->environment = $body['environment'] ?? null;
         $obj->isRetryable = $body['is-retryable'] ?? null;
@@ -210,6 +216,6 @@ class ReceiptResponse implements Arrayable
      */
     public function toArray(): array
     {
-        return [];
+        return $this->body;
     }
 }

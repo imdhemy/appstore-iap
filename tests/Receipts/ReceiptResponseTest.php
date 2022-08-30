@@ -17,7 +17,7 @@ class ReceiptResponseTest extends TestCase
     public function all_attributes_are_optional_except_status(): void
     {
         $this->expectNotToPerformAssertions();
-        
+
         ReceiptResponse::fromArray(['status' => 0]);
     }
 
@@ -146,5 +146,22 @@ class ReceiptResponseTest extends TestCase
 
         $response = ReceiptResponse::fromArray(['status' => $value,]);
         $this->assertEquals($value, $response->getStatus()->getValue());
+    }
+
+    /**
+     * @test
+     */
+    public function to_array_should_return_all_attributes(): void
+    {
+        $body = [
+            'status' => 0,
+            'environment' => ReceiptResponse::ENV_PRODUCTION,
+            'is-retryable' => 'true',
+            'latest_receipt' => 'fake_receipt_content',
+        ];
+
+        $response = ReceiptResponse::fromArray($body);
+
+        $this->assertEquals($body, $response->toArray());
     }
 }
