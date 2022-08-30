@@ -4,11 +4,11 @@ namespace Imdhemy\AppStore\ValueObjects;
 
 /**
  * Class Cancellation
- * @package Imdhemy\AppStore\ValueObjects
  * Cancellation class represents two separate parts of information from the
  * response body receipt info, the cancellation time and reason.
  * The time and reason are received in two separate keys, but they are logically
  * related either coupled.
+ *
  * @see https://developer.apple.com/documentation/appstorereceipts/responsebody/latest_receipt_info
  */
 final class Cancellation
@@ -20,7 +20,7 @@ final class Cancellation
      * The time the App Store refunded a transaction or revoked it from family sharing.
      * @var Time
      */
-    private $time;
+    private Time $time;
 
     /**
      * The reason for a refunded or revoked transaction.
@@ -31,7 +31,7 @@ final class Cancellation
      * for example, if the customer made the purchase accidentally.
      * @var int
      */
-    private $reason;
+    private int $reason;
 
     /**
      * Cancellation constructor.
