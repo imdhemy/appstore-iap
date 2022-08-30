@@ -16,7 +16,8 @@ class ReceiptResponseTest extends TestCase
      */
     public function all_attributes_are_optional_except_status(): void
     {
-        $response = new ReceiptResponse(0);
+        $response = ReceiptResponse::fromArray(['status' => 0]);
+        
         $this->assertInstanceOf(ReceiptResponse::class, $response);
     }
 

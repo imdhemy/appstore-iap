@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Receipts;
 
+use Imdhemy\AppStore\Contracts\Arrayable;
 use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\PendingRenewal;
 use Imdhemy\AppStore\ValueObjects\Receipt;
@@ -13,7 +14,7 @@ use Imdhemy\AppStore\ValueObjects\Status;
  * @see     https://developer.apple.com/documentation/appstorereceipts/responsebody
  * @package Imdhemy\AppStore\Receipts
  */
-class ReceiptResponse
+class ReceiptResponse implements Arrayable
 {
     public const ENV_SANDBOX = 'Sandbox';
 
@@ -84,7 +85,7 @@ class ReceiptResponse
     /**
      * ReceiptResponse Constructor
      */
-    public function __construct(int $status)
+    private function __construct(int $status)
     {
         $this->status = $status;
         $this->parsedLatestReceiptInfo = false;
@@ -202,5 +203,13 @@ class ReceiptResponse
     public function getStatus(): Status
     {
         return new Status($this->status);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return [];
     }
 }
