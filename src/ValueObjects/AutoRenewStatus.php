@@ -2,12 +2,15 @@
 
 namespace Imdhemy\AppStore\ValueObjects;
 
+use Stringable;
+
 /**
  * AutoRenewStatus class
  * The renewal status for the auto-renewable subscription.
+ *
  * @see https://developer.apple.com/documentation/appstorereceipts/auto_renew_status?changes=latest_minor
  */
-final class AutoRenewStatus
+final class AutoRenewStatus implements Stringable
 {
     public const WILL_RENEW = 1;
     public const TURNED_OFF = 0;
@@ -15,7 +18,7 @@ final class AutoRenewStatus
     /**
      * @var int
      */
-    private $value;
+    private int $value;
 
     /**
      * @param int $value
