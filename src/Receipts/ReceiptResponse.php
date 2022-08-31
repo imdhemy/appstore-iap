@@ -85,12 +85,16 @@ class ReceiptResponse implements Arrayable
     /**
      * @var array The raw data from the response.
      */
-    private array $body;
+    private array $rawBody = [];
 
     /**
      * ReceiptResponse Constructor
+     *
+     * @deprecated Use ReceiptResponse::fromArray() instead.
+     * This constructor will be private in the next major release.
+     * Using it will result in inaccessibility to the response body as an array.
      */
-    private function __construct(int $status)
+    public function __construct(int $status)
     {
         $this->status = $status;
         $this->parsedLatestReceiptInfo = false;
@@ -107,7 +111,7 @@ class ReceiptResponse implements Arrayable
     public static function fromArray(array $body): self
     {
         $obj = new self($body['status']);
-        $obj->body = $body;
+        $obj->rawBody = $body;
 
         $obj->environment = $body['environment'] ?? null;
         $obj->isRetryable = $body['is-retryable'] ?? null;
@@ -216,6 +220,6 @@ class ReceiptResponse implements Arrayable
      */
     public function toArray(): array
     {
-        return $this->body;
+        return $this->rawBody;
     }
 }
