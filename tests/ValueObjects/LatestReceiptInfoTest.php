@@ -246,4 +246,31 @@ class LatestReceiptInfoTest extends TestCase
         $this->assertEquals((new Time($now))->toDateTime(), $cancellationTime);
         $this->assertEquals(LatestReceiptInfo::CANCELLATION_REASON_APP_ISSUE, $cancellation->getReason());
     }
+
+    /**
+     * @test
+     */
+    public function get_web_order_line_item_id(): void
+    {
+        $value = 'fake_web_order_line_item_id';
+        $attributes = array_merge($this->commonAttributes, ['web_order_line_item_id' => $value]);
+        $latestReceiptInfo = LatestReceiptInfo::fromArray($attributes);
+        $this->assertEquals($value, $latestReceiptInfo->getWebOrderLineItemId());
+    }
+
+    /**
+     * @test
+     */
+    public function to_array(): void
+    {
+        $attributes = array_merge($this->commonAttributes, [
+            'cancellation_date_ms' => $this->faker->unixTime() * 1000,
+            'cancellation_reason' => LatestReceiptInfo::CANCELLATION_REASON_APP_ISSUE,
+            'web_order_line_item_id' => 'fake_web_order_line_item_id',
+        ]);
+
+        $latestReceiptInfo = LatestReceiptInfo::fromArray($attributes);
+
+        $this->assertEquals($attributes, $latestReceiptInfo->toArray());
+    }
 }

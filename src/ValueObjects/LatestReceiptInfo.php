@@ -2,12 +2,14 @@
 
 namespace Imdhemy\AppStore\ValueObjects;
 
+use Imdhemy\AppStore\Contracts\Arrayable;
+
 /**
  * LatestReceiptInfo class which contains in-app purchase transaction
  *
  * @link https://developer.apple.com/documentation/appstorereceipts/responsebody/latest_receipt_info
  */
-final class LatestReceiptInfo
+final class LatestReceiptInfo implements Arrayable
 {
     /**
      * @const string The transaction belongs to a family member who benefits from service.
@@ -172,10 +174,19 @@ final class LatestReceiptInfo
     private string $transactionId;
 
     /**
+     * @var array The raw data from the App Store
+     */
+    private array $rawBody = [];
+
+    /**
      * @param string $originalTransactionId
      * @param string $productId
      * @param int $quantity
      * @param string $transactionId
+     *
+     * @deprecated Use LatestReceiptInfo::fromArray() instead.
+     * This constructor will be private in the next major release.
+     * Using it will result in inaccessibility to the response raw body as an array.
      */
     public function __construct(string $originalTransactionId, string $productId, int $quantity, string $transactionId)
     {
@@ -198,6 +209,8 @@ final class LatestReceiptInfo
             $attributes['quantity'],
             $attributes['transaction_id']
         );
+
+        $obj->rawBody = $attributes;
 
         $obj->appAccountToken = $attributes['app_account_token'] ?? null;
         $obj->cancellationDate = $attributes['cancellation_date_ms'] ?? null;
@@ -399,5 +412,13 @@ final class LatestReceiptInfo
         }
 
         return $this->isUpgraded;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return $this->rawBody;
     }
 }
