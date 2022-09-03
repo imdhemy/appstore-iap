@@ -12,6 +12,7 @@
     "php": ">=7.4",
     "ext-json": "*",
     "guzzlehttp/guzzle": "^6.5|^7.4",
+    "lcobucci/jwt": "^4.2",
     "nesbot/carbon": "^2.51"
   },
   "require-dev": {
@@ -40,6 +41,10 @@
     "test": "vendor/bin/phpunit --testdox"
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": {},
+    "platform": {
+      "php": "7.4.30"
+    }
   }
 }
