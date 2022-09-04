@@ -7,7 +7,8 @@ use Faker\Generator;
 use JsonException;
 
 /**
- *
+ * Class TestCase
+ * All test cases should extend this class
  */
 class TestCase extends \PHPUnit\Framework\TestCase
 {
