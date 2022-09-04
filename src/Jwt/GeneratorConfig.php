@@ -3,6 +3,7 @@
 namespace Imdhemy\AppStore\Jwt;
 
 use Lcobucci\Clock\Clock;
+use Lcobucci\Clock\SystemClock;
 use Lcobucci\JWT\Configuration;
 
 /**
@@ -43,16 +44,18 @@ final class GeneratorConfig
      * Creates a GeneratorConfig for App Store Connect API
      *
      * @param Issuer $issuer
-     * @param Clock $clock
+     * @param Clock|null $clock
      *
      * @return static
      */
-    public static function forAppStore(Issuer $issuer, Clock $clock): self
+    public static function forAppStore(Issuer $issuer, ?Clock $clock = null): self
     {
         $config = Configuration::forSymmetricSigner(
             $issuer->signer(),
             $issuer->key()
         );
+
+        $clock = $clock ?? SystemClock::fromSystemTimezone();
 
         return new self($config, $issuer, $clock);
     }
