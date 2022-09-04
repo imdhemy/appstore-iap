@@ -3,10 +3,18 @@
 namespace Imdhemy\AppStore\Tests;
 
 use Faker\Factory;
+use Faker\Generator;
+use JsonException;
 
+/**
+ *
+ */
 class TestCase extends \PHPUnit\Framework\TestCase
 {
-    protected $faker;
+    /**
+     * @var Generator
+     */
+    protected Generator $faker;
 
     /**
      * @inheritDoc
@@ -28,14 +36,56 @@ class TestCase extends \PHPUnit\Framework\TestCase
 
     /**
      * @param array $override
+     *
      * @return string
+     * @throws JsonException
      */
     protected function getVerifyReceiptResponse(array $override = []): string
     {
         $contents = file_get_contents(__DIR__ . '/fixtures/verify_receipt_response.json');
-        $data = json_decode($contents, true);
+        $data = json_decode($contents, true, 512, JSON_THROW_ON_ERROR);
         $response = array_merge($data, $override);
 
-        return json_encode($response);
+        return json_encode($response, JSON_THROW_ON_ERROR);
+    }
+
+    /**
+     * Get RSA private key contents
+     *
+     * @return string
+     */
+    protected function getRsaPrivateKey(): string
+    {
+        return file_get_contents(__DIR__ . '/fixtures/keys/rsa-private.pem');
+    }
+
+    /**
+     * Get RSA public key contents
+     *
+     * @return string
+     */
+    protected function getRsaPublicKey(): string
+    {
+        return file_get_contents(__DIR__ . '/fixtures/keys/rsa-public.pem');
+    }
+
+    /**
+     * Get EC private key contents
+     *
+     * @return string
+     */
+    protected function getEcdsaPrivateKey(): string
+    {
+        return file_get_contents(__DIR__ . '/fixtures/keys/ecdsa-private.pem');
+    }
+
+    /**
+     * Get EC public key contents
+     *
+     * @return string
+     */
+    protected function getEcdsaPublicKey(): string
+    {
+        return file_get_contents(__DIR__ . '/fixtures/keys/ecdsa-public.pem');
     }
 }
