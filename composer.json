@@ -41,6 +41,7 @@
     "check-style": "vendor/bin/php-cs-fixer fix --dry-run",
     "test": "vendor/bin/phpunit --testdox",
     "keygen": "./bin/keygen.sh",
+    "security-advice": "composer update --dry-run roave/security-advisories",
     "post-autoload-dump": [
       "@keygen"
     ]
