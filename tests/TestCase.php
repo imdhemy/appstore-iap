@@ -2,8 +2,6 @@
 
 namespace Imdhemy\AppStore\Tests;
 
-use Faker\Factory;
-use Faker\Generator;
 use JsonException;
 
 /**
@@ -13,9 +11,9 @@ use JsonException;
 class TestCase extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var Generator
+     * @var Faker
      */
-    protected Generator $faker;
+    protected Faker $faker;
 
     /**
      * @inheritDoc
@@ -23,7 +21,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->faker = Factory::create();
+        $this->faker = Faker::create();
     }
 
     /**

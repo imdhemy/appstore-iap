@@ -7,70 +7,84 @@ use Imdhemy\AppStore\ValueObjects\Time;
 
 /**
  * App Store Server Notifications
+ *
  * @see https://developer.apple.com/documentation/appstoreservernotifications?changes=latest_minor
  */
 class ServerNotification
 {
     public const CANCEL = 'CANCEL';
+
     public const CONSUMPTION_REQUEST = 'CONSUMPTION_REQUEST';
+
     public const DID_CHANGE_RENEWAL_PREF = 'DID_CHANGE_RENEWAL_PREF';
+
     public const DID_CHANGE_RENEWAL_STATUS = 'DID_CHANGE_RENEWAL_STATUS';
+
     public const DID_FAIL_TO_RENEW = 'DID_FAIL_TO_RENEW';
+
     public const DID_RECOVER = 'DID_RECOVER';
+
     public const DID_RENEW = 'DID_RENEW';
+
     public const INITIAL_BUY = 'INITIAL_BUY';
+
     public const INTERACTIVE_RENEWAL = 'INTERACTIVE_RENEWAL';
+
     public const PRICE_INCREASE_CONSENT = 'PRICE_INCREASE_CONSENT';
+
     public const REFUND = 'REFUND';
+
     public const REVOKE = 'REVOKE';
 
     /**
      * @var ReceiptResponse|null
      */
-    protected $unifiedReceipt;
+    protected ?ReceiptResponse $unifiedReceipt;
 
     /**
      * @var Time|null
      */
-    protected $autoRenewStatusChangeDate;
+    protected ?Time $autoRenewStatusChangeDate;
 
     /**
      * @var string|null
      */
-    protected $environment;
+    protected ?string $environment;
 
     /**
      * @var bool|null
      */
-    protected $autoRenewStatus;
+    protected ?bool $autoRenewStatus;
 
     /**
      * @var string|null
      */
-    protected $bvrs;
+    protected ?string $bvrs;
 
     /**
      * @var string|null
      */
-    protected $bid;
+    protected ?string $bid;
 
     /**
      * @var string|null
      */
-    protected $password;
+    protected ?string $password;
 
     /**
      * @var string|null
      */
-    protected $autoRenewProductId;
+    protected ?string $autoRenewProductId;
 
     /**
      * @var string
      */
-    protected $notificationType;
+    protected string $notificationType;
 
     /**
      * @param string $notificationType
+     *
+     * @deprecated Use ServerNotification::fromArray() instead
      */
     public function __construct(string $notificationType)
     {
@@ -79,6 +93,7 @@ class ServerNotification
 
     /**
      * @param array $attributes
+     *
      * @return ServerNotification
      */
     public static function fromArray(array $attributes = []): self

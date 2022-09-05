@@ -1,12 +1,12 @@
 <?php
 
-namespace Imdhemy\AppStore\Tests\Unit\Jwt;
+namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
 use DateTimeImmutable;
-use Imdhemy\AppStore\Jwt\AppStoreJwtGenerator;
-use Imdhemy\AppStore\Jwt\GeneratorConfig;
-use Imdhemy\AppStore\Jwt\Issuer;
-use Imdhemy\AppStore\Jwt\Key;
+use Imdhemy\AppStore\Jws\AppStoreJwsGenerator;
+use Imdhemy\AppStore\Jws\GeneratorConfig;
+use Imdhemy\AppStore\Jws\Issuer;
+use Imdhemy\AppStore\Jws\Key;
 use Imdhemy\AppStore\Tests\TestCase;
 use Lcobucci\Clock\FrozenClock;
 use Lcobucci\JWT\Encoding\JoseEncoder;
@@ -17,16 +17,16 @@ use Lcobucci\JWT\Validation\Constraint\HasClaimWithValue;
 use Lcobucci\JWT\Validation\Constraint\IssuedBy;
 use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 
-class AppStoreJwtGeneratorTest extends TestCase
+class AppStoreJwsGeneratorTest extends TestCase
 {
     /**
      * @test
      */
-    public function app_store_jwt_generator(): AppStoreJwtGenerator
+    public function app_store_jwt_generator(): AppStoreJwsGenerator
     {
         $config = $this->getConfig();
 
-        $sut = new AppStoreJwtGenerator($config);
+        $sut = new AppStoreJwsGenerator($config);
         $sut->setConfig($config);
 
         $this->assertSame($config, $sut->getConfig());
@@ -38,7 +38,7 @@ class AppStoreJwtGeneratorTest extends TestCase
      * @test
      * @depends app_store_jwt_generator
      */
-    public function generate(AppStoreJwtGenerator $sut): void
+    public function generate(AppStoreJwsGenerator $sut): void
     {
         $generatorConfig = $sut->getConfig();
 
@@ -49,7 +49,7 @@ class AppStoreJwtGeneratorTest extends TestCase
 
         $constraints = [
             new IssuedBy('issuer_id'),
-            new PermittedFor(AppStoreJwtGenerator::AUDIENCE),
+            new PermittedFor(AppStoreJwsGenerator::AUDIENCE),
             new HasClaimWithValue('bid', 'com.some.thing'),
         ];
         $this->assertTrue($validator->validate($token, ...$constraints));

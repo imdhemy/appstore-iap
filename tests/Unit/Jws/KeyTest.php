@@ -1,8 +1,8 @@
 <?php
 
-namespace Imdhemy\AppStore\Tests\Unit\Jwt;
+namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
-use Imdhemy\AppStore\Jwt\Key;
+use Imdhemy\AppStore\Jws\Key;
 use Imdhemy\AppStore\Tests\TestCase;
 use Lcobucci\JWT\Signer\Key\InMemory;
 
