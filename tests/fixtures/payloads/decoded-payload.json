@@ -1,0 +1,8 @@
+{
+  "notificationType": "<notificationType>",
+  "subtype": "<subtype>",
+  "notificationUUID": "<UUID>",
+  "data": {},
+  "version": "2.0",
+  "signedDate": "<unixTimestamp>"
+}

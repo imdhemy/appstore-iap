@@ -4,6 +4,7 @@ namespace Imdhemy\AppStore\Tests;
 
 use Faker\Factory;
 use Faker\Generator;
+use JsonException;
 
 /**
  * Faker Class
@@ -48,9 +49,12 @@ class Faker
 
     /**
      * @return string
+     * @throws JsonException
      */
     public function signedPayload(): string
     {
-        return '';
+        $contents = file_get_contents(__DIR__ . '/fixtures/payloads/test-notification-signed-payload.json');
+
+        return json_decode($contents, true, 512, JSON_THROW_ON_ERROR)['signedPayload'];
     }
 }

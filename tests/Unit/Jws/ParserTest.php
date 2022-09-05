@@ -11,43 +11,31 @@ use Lcobucci\JWT\Token\Parser as JwtParser;
 class ParserTest extends TestCase
 {
     /**
-     * @var string
-     */
-    private string $signedPayload;
-
-    /**
-     * @inheritDoc
-     * @throws JsonException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $contents = file_get_contents(__DIR__ . '/../../fixtures/signed-payload.json');
-        $this->signedPayload = json_decode($contents, true, 512, JSON_THROW_ON_ERROR)['signedPayload'];
-    }
-
-    /**
      * @test
+     * @throws JsonException
      */
     public function parse(): void
     {
         $jwtParser = new JwtParser(new JoseEncoder());
 
         $sut = new Parser($jwtParser);
+        $signedPayload = $this->faker->signedPayload();
 
-        $jws = $sut->parse($this->signedPayload);
+        $jws = $sut->parse($signedPayload);
 
-        $this->assertSame($this->signedPayload, (string)$jws);
+        $this->assertSame($signedPayload, (string)$jws);
     }
 
     /**
      * @test
+     * @throws JsonException
      */
     public function toJws(): void
     {
-        $jws = Parser::toJws($this->signedPayload);
+        $signedPayload = $this->faker->signedPayload();
 
-        $this->assertSame($this->signedPayload, (string)$jws);
+        $jws = Parser::toJws($signedPayload);
+
+        $this->assertSame($signedPayload, (string)$jws);
     }
 }
