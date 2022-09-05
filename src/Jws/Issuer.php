@@ -1,6 +1,6 @@
 <?php
 
-namespace Imdhemy\AppStore\Jwt;
+namespace Imdhemy\AppStore\Jws;
 
 use Lcobucci\JWT\Signer;
 

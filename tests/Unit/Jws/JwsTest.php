@@ -1,15 +1,15 @@
 <?php
 
-namespace Imdhemy\AppStore\Tests\Unit\Jwt;
+namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
-use Imdhemy\AppStore\Jwt\Jwt;
+use Imdhemy\AppStore\Jws\Jws;
 use Imdhemy\AppStore\Tests\TestCase;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Token\Plain;
 
-class JwtTest extends TestCase
+class JwsTest extends TestCase
 {
     /**
      * @test
@@ -18,7 +18,7 @@ class JwtTest extends TestCase
     public function from_jwt_plain(): array
     {
         $plain = $this->getPlain();
-        $sut = Jwt::fromJwtPlain($plain);
+        $sut = Jws::fromJwtPlain($plain);
 
         $this->assertSame((string)$sut, $plain->toString());
 
@@ -32,7 +32,7 @@ class JwtTest extends TestCase
     public function get_headers(array $args): void
     {
         /**
-         * @var Jwt $sut
+         * @var Jws $sut
          * @var Plain $plain
          */
         [$sut, $plain] = $args;
@@ -47,7 +47,7 @@ class JwtTest extends TestCase
     public function get_claims(array $args): void
     {
         /**
-         * @var Jwt $sut
+         * @var Jws $sut
          * @var Plain $plain
          */
         [$sut, $plain] = $args;
@@ -62,7 +62,7 @@ class JwtTest extends TestCase
     public function get_signature(array $args): void
     {
         /**
-         * @var Jwt $sut
+         * @var Jws $sut
          * @var Plain $plain
          */
         [$sut, $plain] = $args;

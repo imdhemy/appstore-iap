@@ -1,15 +1,15 @@
 <?php
 
-namespace Imdhemy\AppStore\Jwt;
+namespace Imdhemy\AppStore\Jws;
 
 use Lcobucci\JWT\Token\Plain;
 
 /**
- * Class Jwt
+ * Class Jws
  *
  * This is a wrapper class for Lcobucci\JWT\Token\Plain
  */
-final class Jwt
+final class Jws
 {
     /**
      * @var Plain

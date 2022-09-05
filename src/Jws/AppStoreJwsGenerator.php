@@ -1,11 +1,11 @@
 <?php
 
-namespace Imdhemy\AppStore\Jwt;
+namespace Imdhemy\AppStore\Jws;
 
 /**
  * Generates ES256 JWT token for App Store Connect API
  */
-class AppStoreJwtGenerator implements JwtGenerator
+class AppStoreJwsGenerator implements JwsGenerator
 {
     public const AUDIENCE = 'appstoreconnect-v1';
 
@@ -28,9 +28,9 @@ class AppStoreJwtGenerator implements JwtGenerator
      * @param array $claims
      * @param array $headers
      *
-     * @return Jwt
+     * @return Jws
      */
-    public function generate(array $claims = [], array $headers = []): Jwt
+    public function generate(array $claims = [], array $headers = []): Jws
     {
         $generatorConfig = $this->config;
 
@@ -44,7 +44,7 @@ class AppStoreJwtGenerator implements JwtGenerator
             ->withClaim('bid', $generatorConfig->issuer()->bundle())
             ->getToken($generatorConfig->issuer()->signer(), $generatorConfig->issuer()->key());
 
-        return Jwt::fromJwtPlain($token);
+        return Jws::fromJwtPlain($token);
     }
 
     /**
@@ -58,9 +58,9 @@ class AppStoreJwtGenerator implements JwtGenerator
     /**
      * @param GeneratorConfig $config
      *
-     * @return AppStoreJwtGenerator
+     * @return AppStoreJwsGenerator
      */
-    public function setConfig(GeneratorConfig $config): AppStoreJwtGenerator
+    public function setConfig(GeneratorConfig $config): AppStoreJwsGenerator
     {
         $this->config = $config;
 
