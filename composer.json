@@ -12,6 +12,7 @@
     "php": ">=7.4",
     "ext-json": "*",
     "ext-sodium": "*",
+    "ext-openssl": "*",
     "guzzlehttp/guzzle": "^6.5|^7.4",
     "lcobucci/jwt": "^4.2",
     "nesbot/carbon": "^2.51"
