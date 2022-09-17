@@ -41,9 +41,9 @@ class Parser implements JwsParser
      *
      * @param string $jws
      *
-     * @return Jws
+     * @return JsonWebSignature
      */
-    public function parse(string $jws): Jws
+    public function parse(string $jws): JsonWebSignature
     {
         return Jws::fromJwtPlain($this->parser->parse($jws));
     }

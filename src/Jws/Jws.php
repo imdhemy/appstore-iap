@@ -9,7 +9,7 @@ use Lcobucci\JWT\Token\Plain;
  *
  * This is a wrapper class for Lcobucci\JWT\Token\Plain
  */
-final class Jws
+final class Jws implements JsonWebSignature
 {
     /**
      * @var Plain
