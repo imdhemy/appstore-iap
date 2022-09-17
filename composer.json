@@ -18,12 +18,12 @@
     "nesbot/carbon": "^2.51"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-latest",
-    "phpunit/phpunit": "^9.5",
-    "symfony/var-dumper": "^5.3",
-    "vimeo/psalm": "^4.9",
+    "fakerphp/faker": "^1.15",
     "friendsofphp/php-cs-fixer": "^3.0",
-    "fakerphp/faker": "^1.15"
+    "phpunit/phpunit": "^9.5",
+    "roave/security-advisories": "dev-latest",
+    "symfony/var-dumper": "^5.3",
+    "vimeo/psalm": "^4.27"
   },
   "autoload": {
     "psr-4": {

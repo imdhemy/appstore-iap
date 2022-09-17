@@ -8,6 +8,8 @@ namespace Imdhemy\AppStore\Jws;
  */
 class AppStoreJwsVerifier implements JwsVerifier
 {
+    public const APPLE_ROOT_CA_G3 = __DIR__ . '/../../AppleRootCA-G3.cer';
+
     /**
      * Verifies the JWS
      *
@@ -17,6 +19,48 @@ class AppStoreJwsVerifier implements JwsVerifier
      */
     public function verify(Jws $jws): bool
     {
+        $chain = $jws->getHeaders()['x5c'];
+        $applePublicKey = $this->applePublicKey();
+
+        // Verify root certificate against apple public key
+        if (openssl_x509_verify($this->qualifyChainCert($chain[2]), $applePublicKey) !== 1) {
+            return false;
+        }
+
+        // Verify intermediate certificate against root certificate
+        if (openssl_x509_verify($this->qualifyChainCert($chain[1]), $this->qualifyChainCert($chain[2])) !== 1) {
+            return false;
+        }
+
+        // Verify leaf certificate against intermediate certificate
+        if (openssl_x509_verify($this->qualifyChainCert($chain[0]), $this->qualifyChainCert($chain[1])) !== 1) {
+            return false;
+        }
+
         return true;
+    }
+
+    /**
+     * Get the Apple public key
+     *
+     * @return false|resource
+     */
+    private function applePublicKey()
+    {
+        $cer = file_get_contents(self::APPLE_ROOT_CA_G3);
+        $key = chunk_split(base64_encode($cer), 64, PHP_EOL);
+        $pem = "-----BEGIN CERTIFICATE-----" . PHP_EOL . $key . "-----END CERTIFICATE-----" . PHP_EOL;
+
+        return openssl_get_publickey($pem);
+    }
+
+    /**
+     * @param string $cert
+     *
+     * @return string
+     */
+    public function qualifyChainCert(string $cert): string
+    {
+        return '-----BEGIN CERTIFICATE-----' . PHP_EOL . $cert . PHP_EOL . '-----END CERTIFICATE-----';
     }
 }
