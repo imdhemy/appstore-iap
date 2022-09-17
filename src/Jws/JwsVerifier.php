@@ -14,5 +14,5 @@ interface JwsVerifier
      *
      * @return bool
      */
-    public function verify(Jws $jws): bool;
+    public function verify(JsonWebSignature $jws): bool;
 }

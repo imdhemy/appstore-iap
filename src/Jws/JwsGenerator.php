@@ -15,5 +15,5 @@ interface JwsGenerator
      *
      * @return Jws
      */
-    public function generate(array $claims = [], array $headers = []): Jws;
+    public function generate(array $claims = [], array $headers = []): JsonWebSignature;
 }

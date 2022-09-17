@@ -13,14 +13,18 @@ class AppStoreJwsVerifier implements JwsVerifier
     /**
      * Verifies the JWS
      *
-     * @param Jws $jws
+     * @param JsonWebSignature $jws
      *
      * @return bool
      */
-    public function verify(Jws $jws): bool
+    public function verify(JsonWebSignature $jws): bool
     {
         $chain = $jws->getHeaders()['x5c'];
         $applePublicKey = $this->applePublicKey();
+
+        if (count($chain) !== 3) {
+            return false;
+        }
 
         // Verify root certificate against apple public key
         if (openssl_x509_verify($this->qualifyChainCert($chain[2]), $applePublicKey) !== 1) {

@@ -12,7 +12,7 @@ interface JwsParser
      *
      * @param string $jws
      *
-     * @return Jws
+     * @return JsonWebSignature
      */
-    public function parse(string $jws): Jws;
+    public function parse(string $jws): JsonWebSignature;
 }

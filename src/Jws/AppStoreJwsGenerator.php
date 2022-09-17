@@ -28,9 +28,9 @@ class AppStoreJwsGenerator implements JwsGenerator
      * @param array $claims
      * @param array $headers
      *
-     * @return Jws
+     * @return JsonWebSignature
      */
-    public function generate(array $claims = [], array $headers = []): Jws
+    public function generate(array $claims = [], array $headers = []): JsonWebSignature
     {
         $generatorConfig = $this->config;
 
