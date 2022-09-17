@@ -44,4 +44,29 @@ class AppStoreJwsVerifierTest extends TestCase
         $this->assertFalse($sut->verify($jwsMock));
         $this->assertFalse($sut->verify($jwsMock));
     }
+
+    /**
+     * @test
+     * @throws JsonException
+     */
+    public function verify_should_validate_certificate_chain(): void
+    {
+        $signedPayload = $this->faker->signedPayload();
+        $jws = Parser::toJws($signedPayload);
+
+        $jwsMock = $this->createMock(JsonWebSignature::class);
+        $jwsMock->method('getHeaders')->willReturnOnConsecutiveCalls(
+            ['x5c' => [$jws->getHeaders()['x5c'][0], $jws->getHeaders()['x5c'][1], $jws->getHeaders()['x5c'][2]]],
+            ['x5c' => [$jws->getHeaders()['x5c'][0], $jws->getHeaders()['x5c'][1], 'invalid_root_cert']],
+            ['x5c' => [$jws->getHeaders()['x5c'][0], 'invalid_intermediate_cert', $jws->getHeaders()['x5c'][2]]],
+            ['x5c' => ['invalid_leaf_cert', $jws->getHeaders()['x5c'][1], $jws->getHeaders()['x5c'][2]]],
+        );
+
+        $sut = new AppStoreJwsVerifier();
+
+        $this->assertTrue($sut->verify($jwsMock));
+        $this->assertFalse($sut->verify($jwsMock));
+        $this->assertFalse($sut->verify($jwsMock));
+        $this->assertFalse($sut->verify($jwsMock));
+    }
 }
