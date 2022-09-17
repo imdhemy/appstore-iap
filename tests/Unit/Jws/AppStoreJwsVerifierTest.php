@@ -22,33 +22,47 @@ class AppStoreJwsVerifierTest extends TestCase
         // Extract the X.509 certificate chain
         $certificateChain = $jws->getHeaders()['x5c'];
 
-        $certPath = __DIR__ . '/../../../AppleRootCA-G3.pem';
+        $certPath = __DIR__ . '/../../../AppleRootCA-G3.cer';
         $r = $this->verifyCertificateChain($certificateChain, $certPath);
 
-        $pem = $this->convertCerToPem(file_get_contents(__DIR__ . '/../../../AppleRootCA-G3.cer'));
-
-        dd($pem);
+        $this->assertTrue($r);
     }
 
 
-    private function verifyCertificateChain(array $chain, $pem): bool
+    private function verifyCertificateChain(array $chain, string $cer): bool
     {
-        $rootCert = file_get_contents($pem);
-        $rootPublicKey = openssl_get_publickey($rootCert);
+        $rootPem = $this->convertCerToPem($cer);
+        $rootPublicKey = openssl_get_publickey($rootPem);
 
-        $intermediateCert = '-----BEGIN CERTIFICATE-----' . PHP_EOL . $chain[1] . PHP_EOL . '-----END CERTIFICATE-----';
+        if (openssl_x509_verify($this->qualifyChainCert($chain[0]), $this->qualifyChainCert($chain[1])) !== 1) {
+            return false;
+        }
 
-        $leafCert = '-----BEGIN CERTIFICATE-----' . PHP_EOL . $chain[0] . PHP_EOL . '-----END CERTIFICATE-----';
+        if (openssl_x509_verify($this->qualifyChainCert($chain[1]), $this->qualifyChainCert($chain[2])) !== 1) {
+            return false;
+        }
 
-        $r1 = openssl_x509_verify($leafCert, $intermediateCert);
-        $r2 = openssl_x509_verify($intermediateCert, $rootPublicKey);
+        if (openssl_x509_verify($this->qualifyChainCert($chain[2]), $rootPublicKey) !== 1) {
+            return false;
+        }
 
-        return $r1 === 1 && $r2 === 1;
+        return true;
     }
 
-    private function convertCerToPem($cer): string
+    /**
+     * @param string $cert
+     *
+     * @return string
+     */
+    public function qualifyChainCert(string $cert): string
     {
-        $pem = chunk_split(base64_encode($cer), 64, PHP_EOL);
+        return '-----BEGIN CERTIFICATE-----' . PHP_EOL . $cert . PHP_EOL . '-----END CERTIFICATE-----';
+    }
+
+    private function convertCerToPem(string $path): string
+    {
+        $cerContents = file_get_contents($path);
+        $pem = chunk_split(base64_encode($cerContents), 64, PHP_EOL);
 
         return "-----BEGIN CERTIFICATE-----" . PHP_EOL . $pem . "-----END CERTIFICATE-----" . PHP_EOL;
     }
