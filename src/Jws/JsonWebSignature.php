@@ -2,6 +2,9 @@
 
 namespace Imdhemy\AppStore\Jws;
 
+/**
+ * JSON Web Signature (JWS) interface
+ */
 interface JsonWebSignature
 {
     /**
