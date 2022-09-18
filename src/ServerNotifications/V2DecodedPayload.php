@@ -13,6 +13,22 @@ use Imdhemy\AppStore\Jws\JsonWebSignature;
  */
 final class V2DecodedPayload implements Arrayable
 {
+    public const TYPE_CONSUMPTION_REQUEST = 'CONSUMPTION_REQUEST';
+    public const TYPE_DID_CHANGE_RENEWAL_PREF = 'DID_CHANGE_RENEWAL_PREF';
+    public const TYPE_DID_CHANGE_RENEWAL_STATUS = 'DID_CHANGE_RENEWAL_STATUS';
+    public const TYPE_DID_FAIL_TO_RENEW = 'DID_FAIL_TO_RENEW';
+    public const TYPE_DID_RENEW = 'DID_RENEW';
+    public const TYPE_EXPIRED = 'EXPIRED';
+    public const TYPE_GRACE_PERIOD_EXPIRED = 'GRACE_PERIOD_EXPIRED';
+    public const TYPE_OFFER_REDEEMED = 'OFFER_REDEEMED';
+    public const TYPE_PRICE_INCREASE = 'PRICE_INCREASE';
+    public const TYPE_REFUND = 'REFUND';
+    public const TYPE_REFUND_DECLINED = 'REFUND_DECLINED';
+    public const TYPE_RENEWAL_EXTENDED = 'RENEWAL_EXTENDED';
+    public const TYPE_REVOKE = 'REVOKE';
+    public const TYPE_SUBSCRIBED = 'SUBSCRIBED';
+    public const TYPE_TEST = 'TEST';
+
     /**
      * @var string
      */

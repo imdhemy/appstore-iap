@@ -14,7 +14,7 @@ class V2DecodedPayloadTest extends TestCase
     public function v2_decoded_payload(): void
     {
         $claims = [
-            'notificationType' => 'TEST',
+            'notificationType' => V2DecodedPayload::TYPE_TEST,
             'notificationUUID' => $this->faker->uuid(),
             'data' => [],
             'version' => '2.0',
