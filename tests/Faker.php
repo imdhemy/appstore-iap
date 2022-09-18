@@ -81,6 +81,7 @@ class Faker
                 foreach ($claims as $key => $value) {
                     $builder->withClaim($key, $value);
                 }
+
                 return $builder;
             }
         )->toString();
