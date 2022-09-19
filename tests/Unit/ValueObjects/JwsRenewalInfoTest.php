@@ -1,6 +1,6 @@
 <?php
 
-namespace Imdhemy\AppStore\Tests\Unit\Jws;
+namespace Imdhemy\AppStore\Tests\Unit\ValueObjects;
 
 use Imdhemy\AppStore\Jws\Parser;
 use Imdhemy\AppStore\Tests\TestCase;
