@@ -12,6 +12,24 @@ use Imdhemy\AppStore\Jws\JsonWebSignature;
  */
 final class JwsTransactionInfo implements JsonWebSignature
 {
+    public const ENVIRONMENT_SANDBOX = 'Sandbox';
+    public const ENVIRONMENT_PRODUCTION = 'Production';
+
+    public const OWNERSHIP_TYPE_FAMILY_SHARED = 'FAMILY_SHARED';
+    public const OWNERSHIP_TYPE_PURCHASED = 'PURCHASED';
+
+    public const OFFER_TYPE_INTRODUCTORY = 1;
+    public const OFFER_TYPE_PROMOTIONAL = 2;
+    public const OFFER_TYPE_SUBSCRIPTION = 3;
+
+    public const REVOCATION_REASON_APP_ISSUE = 1;
+    public const REVOCATION_REASON_OTHER = 0;
+
+    public const TYPE_AUTO_RENEWABLE = 'Auto-Renewable Subscription';
+    public const TYPE_NON_RENEWING_SUBSCRIPTION = 'Non-Renewing Subscription';
+    public const TYPE_NON_CONSUMABLE = 'Non-Consumable';
+    public const TYPE_CONSUMABLE = 'Consumable';
+
     /**
      * @var JsonWebSignature
      */
