@@ -29,9 +29,9 @@ class Parser implements JwsParser
      *
      * @param $signedPayload
      *
-     * @return Jws
+     * @return JsonWebSignature
      */
-    public static function toJws($signedPayload): Jws
+    public static function toJws($signedPayload): JsonWebSignature
     {
         return (new self(new JwtParser(new JoseEncoder())))->parse($signedPayload);
     }
