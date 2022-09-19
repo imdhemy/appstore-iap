@@ -2,10 +2,12 @@
 
 namespace Imdhemy\AppStore\Jws;
 
+use Stringable;
+
 /**
  * JSON Web Signature (JWS) interface
  */
-interface JsonWebSignature
+interface JsonWebSignature extends Stringable
 {
     /**
      * Get list of headers

@@ -10,7 +10,7 @@ class Time
     /**
      * @var Carbon
      */
-    private $carbon;
+    private Carbon $carbon;
 
     /**
      * Time constructor
@@ -60,5 +60,17 @@ class Time
     public function toDateTime(): DateTime
     {
         return $this->carbon->toDateTime();
+    }
+
+    /**
+     * Check if equals to the given time
+     *
+     * @param Time $time
+     *
+     * @return bool
+     */
+    public function equals(Time $time): bool
+    {
+        return $this->carbon->eq($time->getCarbon());
     }
 }
