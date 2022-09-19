@@ -6,6 +6,8 @@ use Imdhemy\AppStore\Contracts\Arrayable;
 use Imdhemy\AppStore\Jws\JsonWebSignature;
 use Imdhemy\AppStore\Jws\Parser;
 use Imdhemy\AppStore\ValueObjects\AppMetadata;
+use Imdhemy\AppStore\ValueObjects\JwsRenewalInfo;
+use Imdhemy\AppStore\ValueObjects\JwsTransactionInfo;
 use Imdhemy\AppStore\ValueObjects\Time;
 
 /**
@@ -146,20 +148,20 @@ final class V2DecodedPayload implements Arrayable
     /**
      * Gets the renewal information
      *
-     * @return JsonWebSignature
+     * @return JwsRenewalInfo
      */
-    public function getRenewalInfo(): JsonWebSignature
+    public function getRenewalInfo(): JwsRenewalInfo
     {
-        return Parser::toJws($this->rawData['data']['signedRenewalInfo']);
+        return new JwsRenewalInfo(Parser::toJws($this->rawData['data']['signedRenewalInfo']));
     }
 
     /**
      * Gets the transaction information
      *
-     * @return JsonWebSignature
+     * @return JwsTransactionInfo
      */
-    public function getTransactionInfo(): JsonWebSignature
+    public function getTransactionInfo(): JwsTransactionInfo
     {
-        return Parser::toJws($this->rawData['data']['signedTransactionInfo']);
+        return new JwsTransactionInfo(Parser::toJws($this->rawData['data']['signedTransactionInfo']));
     }
 }
