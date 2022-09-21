@@ -3,6 +3,7 @@
 namespace Imdhemy\AppStore\ValueObjects;
 
 use Imdhemy\AppStore\Jws\JsonWebSignature;
+use Imdhemy\AppStore\Jws\UnEncryptedTokenConcern;
 
 /**
  * Class JwsRenewalInfo
@@ -12,6 +13,8 @@ use Imdhemy\AppStore\Jws\JsonWebSignature;
  */
 final class JwsRenewalInfo implements JsonWebSignature
 {
+    use UnEncryptedTokenConcern;
+
     public const AUTO_RENEW_STATUS_OFF = 0;
 
     public const AUTO_RENEW_STATUS_ON = 1;

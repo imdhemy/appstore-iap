@@ -2,12 +2,13 @@
 
 namespace Imdhemy\AppStore\Jws;
 
+use Lcobucci\JWT\UnencryptedToken;
 use Stringable;
 
 /**
  * JSON Web Signature (JWS) interface
  */
-interface JsonWebSignature extends Stringable
+interface JsonWebSignature extends Stringable, UnencryptedToken
 {
     /**
      * Get list of headers
