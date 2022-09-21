@@ -2,13 +2,25 @@
 
 namespace Imdhemy\AppStore\Jws;
 
+use Lcobucci\JWT\Signer\Ecdsa\Sha256;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+
 /**
  * App Store JWS Verifier
  * Verifies a signed payload is signed by Apple
  */
 class AppStoreJwsVerifier implements JwsVerifier
 {
-    public const APPLE_ROOT_CA_G3 = __DIR__ . '/../../AppleRootCA-G3.cer';
+    private const APPLE_CERTIFICATE_FINGERPRINTS = [
+        // Fingerprint of https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer
+        '0be38bfe21fd434d8cc51cbe0e2bc7758ddbf97b',
+        // Fingerprint of https://www.apple.com/certificateauthority/AppleRootCA-G3.cer
+        'b52cb02fd567e0359fe8fa4d4c41037970fe01b0',
+
+    ];
+
+    private const CHAIN_LENGTH = 3;
 
     /**
      * Verifies the JWS
@@ -19,52 +31,67 @@ class AppStoreJwsVerifier implements JwsVerifier
      */
     public function verify(JsonWebSignature $jws): bool
     {
-        $chain = $jws->getHeaders()['x5c'];
-        $applePublicKey = $this->applePublicKey();
+        $x5c = $jws->getHeaders()['x5c'] ?? [];
 
-        if (count($chain) !== 3) {
+        if (count($x5c) !== self::CHAIN_LENGTH) {
             return false;
         }
 
-        // Verify root certificate against apple public key
-        if (openssl_x509_verify($this->qualifyChainCert($chain[2]), $applePublicKey) !== 1) {
+        $chain = $this->chain($jws->getHeaders()['x5c'] ?? []);
+
+        $fingerPrints = [];
+
+        for ($i = 0; $i < self::CHAIN_LENGTH; ++$i) {
+            $current = $chain[$i];
+            $next = $chain[$i + 1] ?? null;
+
+            if ($i !== 0) {
+                $fingerPrints[] = openssl_x509_fingerprint($current);
+            }
+
+            if ($next !== null && openssl_x509_verify($current, $next) !== 1) {
+                return false;
+            }
+        }
+
+        if (self::APPLE_CERTIFICATE_FINGERPRINTS !== $fingerPrints) {
             return false;
         }
 
-        // Verify intermediate certificate against root certificate
-        if (openssl_x509_verify($this->qualifyChainCert($chain[1]), $this->qualifyChainCert($chain[2])) !== 1) {
-            return false;
-        }
-
-        // Verify leaf certificate against intermediate certificate
-        if (openssl_x509_verify($this->qualifyChainCert($chain[0]), $this->qualifyChainCert($chain[1])) !== 1) {
-            return false;
-        }
+        openssl_x509_export($chain[0], $exportedCertificate);
+        (new SignedWith(Sha256::create(), InMemory::plainText($exportedCertificate)))->assert($jws);
 
         return true;
     }
 
     /**
-     * Get the Apple public key
+     * @param array $certificates
      *
-     * @return false|resource
+     * @return string[]
      */
-    private function applePublicKey()
+    private function chain(array $certificates): array
     {
-        $cer = file_get_contents(self::APPLE_ROOT_CA_G3);
-        $key = chunk_split(base64_encode($cer), 64, PHP_EOL);
-        $pem = "-----BEGIN CERTIFICATE-----" . PHP_EOL . $key . "-----END CERTIFICATE-----" . PHP_EOL;
+        $chain = [];
 
-        return openssl_get_publickey($pem);
+        foreach ($certificates as $certificate) {
+            $chain[] = $this->bas464DerToCert($certificate);
+        }
+
+        return $chain;
     }
 
     /**
-     * @param string $cert
+     * @param string $certificate
      *
-     * @return string
+     * @return resource
      */
-    public function qualifyChainCert(string $cert): string
+    private function bas464DerToCert(string $certificate)
     {
-        return '-----BEGIN CERTIFICATE-----' . PHP_EOL . $cert . PHP_EOL . '-----END CERTIFICATE-----';
+        $contents =
+            '-----BEGIN CERTIFICATE-----' . PHP_EOL .
+            $certificate . PHP_EOL .
+            '-----END CERTIFICATE-----';
+
+        return openssl_x509_read($contents);
     }
 }
