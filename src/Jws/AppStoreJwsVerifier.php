@@ -37,24 +37,23 @@ class AppStoreJwsVerifier implements JwsVerifier
             return false;
         }
 
-        $chain = $this->chain($jws->getHeaders()['x5c'] ?? []);
+        $chain = $this->chain($x5c);
 
-        $fingerPrints = [];
-
-        for ($i = 0; $i < self::CHAIN_LENGTH; ++$i) {
-            $current = $chain[$i];
-            $next = $chain[$i + 1] ?? null;
-
-            if ($i !== 0) {
-                $fingerPrints[] = openssl_x509_fingerprint($current);
-            }
-
-            if ($next !== null && openssl_x509_verify($current, $next) !== 1) {
-                return false;
-            }
-        }
+        [$leaf, $intermediate, $root] = $chain;
+        $fingerPrints = [
+            openssl_x509_fingerprint($intermediate),
+            openssl_x509_fingerprint($root),
+        ];
 
         if (self::APPLE_CERTIFICATE_FINGERPRINTS !== $fingerPrints) {
+            return false;
+        }
+
+        if (openssl_x509_verify($leaf, $intermediate) !== 1) {
+            return false;
+        }
+
+        if (openssl_x509_verify($intermediate, $root) !== 1) {
             return false;
         }
 
