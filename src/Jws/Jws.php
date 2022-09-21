@@ -11,6 +11,8 @@ use Lcobucci\JWT\Token\Plain;
  */
 final class Jws implements JsonWebSignature
 {
+    use UnEncryptedTokenConcern;
+
     /**
      * @var Plain
      */

@@ -3,6 +3,7 @@
 namespace Imdhemy\AppStore\ValueObjects;
 
 use Imdhemy\AppStore\Jws\JsonWebSignature;
+use Imdhemy\AppStore\Jws\UnEncryptedTokenConcern;
 
 /**
  * Class JwsTransactionInfo
@@ -12,6 +13,8 @@ use Imdhemy\AppStore\Jws\JsonWebSignature;
  */
 final class JwsTransactionInfo implements JsonWebSignature
 {
+    use UnEncryptedTokenConcern;
+
     public const ENVIRONMENT_SANDBOX = 'Sandbox';
     public const ENVIRONMENT_PRODUCTION = 'Production';
 
