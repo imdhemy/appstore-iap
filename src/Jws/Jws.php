@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Jws;
 
+use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Token\Plain;
 
 /**
@@ -14,14 +15,14 @@ final class Jws implements JsonWebSignature
     use UnEncryptedTokenConcern;
 
     /**
-     * @var Plain
+     * @var Token
      */
-    private Plain $token;
+    private Token $token;
 
     /**
      * @param Plain $token
      */
-    private function __construct(Plain $token)
+    private function __construct(Token $token)
     {
         $this->token = $token;
     }
@@ -29,11 +30,11 @@ final class Jws implements JsonWebSignature
     /**
      * Creates a new instance from a Lcobucci\JWT\Token\Plain instance
      *
-     * @param Plain $token
+     * @param Token $token
      *
      * @return static
      */
-    public static function fromJwtPlain(Plain $token): self
+    public static function fromJwtPlain(Token $token): self
     {
         return new self($token);
     }
