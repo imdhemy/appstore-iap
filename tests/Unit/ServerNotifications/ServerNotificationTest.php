@@ -12,7 +12,7 @@ class ServerNotificationTest extends TestCase
     /**
      * @test
      */
-    public function test_unified_receipt()
+    public function unified_receipt(): void
     {
         $value = ['status' => 0];
         $serverNotification = ServerNotification::fromArray(
@@ -32,7 +32,7 @@ class ServerNotificationTest extends TestCase
      * @test
      * @throws Exception
      */
-    public function test_auto_renew_status_change_date()
+    public function auto_renew_status_change_date(): void
     {
         $value = "1606293002000";
 
@@ -58,7 +58,7 @@ class ServerNotificationTest extends TestCase
     /**
      * @test
      */
-    public function test_environment()
+    public function environment(): void
     {
         $value = ReceiptResponse::ENV_SANDBOX;
         $serverNotification = ServerNotification::fromArray(
@@ -78,7 +78,7 @@ class ServerNotificationTest extends TestCase
     /**
      * @test
      */
-    public function test_auto_renew_status()
+    public function auto_renew_status(): void
     {
         $serverNotification = ServerNotification::fromArray(
             [
@@ -103,7 +103,7 @@ class ServerNotificationTest extends TestCase
     /**
      * @test
      */
-    public function test_bvrs()
+    public function bvrs(): void
     {
         $value = "33";
         $serverNotification = ServerNotification::fromArray(
@@ -121,7 +121,7 @@ class ServerNotificationTest extends TestCase
     /**
      * @test
      */
-    public function test_bid()
+    public function bid(): void
     {
         $value = "com.some.thing";
         $serverNotification = ServerNotification::fromArray(
@@ -139,7 +139,7 @@ class ServerNotificationTest extends TestCase
     /**
      * @test
      */
-    public function test_password()
+    public function password(): void
     {
         $value = "******";
         $serverNotification = ServerNotification::fromArray(
@@ -157,7 +157,7 @@ class ServerNotificationTest extends TestCase
     /**
      * @test
      */
-    public function test_auto_renew_production_id()
+    public function auto_renew_production_id(): void
     {
         $value = "fake_product_id";
         $serverNotification = ServerNotification::fromArray(
@@ -175,12 +175,34 @@ class ServerNotificationTest extends TestCase
     /**
      * @test
      */
-    public function test_notification_type()
+    public function notification_type(): void
     {
         $value = ServerNotification::PRICE_INCREASE_CONSENT;
         $serverNotification = ServerNotification::fromArray(
             ['notification_type' => $value]
         );
         $this->assertEquals($value, $serverNotification->getNotificationType());
+    }
+
+    /**
+     * @test
+     */
+    public function to_array(): void
+    {
+        $attributes = [
+            'notification_type' => ServerNotification::CANCEL,
+            'auto_renew_status' => "true",
+            'auto_renew_product_id' => "fake_product_id",
+            'password' => "******",
+            'bid' => "com.some.thing",
+            'bvrs' => "33",
+            'environment' => ReceiptResponse::ENV_SANDBOX,
+            'auto_renew_status_change_date_ms' => "1606293002000",
+            'unified_receipt' => ['status' => 0],
+        ];
+
+        $serverNotification = ServerNotification::fromArray($attributes);
+
+        $this->assertEquals($attributes, $serverNotification->toArray());
     }
 }

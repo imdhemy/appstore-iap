@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\ServerNotifications;
 
+use Imdhemy\AppStore\Contracts\Arrayable;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
 use Imdhemy\AppStore\ValueObjects\Time;
 
@@ -10,30 +11,20 @@ use Imdhemy\AppStore\ValueObjects\Time;
  *
  * @see https://developer.apple.com/documentation/appstoreservernotifications?changes=latest_minor
  */
-class ServerNotification
+class ServerNotification implements Arrayable
 {
+    // Notification types
     public const CANCEL = 'CANCEL';
-
     public const CONSUMPTION_REQUEST = 'CONSUMPTION_REQUEST';
-
     public const DID_CHANGE_RENEWAL_PREF = 'DID_CHANGE_RENEWAL_PREF';
-
     public const DID_CHANGE_RENEWAL_STATUS = 'DID_CHANGE_RENEWAL_STATUS';
-
     public const DID_FAIL_TO_RENEW = 'DID_FAIL_TO_RENEW';
-
     public const DID_RECOVER = 'DID_RECOVER';
-
     public const DID_RENEW = 'DID_RENEW';
-
     public const INITIAL_BUY = 'INITIAL_BUY';
-
     public const INTERACTIVE_RENEWAL = 'INTERACTIVE_RENEWAL';
-
     public const PRICE_INCREASE_CONSENT = 'PRICE_INCREASE_CONSENT';
-
     public const REFUND = 'REFUND';
-
     public const REVOKE = 'REVOKE';
 
     /**
@@ -82,6 +73,11 @@ class ServerNotification
     protected string $notificationType;
 
     /**
+     * @var array
+     */
+    private array $rawData;
+
+    /**
      * @param string $notificationType
      *
      * @deprecated Use ServerNotification::fromArray() instead
@@ -99,6 +95,7 @@ class ServerNotification
     public static function fromArray(array $attributes = []): self
     {
         $obj = new self($attributes['notification_type']);
+        $obj->rawData = $attributes;
 
         $obj->unifiedReceipt = isset($attributes['unified_receipt']) ?
             ReceiptResponse::fromArray($attributes['unified_receipt']) :
@@ -192,5 +189,15 @@ class ServerNotification
     public function getAutoRenewStatus(): ?bool
     {
         return $this->autoRenewStatus;
+    }
+
+    /**
+     * Convert the object to its array representation.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->rawData;
     }
 }
