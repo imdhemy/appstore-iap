@@ -64,7 +64,7 @@ final class V2DecodedPayload implements Arrayable
     }
 
     /**
-     * Create a new instance from a Json Web Signature
+     * Creates a new instance from a Json Web Signature
      *
      * @param JsonWebSignature $jws
      *
@@ -73,6 +73,18 @@ final class V2DecodedPayload implements Arrayable
     public static function fromJws(JsonWebSignature $jws): self
     {
         return new self($jws->getClaims());
+    }
+
+    /**
+     * Creates a new instance from a list of claims
+     *
+     * @param array $claims
+     *
+     * @return static
+     */
+    public static function fromArray(array $claims): self
+    {
+        return new self($claims);
     }
 
     /**

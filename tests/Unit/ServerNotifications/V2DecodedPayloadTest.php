@@ -12,7 +12,7 @@ class V2DecodedPayloadTest extends TestCase
     /**
      * @test
      */
-    public function v2_decoded_payload(): V2DecodedPayload
+    public function from_jws(): V2DecodedPayload
     {
         $claims = [
             'notificationType' => V2DecodedPayload::TYPE_TEST,
@@ -35,7 +35,27 @@ class V2DecodedPayloadTest extends TestCase
     }
 
     /**
-     * @depends v2_decoded_payload
+     * @test
+     */
+    public function from_array(): void
+    {
+        $claims = [
+            'notificationType' => V2DecodedPayload::TYPE_TEST,
+            'notificationUUID' => $this->faker->uuid(),
+            'data' => [],
+            'version' => '2.0',
+            'signedDate' => $this->faker->unixTime() * 1000,
+        ];
+
+        $sut = V2DecodedPayload::fromArray($claims);
+
+        foreach ($claims as $key => $value) {
+            $this->assertEquals($value, $sut->toArray()[$key]);
+        }
+    }
+
+    /**
+     * @depends from_jws
      * @test
      */
     public function get_type(V2DecodedPayload $sut): void
@@ -44,7 +64,7 @@ class V2DecodedPayloadTest extends TestCase
     }
 
     /**
-     * @depends v2_decoded_payload
+     * @depends from_jws
      * @test
      */
     public function subtype_is_null_if_type_is_test(V2DecodedPayload $sut): void
