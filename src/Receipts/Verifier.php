@@ -9,9 +9,10 @@ use Imdhemy\AppStore\Exceptions\InvalidReceiptException;
 
 /**
  * Verifier class
+ *
+ * @see     https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
  * @package Imdhemy\AppStore;
- * This class is responsible for handling verification requests
- * @see https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
+ *          This class is responsible for handling verification requests
  */
 class Verifier
 {
@@ -36,6 +37,7 @@ class Verifier
 
     /**
      * Receipt constructor.
+     *
      * @param Client $client
      * @param string $receiptData
      * @param string $password
@@ -49,8 +51,10 @@ class Verifier
 
     /**
      * @param Client|null $sandboxClient
+     *
      * @return ReceiptResponse
      * @throws GuzzleException|InvalidReceiptException
+     * @deprecated Use verify() instead - this method will be removed in the next major release
      */
     public function verifyRenewable(?Client $sandboxClient = null): ReceiptResponse
     {
@@ -60,6 +64,7 @@ class Verifier
     /**
      * @param bool $excludeOldTransactions
      * @param Client|null $sandboxClient
+     *
      * @return ReceiptResponse
      * @throws GuzzleException|InvalidReceiptException
      */
@@ -83,6 +88,7 @@ class Verifier
     /**
      * @param bool $excludeOldTransactions
      * @param Client|null $client
+     *
      * @return array
      * @throws GuzzleException
      */
@@ -97,6 +103,7 @@ class Verifier
 
     /**
      * @param bool $excludeOldTransactions
+     *
      * @return array[]
      */
     private function buildRequestOptions(bool $excludeOldTransactions): array
@@ -112,6 +119,7 @@ class Verifier
 
     /**
      * @param int $status
+     *
      * @return bool
      */
     private function isInvalidReceiptStatus(int $status): bool
@@ -125,6 +133,7 @@ class Verifier
 
     /**
      * @param int $status
+     *
      * @return bool
      */
     private function isFromTestEnv(int $status): bool
