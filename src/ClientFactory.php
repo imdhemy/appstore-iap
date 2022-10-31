@@ -17,8 +17,8 @@ class ClientFactory
     public const BASE_URI = 'https://buy.itunes.apple.com';
     public const BASE_URI_SANDBOX = 'https://sandbox.itunes.apple.com';
 
-    public const TEST_NOTIFICATION_PRODUCTION_URL = 'https://api.storekit.itunes.apple.com/inApps/v1/notifications/test';
-    public const TEST_NOTIFICATION_SANDBOX_URL = 'https://api.storekit-sandbox.itunes.apple.com/inApps/v1/notifications/test';
+    public const TEST_NOTIFICATION_PRODUCTION_URL = 'https://api.storekit.itunes.apple.com';
+    public const TEST_NOTIFICATION_SANDBOX_URL = 'https://api.storekit-sandbox.itunes.apple.com';
 
     /**
      * @param bool $sandbox
