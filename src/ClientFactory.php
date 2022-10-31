@@ -17,13 +17,22 @@ class ClientFactory
     public const BASE_URI = 'https://buy.itunes.apple.com';
     public const BASE_URI_SANDBOX = 'https://sandbox.itunes.apple.com';
 
+    public const STORE_KIT_PRODUCTION_URI = 'https://api.storekit.itunes.apple.com';
+    public const STORE_KIT_SANDBOX_URI = 'https://api.storekit-sandbox.itunes.apple.com';
+
     /**
      * @param bool $sandbox
+     * @param array $options
+     *
      * @return Client
      */
-    public static function create(bool $sandbox = false): Client
+    public static function create(bool $sandbox = false, array $options = []): Client
     {
-        return new Client(['base_uri' => $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI]);
+        if (empty($options['base_uri'])) {
+            $options['base_uri'] = $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI;
+        }
+
+        return new Client($options);
     }
 
     /**
@@ -39,6 +48,7 @@ class ClientFactory
      *
      * @param ResponseInterface $responseMock
      * @param array $transactions
+     *
      * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */
@@ -56,6 +66,7 @@ class ClientFactory
      *
      * @param array|ResponseInterface[]|RequestExceptionInterface[] $responseQueue
      * @param array $transactions
+     *
      * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */
@@ -73,6 +84,7 @@ class ClientFactory
      *
      * @param RequestExceptionInterface $error
      * @param array $transactions
+     *
      * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */
