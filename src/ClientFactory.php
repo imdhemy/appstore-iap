@@ -19,11 +19,17 @@ class ClientFactory
 
     /**
      * @param bool $sandbox
+     * @param array $options
+     *
      * @return Client
      */
-    public static function create(bool $sandbox = false): Client
+    public static function create(bool $sandbox = false, array $options = []): Client
     {
-        return new Client(['base_uri' => $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI]);
+        if (empty($options['base_uri'])) {
+            $options['base_uri'] = $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI;
+        }
+
+        return new Client($options);
     }
 
     /**
@@ -39,6 +45,7 @@ class ClientFactory
      *
      * @param ResponseInterface $responseMock
      * @param array $transactions
+     *
      * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */
@@ -56,6 +63,7 @@ class ClientFactory
      *
      * @param array|ResponseInterface[]|RequestExceptionInterface[] $responseQueue
      * @param array $transactions
+     *
      * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */
@@ -73,6 +81,7 @@ class ClientFactory
      *
      * @param RequestExceptionInterface $error
      * @param array $transactions
+     *
      * @psalm-suppress ReferenceConstraintViolation
      * @return Client
      */

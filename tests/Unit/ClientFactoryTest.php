@@ -57,6 +57,20 @@ class ClientFactoryTest extends TestCase
 
     /**
      * @test
+     * @throws ReflectionException
+     */
+    public function client_options_overrides_the_sandbox_param(): void
+    {
+        $client = ClientFactory::create(true, ['base_uri' => 'https://example.com']);
+        $reflection = new ReflectionClass($client);
+        $config = $reflection->getProperty('config');
+        $config->setAccessible(true);
+
+        $this->assertEquals('https://example.com', $config->getValue($client)['base_uri']);
+    }
+
+    /**
+     * @test
      * @throws GuzzleException
      */
     public function client_response_can_be_mocked(): void
