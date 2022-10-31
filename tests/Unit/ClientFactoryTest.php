@@ -1,6 +1,6 @@
 <?php
 
-namespace Imdhemy\AppStore\Tests;
+namespace Imdhemy\AppStore\Tests\Unit;
 
 use Exception;
 use GuzzleHttp\Client;
@@ -9,13 +9,14 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Imdhemy\AppStore\ClientFactory;
+use Imdhemy\AppStore\Tests\TestCase;
 
 class ClientFactoryTest extends TestCase
 {
     /**
      * @test
      */
-    public function test_create()
+    public function create(): void
     {
         $client = ClientFactory::create();
         $this->assertInstanceOf(Client::class, $client);
@@ -28,7 +29,7 @@ class ClientFactoryTest extends TestCase
      * @test
      * @throws GuzzleException
      */
-    public function test_client_response_can_be_mocked()
+    public function client_response_can_be_mocked(): void
     {
         $statusCode = 200;
         $body = 'This is a mock!';
@@ -45,7 +46,7 @@ class ClientFactoryTest extends TestCase
      * @test
      * @throws GuzzleException
      */
-    public function test_a_queue_of_responses_can_be_mocked()
+    public function a_queue_of_responses_can_be_mocked(): void
     {
         $mocks = [
             new Response(200, [], 'first'),
@@ -66,7 +67,7 @@ class ClientFactoryTest extends TestCase
      * @test
      * @throws GuzzleException
      */
-    public function test_it_can_mock_an_error_response()
+    public function it_can_mock_an_error_response(): void
     {
         $message = 'Something went wrong';
 
@@ -87,7 +88,7 @@ class ClientFactoryTest extends TestCase
      * @test
      * @throws GuzzleException
      */
-    public function test_mock_can_track_transactions()
+    public function mock_can_track_transactions(): void
     {
         $transactions = [];
         $response = new Response();
@@ -104,7 +105,7 @@ class ClientFactoryTest extends TestCase
      * @throws Exception
      * @throws GuzzleException
      */
-    public function test_mock_queue_can_track_transactions()
+    public function mock_queue_can_track_transactions(): void
     {
         $size = random_int(1, 10);
         $queue = [];
@@ -131,7 +132,7 @@ class ClientFactoryTest extends TestCase
      * @test
      * @throws GuzzleException
      */
-    public function test_mock_error_can_track_transactions()
+    public function mock_error_can_track_transactions(): void
     {
         $transactions = [];
         $request = new Request('GET', '/admin');
