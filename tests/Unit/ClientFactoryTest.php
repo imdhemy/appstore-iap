@@ -10,6 +10,8 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Imdhemy\AppStore\ClientFactory;
 use Imdhemy\AppStore\Tests\TestCase;
+use ReflectionClass;
+use ReflectionException;
 
 class ClientFactoryTest extends TestCase
 {
@@ -23,6 +25,34 @@ class ClientFactoryTest extends TestCase
 
         $client = ClientFactory::createSandbox();
         $this->assertInstanceOf(Client::class, $client);
+    }
+
+    /**
+     * @test
+     * @throws ReflectionException
+     */
+    public function client_base_uri_for_production(): void
+    {
+        $client = ClientFactory::create();
+        $reflection = new ReflectionClass($client);
+        $config = $reflection->getProperty('config');
+        $config->setAccessible(true);
+
+        $this->assertEquals('https://buy.itunes.apple.com', $config->getValue($client)['base_uri']);
+    }
+
+    /**
+     * @test
+     * @throws ReflectionException
+     */
+    public function client_base_uri_for_sandbox(): void
+    {
+        $client = ClientFactory::createSandbox();
+        $reflection = new ReflectionClass($client);
+        $config = $reflection->getProperty('config');
+        $config->setAccessible(true);
+
+        $this->assertEquals('https://sandbox.itunes.apple.com', $config->getValue($client)['base_uri']);
     }
 
     /**
