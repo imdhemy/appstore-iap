@@ -3,13 +3,14 @@
 namespace Imdhemy\AppStore\ValueObjects;
 
 use Imdhemy\AppStore\Contracts\Arrayable;
+use JsonSerializable;
 
 /**
  * LatestReceiptInfo class which contains in-app purchase transaction
  *
  * @link https://developer.apple.com/documentation/appstorereceipts/responsebody/latest_receipt_info
  */
-final class LatestReceiptInfo implements Arrayable
+final class LatestReceiptInfo implements Arrayable, JsonSerializable
 {
     /**
      * @const string The transaction belongs to a family member who benefits from service.
@@ -420,5 +421,13 @@ final class LatestReceiptInfo implements Arrayable
     public function toArray(): array
     {
         return $this->rawBody;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

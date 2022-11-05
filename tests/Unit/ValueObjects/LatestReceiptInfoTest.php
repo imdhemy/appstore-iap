@@ -1,6 +1,6 @@
 <?php
 
-namespace Imdhemy\AppStore\Tests\ValueObjects;
+namespace Imdhemy\AppStore\Tests\Unit\ValueObjects;
 
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
@@ -272,5 +272,21 @@ class LatestReceiptInfoTest extends TestCase
         $latestReceiptInfo = LatestReceiptInfo::fromArray($attributes);
 
         $this->assertEquals($attributes, $latestReceiptInfo->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function json_serialize(): void
+    {
+        $attributes = array_merge($this->commonAttributes, [
+            'cancellation_date_ms' => $this->faker->unixTime() * 1000,
+            'cancellation_reason' => LatestReceiptInfo::CANCELLATION_REASON_APP_ISSUE,
+            'web_order_line_item_id' => 'fake_web_order_line_item_id',
+        ]);
+
+        $latestReceiptInfo = LatestReceiptInfo::fromArray($attributes);
+
+        $this->assertEquals($attributes, $latestReceiptInfo->jsonSerialize());
     }
 }
