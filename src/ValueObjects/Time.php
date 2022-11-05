@@ -4,22 +4,44 @@ namespace Imdhemy\AppStore\ValueObjects;
 
 use Carbon\Carbon;
 use DateTime;
+use Stringable;
 
-class Time
+final class Time implements Stringable
 {
     /**
-     * @var Carbon
+     * @var int The number of microseconds since the Unix epoch.
+     * @psalm-immutable
      */
-    private Carbon $carbon;
+    private int $timestampMilliseconds;
 
     /**
      * Time constructor
      *
-     * @param int $timestampMs
+     * @param int $timestampMilliseconds
      */
-    public function __construct(int $timestampMs)
+    public function __construct(int $timestampMilliseconds)
     {
-        $this->carbon = Carbon::createFromTimestampMs($timestampMs);
+        $this->timestampMilliseconds = $timestampMilliseconds;
+    }
+
+    /**
+     * @param Carbon $carbon
+     *
+     * @return static
+     */
+    public static function fromCarbon(Carbon $carbon): self
+    {
+        return new self($carbon->getTimestampMs());
+    }
+
+    /**
+     * @param DateTime $dateTime
+     *
+     * @return static
+     */
+    public static function fromDateTime(DateTime $dateTime): self
+    {
+        return self::fromCarbon(Carbon::instance($dateTime));
     }
 
     /**
@@ -27,7 +49,7 @@ class Time
      */
     public function isFuture(): bool
     {
-        return Carbon::now()->lessThan($this->carbon);
+        return $this->toCarbon()->isFuture();
     }
 
     /**
@@ -35,31 +57,44 @@ class Time
      */
     public function isPast(): bool
     {
-        return Carbon::now()->greaterThan($this->carbon);
+        return $this->toCarbon()->isPast();
     }
 
     /**
      * @return Carbon
+     * @deprecated Use toCarbon() instead.
      */
     public function getCarbon(): Carbon
     {
-        return $this->carbon;
+        return $this->toCarbon();
     }
 
     /**
+     * Converts the value object to a Carbon instance.
+     *
      * @return Carbon
      */
     public function toCarbon(): Carbon
     {
-        return $this->carbon;
+        return Carbon::createFromTimestampMs($this->timestampMilliseconds);
     }
 
     /**
+     * Convert the value object to a DateTime instance.
+     *
      * @return DateTime
      */
     public function toDateTime(): DateTime
     {
-        return $this->carbon->toDateTime();
+        return $this->toCarbon()->toDateTime();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string)$this->toCarbon();
     }
 
     /**
@@ -68,9 +103,10 @@ class Time
      * @param Time $time
      *
      * @return bool
+     * @return string
      */
     public function equals(Time $time): bool
     {
-        return $this->carbon->eq($time->getCarbon());
+        return $this->toCarbon()->eq($time->toCarbon());
     }
 }
