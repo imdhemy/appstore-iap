@@ -16,8 +16,4 @@ to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 - [1.x]: make time value object immutable by @imdhemy in https://github.com/imdhemy/appstore-iap/pull/54
 
-### New Contributors
-
-- @dependabot made their first contribution in https://github.com/imdhemy/appstore-iap/pull/50
-
 **Full Changelog**: https://github.com/imdhemy/appstore-iap/compare/1.4.0...1.5.0
