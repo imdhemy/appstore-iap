@@ -23,7 +23,7 @@
     "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "dev-latest",
     "symfony/var-dumper": "^5.3",
-    "vimeo/psalm": "^4.27"
+    "vimeo/psalm": "^5.1"
   },
   "autoload": {
     "psr-4": {
