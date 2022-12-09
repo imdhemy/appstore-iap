@@ -2,7 +2,6 @@
 
 namespace Imdhemy\AppStore\Receipts;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Imdhemy\AppStore\ClientFactory;
@@ -64,7 +63,7 @@ class Verifier
 
     /**
      * @param bool $excludeOldTransactions
-     * @param Client|null $sandboxClient
+     * @param ClientInterface|null $sandboxClient
      *
      * @return ReceiptResponse
      * @throws GuzzleException|InvalidReceiptException
