@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\ServerNotifications;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Imdhemy\AppStore\Jws\JwsGenerator;
 use Psr\Http\Message\ResponseInterface;
@@ -16,9 +16,9 @@ use Psr\Http\Message\ResponseInterface;
 final class TestNotificationService
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
-    private Client $client;
+    private ClientInterface $client;
 
     /**
      * @var JwsGenerator
@@ -26,10 +26,10 @@ final class TestNotificationService
     private JwsGenerator $jwsGenerator;
 
     /**
-     * @param Client $client
+     * @param ClientInterface $client
      * @param JwsGenerator $jwsGenerator
      */
-    public function __construct(Client $client, JwsGenerator $jwsGenerator)
+    public function __construct(ClientInterface $client, JwsGenerator $jwsGenerator)
     {
         $this->client = $client;
         $this->jwsGenerator = $jwsGenerator;

@@ -3,6 +3,7 @@
 namespace Imdhemy\AppStore;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -24,9 +25,9 @@ class ClientFactory
      * @param bool $sandbox
      * @param array $options
      *
-     * @return Client
+     * @return ClientInterface
      */
-    public static function create(bool $sandbox = false, array $options = []): Client
+    public static function create(bool $sandbox = false, array $options = []): ClientInterface
     {
         if (empty($options['base_uri'])) {
             $options['base_uri'] = $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI;
@@ -36,9 +37,9 @@ class ClientFactory
     }
 
     /**
-     * @return Client
+     * @return ClientInterface
      */
-    public static function createSandbox(): Client
+    public static function createSandbox(): ClientInterface
     {
         return self::create(true);
     }
@@ -50,9 +51,9 @@ class ClientFactory
      * @param array $transactions
      *
      * @psalm-suppress ReferenceConstraintViolation
-     * @return Client
+     * @return ClientInterface
      */
-    public static function mock(ResponseInterface $responseMock, array &$transactions = []): Client
+    public static function mock(ResponseInterface $responseMock, array &$transactions = []): ClientInterface
     {
         $mockHandler = new MockHandler([$responseMock]);
         $handlerStack = HandlerStack::create($mockHandler);
@@ -68,9 +69,9 @@ class ClientFactory
      * @param array $transactions
      *
      * @psalm-suppress ReferenceConstraintViolation
-     * @return Client
+     * @return ClientInterface
      */
-    public static function mockQueue(array $responseQueue, array &$transactions = []): Client
+    public static function mockQueue(array $responseQueue, array &$transactions = []): ClientInterface
     {
         $mockHandler = new MockHandler($responseQueue);
         $handlerStack = HandlerStack::create($mockHandler);
@@ -86,9 +87,9 @@ class ClientFactory
      * @param array $transactions
      *
      * @psalm-suppress ReferenceConstraintViolation
-     * @return Client
+     * @return ClientInterface
      */
-    public static function mockError(RequestExceptionInterface $error, array &$transactions = []): Client
+    public static function mockError(RequestExceptionInterface $error, array &$transactions = []): ClientInterface
     {
         $mockHandler = new MockHandler([$error]);
         $handlerStack = HandlerStack::create($mockHandler);
