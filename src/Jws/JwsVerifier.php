@@ -10,7 +10,7 @@ interface JwsVerifier
     /**
      * Verifies the JWS
      *
-     * @param Jws $jws
+     * @param JsonWebSignature $jws
      *
      * @return bool
      */
