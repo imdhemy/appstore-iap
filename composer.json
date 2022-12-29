@@ -18,7 +18,7 @@
     "nesbot/carbon": "^2.64"
   },
   "require-dev": {
-    "fakerphp/faker": "^1.15",
+    "fakerphp/faker": "^1.21",
     "friendsofphp/php-cs-fixer": "^3.13",
     "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "dev-latest",
