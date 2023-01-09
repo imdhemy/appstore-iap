@@ -14,7 +14,7 @@
     "ext-sodium": "*",
     "ext-openssl": "*",
     "guzzlehttp/guzzle": "^6.5|^7.4",
-    "lcobucci/jwt": "^4.2",
+    "lcobucci/jwt": "^4.3",
     "nesbot/carbon": "^2.65"
   },
   "require-dev": {
