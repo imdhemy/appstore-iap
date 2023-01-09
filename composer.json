@@ -15,7 +15,7 @@
     "ext-openssl": "*",
     "guzzlehttp/guzzle": "^6.5|^7.4",
     "lcobucci/jwt": "^4.2",
-    "nesbot/carbon": "^2.64"
+    "nesbot/carbon": "^2.65"
   },
   "require-dev": {
     "fakerphp/faker": "^1.21",
