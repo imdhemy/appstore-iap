@@ -13,7 +13,7 @@
     "ext-json": "*",
     "ext-sodium": "*",
     "ext-openssl": "*",
-    "guzzlehttp/guzzle": "^6.5|^7.4",
+    "guzzlehttp/guzzle": "^6.5|^7.5",
     "lcobucci/jwt": "^4.3",
     "nesbot/carbon": "^2.66"
   },
@@ -22,7 +22,6 @@
     "friendsofphp/php-cs-fixer": "^3.15",
     "phpunit/phpunit": "^9.6",
     "roave/security-advisories": "dev-latest",
-    "symfony/var-dumper": "^5.4",
     "vimeo/psalm": "^5.8"
   },
   "autoload": {
@@ -51,7 +50,7 @@
     "sort-packages": true,
     "allow-plugins": {},
     "platform": {
-      "php": "7.4.30"
+      "php": "7.4"
     }
   }
 }
