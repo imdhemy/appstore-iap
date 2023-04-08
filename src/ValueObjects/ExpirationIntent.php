@@ -2,12 +2,15 @@
 
 namespace Imdhemy\AppStore\ValueObjects;
 
+use Stringable;
+
 /**
  * ExpirationIntent class
  * The reason a subscription expired
+ *
  * @see https://developer.apple.com/documentation/appstorereceipts/expiration_intent
  */
-final class ExpirationIntent
+final class ExpirationIntent implements Stringable
 {
     public const VOLUNTARY_CANCEL = 1;
     public const BILLING_ERROR = 2;
@@ -18,7 +21,7 @@ final class ExpirationIntent
     /**
      * @var int
      */
-    private $value;
+    private int $value;
 
     /**
      * ExpirationIntent constructor.

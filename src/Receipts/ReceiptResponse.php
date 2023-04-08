@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Receipts;
 
+use Imdhemy\AppStore\Contracts\Arrayable;
 use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\PendingRenewal;
 use Imdhemy\AppStore\ValueObjects\Receipt;
@@ -9,71 +10,89 @@ use Imdhemy\AppStore\ValueObjects\Status;
 
 /**
  * Class ReceiptResponse
+ *
+ * @see     https://developer.apple.com/documentation/appstorereceipts/responsebody
  * @package Imdhemy\AppStore\Receipts
- * @see https://developer.apple.com/documentation/appstorereceipts/responsebody
  */
-class ReceiptResponse
+class ReceiptResponse implements Arrayable
 {
     public const ENV_SANDBOX = 'Sandbox';
+
     public const ENV_PRODUCTION = 'Production';
 
     /**
      * The environment for which the receipt was generated.
+     *
      * @var string|null
      */
-    protected $environment;
+    protected ?string $environment;
 
     /**
      * An indicator that an error occurred during the request.
+     *
      * @var bool|null
      */
-    protected $isRetryable;
+    protected ?bool $isRetryable;
 
     /**
      * The latest Base64 encoded app receipt.
      * Only returned for receipts that contain auto-renewable subscriptions.
+     *
      * @var string|null
      */
-    protected $latestReceipt;
+    protected ?string $latestReceipt;
 
     /**
      * An array that contains all in-app purchase transactions.
+     *
      * @var array|LatestReceiptInfo[]|null
      */
-    protected $latestReceiptInfo;
+    protected ?array $latestReceiptInfo;
 
     /**
      * In the JSON file, an array where each element contains the pending renewal information
      * for each auto-renewable subscription identified by the product_id.
+     *
      * @var array|PendingRenewal[]|null
      */
-    protected $pendingRenewalInfo;
+    protected ?array $pendingRenewalInfo;
 
     /**
      * the receipt that was sent for verification.
+     *
      * @var array|null
      */
-    protected $receipt;
+    protected ?array $receipt;
 
     /**
-     * Either 0 if the receipt is valid, or a status code if there is an error.
+     * Either `0` if the receipt is valid, or a status code if there is an error.
+     *
      * @see https://developer.apple.com/documentation/appstorereceipts/status
      * @var int
      */
-    protected $status;
+    protected int $status;
 
     /**
      * @var bool
      */
-    private $parsedLatestReceiptInfo;
+    private bool $parsedLatestReceiptInfo;
 
     /**
      * @var bool
      */
-    private $parsedPendingRenewalInfo;
+    private bool $parsedPendingRenewalInfo;
+
+    /**
+     * @var array The raw data from the response.
+     */
+    private array $rawBody = [];
 
     /**
      * ReceiptResponse Constructor
+     *
+     * @deprecated Use ReceiptResponse::fromArray() instead.
+     * This constructor will be private in the next major release.
+     * Using it will result in inaccessibility to the response body as an array.
      */
     public function __construct(int $status)
     {
@@ -84,12 +103,15 @@ class ReceiptResponse
 
     /**
      * Static factory method
+     *
      * @param array $body
+     *
      * @return ReceiptResponse
      */
     public static function fromArray(array $body): self
     {
         $obj = new self($body['status']);
+        $obj->rawBody = $body;
 
         $obj->environment = $body['environment'] ?? null;
         $obj->isRetryable = $body['is-retryable'] ?? null;
@@ -191,5 +213,13 @@ class ReceiptResponse
     public function getStatus(): Status
     {
         return new Status($this->status);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return $this->rawBody;
     }
 }

@@ -2,16 +2,17 @@
 
 namespace Imdhemy\AppStore\Receipts;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Imdhemy\AppStore\ClientFactory;
 use Imdhemy\AppStore\Exceptions\InvalidReceiptException;
 
 /**
  * Verifier class
+ *
+ * @see     https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
  * @package Imdhemy\AppStore;
- * This class is responsible for handling verification requests
- * @see https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
+ *          This class is responsible for handling verification requests
  */
 class Verifier
 {
@@ -20,7 +21,7 @@ class Verifier
     public const VERIFY_RECEIPT_PATH = '/verifyReceipt';
 
     /**
-     * @var Client
+     * @var ClientInterface
      */
     protected $client;
 
@@ -36,11 +37,12 @@ class Verifier
 
     /**
      * Receipt constructor.
-     * @param Client $client
+     *
+     * @param ClientInterface $client
      * @param string $receiptData
      * @param string $password
      */
-    public function __construct(Client $client, string $receiptData, string $password)
+    public function __construct(ClientInterface $client, string $receiptData, string $password)
     {
         $this->client = $client;
         $this->receiptData = $receiptData;
@@ -48,23 +50,28 @@ class Verifier
     }
 
     /**
-     * @param Client|null $sandboxClient
+     * @param ClientInterface|null $sandboxClient
+     *
      * @return ReceiptResponse
      * @throws GuzzleException|InvalidReceiptException
+     * @deprecated Use verify() instead - this method will be removed in the next major release
      */
-    public function verifyRenewable(?Client $sandboxClient = null): ReceiptResponse
+    public function verifyRenewable(?ClientInterface $sandboxClient = null): ReceiptResponse
     {
         return $this->verify(true, $sandboxClient);
     }
 
     /**
      * @param bool $excludeOldTransactions
-     * @param Client|null $sandboxClient
+     * @param ClientInterface|null $sandboxClient
+     *
      * @return ReceiptResponse
      * @throws GuzzleException|InvalidReceiptException
      */
-    public function verify(bool $excludeOldTransactions = false, ?Client $sandboxClient = null): ReceiptResponse
-    {
+    public function verify(
+        bool $excludeOldTransactions = false,
+        ?ClientInterface $sandboxClient = null
+    ): ReceiptResponse {
         $responseBody = $this->sendVerifyRequest($excludeOldTransactions);
         $status = $responseBody['status'];
 
@@ -82,11 +89,12 @@ class Verifier
 
     /**
      * @param bool $excludeOldTransactions
-     * @param Client|null $client
+     * @param ClientInterface|null $client
+     *
      * @return array
      * @throws GuzzleException
      */
-    private function sendVerifyRequest(bool $excludeOldTransactions = false, ?Client $client = null): array
+    private function sendVerifyRequest(bool $excludeOldTransactions = false, ?ClientInterface $client = null): array
     {
         $client = $client ?? $this->client;
         $options = $this->buildRequestOptions($excludeOldTransactions);
@@ -97,6 +105,7 @@ class Verifier
 
     /**
      * @param bool $excludeOldTransactions
+     *
      * @return array[]
      */
     private function buildRequestOptions(bool $excludeOldTransactions): array
@@ -112,6 +121,7 @@ class Verifier
 
     /**
      * @param int $status
+     *
      * @return bool
      */
     private function isInvalidReceiptStatus(int $status): bool
@@ -125,6 +135,7 @@ class Verifier
 
     /**
      * @param int $status
+     *
      * @return bool
      */
     private function isFromTestEnv(int $status): bool

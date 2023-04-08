@@ -2,15 +2,18 @@
 
 namespace Imdhemy\AppStore\ServerNotifications;
 
+use Imdhemy\AppStore\Contracts\Arrayable;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
 use Imdhemy\AppStore\ValueObjects\Time;
 
 /**
  * App Store Server Notifications
+ *
  * @see https://developer.apple.com/documentation/appstoreservernotifications?changes=latest_minor
  */
-class ServerNotification
+class ServerNotification implements Arrayable
 {
+    // Notification types
     public const CANCEL = 'CANCEL';
     public const CONSUMPTION_REQUEST = 'CONSUMPTION_REQUEST';
     public const DID_CHANGE_RENEWAL_PREF = 'DID_CHANGE_RENEWAL_PREF';
@@ -27,50 +30,57 @@ class ServerNotification
     /**
      * @var ReceiptResponse|null
      */
-    protected $unifiedReceipt;
+    protected ?ReceiptResponse $unifiedReceipt;
 
     /**
      * @var Time|null
      */
-    protected $autoRenewStatusChangeDate;
+    protected ?Time $autoRenewStatusChangeDate;
 
     /**
      * @var string|null
      */
-    protected $environment;
+    protected ?string $environment;
 
     /**
      * @var bool|null
      */
-    protected $autoRenewStatus;
+    protected ?bool $autoRenewStatus;
 
     /**
      * @var string|null
      */
-    protected $bvrs;
+    protected ?string $bvrs;
 
     /**
      * @var string|null
      */
-    protected $bid;
+    protected ?string $bid;
 
     /**
      * @var string|null
      */
-    protected $password;
+    protected ?string $password;
 
     /**
      * @var string|null
      */
-    protected $autoRenewProductId;
+    protected ?string $autoRenewProductId;
 
     /**
      * @var string
      */
-    protected $notificationType;
+    protected string $notificationType;
+
+    /**
+     * @var array
+     */
+    private array $rawData;
 
     /**
      * @param string $notificationType
+     *
+     * @deprecated Use ServerNotification::fromArray() instead
      */
     public function __construct(string $notificationType)
     {
@@ -79,11 +89,13 @@ class ServerNotification
 
     /**
      * @param array $attributes
+     *
      * @return ServerNotification
      */
     public static function fromArray(array $attributes = []): self
     {
         $obj = new self($attributes['notification_type']);
+        $obj->rawData = $attributes;
 
         $obj->unifiedReceipt = isset($attributes['unified_receipt']) ?
             ReceiptResponse::fromArray($attributes['unified_receipt']) :
@@ -177,5 +189,15 @@ class ServerNotification
     public function getAutoRenewStatus(): ?bool
     {
         return $this->autoRenewStatus;
+    }
+
+    /**
+     * Convert the object to its array representation.
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->rawData;
     }
 }

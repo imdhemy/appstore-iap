@@ -21,7 +21,7 @@ final class PendingRenewal
      * @see https://developer.apple.com/documentation/storekit/skpayment/1506155-productidentifier
      * @var string
      */
-    private $autoRenewProductId;
+    private string $autoRenewProductId;
 
     /**
      * The current renewal status for the auto-renewable subscription.
@@ -29,7 +29,7 @@ final class PendingRenewal
      * @see https://developer.apple.com/documentation/appstorereceipts/auto_renew_status?changes=latest_minor
      * @var int|null
      */
-    private $autoRenewStatus;
+    private ?int $autoRenewStatus;
 
     /**
      * The reason a subscription expired.
@@ -38,21 +38,21 @@ final class PendingRenewal
      * @see ExpirationIntent
      * @var int|null
      */
-    private $expirationIntent;
+    private ?int $expirationIntent;
 
     /**
      * The time at which the grace period for subscription renewals expires,
      * in UNIX epoch time format, in milliseconds
      * @var int|null
      */
-    private $gracePeriodExpiresDate;
+    private ?int $gracePeriodExpiresDate;
 
     /**
      * A flag that indicates Apple is attempting to renew an expired subscription automatically.
      * @see https://developer.apple.com/documentation/appstorereceipts/is_in_billing_retry_period?changes=latest_minor
      * @var int|null
      */
-    private $isInBillingRetryPeriod;
+    private ?int $isInBillingRetryPeriod;
 
     /**
      * The reference name of a subscription offer that you configured in App Store Connect.
@@ -60,14 +60,14 @@ final class PendingRenewal
      * @var string|null
      * @see https://developer.apple.com/documentation/appstorereceipts/offer_code_ref_name?changes=latest_minor
      */
-    private $offerCodeRefName;
+    private ?string $offerCodeRefName;
 
     /**
      * The transaction identifier of the original purchase.
      * @see https://developer.apple.com/documentation/appstorereceipts/original_transaction_id?changes=latest_minor
      * @var string
      */
-    private $originalTransactionId;
+    private string $originalTransactionId;
 
     /**
      * The price consent status for a subscription price increase.
@@ -77,7 +77,7 @@ final class PendingRenewal
      * describes this key string.
      * @var string|null
      */
-    private $priceConsentStatus;
+    private ?string $priceConsentStatus;
 
     /**
      * The unique identifier of the product purchased.
@@ -87,7 +87,7 @@ final class PendingRenewal
      * @see https://developer.apple.com/documentation/storekit/skpayment?changes=latest_minor
      * @var string
      */
-    private $productId;
+    private string $productId;
 
     /**
      * The identifier of the promotional offer for an auto-renewable subscription
@@ -96,7 +96,7 @@ final class PendingRenewal
      * @see https://developer.apple.com/documentation/appstorereceipts/promotional_offer_id
      * @var string|null
      */
-    private $promotionalOfferId;
+    private ?string $promotionalOfferId;
 
     /**
      * @param string $autoRenewProductId

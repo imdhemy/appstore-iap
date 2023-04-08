@@ -43,7 +43,7 @@ final class Status
     /**
      * @var int
      */
-    private $value;
+    private int $value;
 
     /**
      * Status constructor.
