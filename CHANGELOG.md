@@ -6,6 +6,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.6.0 - 2023-04-08
+
+### What's Changed
+
+- [deps] **drop php7.4** by @imdhemy in https://github.com/imdhemy/appstore-iap/pull/124
+
+
+---
+
+- chore(deps-dev): bump phpunit/phpunit from 9.5.26 to 9.5.27 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/74
+- chore(deps): bump netresearch/jsonmapper from 4.0.0 to 4.1.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/75
+- chore(deps): bump doctrine/annotations from 1.13.3 to 1.14.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/76
+- chore(deps-dev): bump vimeo/psalm from 5.1.0 to 5.3.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/77
+- chore(deps): bump doctrine/lexer from 2.0.0 to 2.1.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/78
+- chore(deps-dev): bump friendsofphp/php-cs-fixer from 3.13.0 to 3.13.1 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/80
+- chore(deps-dev): bump fakerphp/faker from 1.20.0 to 1.21.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/82
+- chore(deps-dev): bump vimeo/psalm from 5.3.0 to 5.4.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/83
+- chore(deps-dev): bump symfony/var-dumper from 5.4.14 to 5.4.17 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/85
+- chore(deps): bump nesbot/carbon from 2.64.0 to 2.65.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/88
+- chore(deps-dev): bump friendsofphp/php-cs-fixer from 3.13.1 to 3.13.2 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/89
+- chore(deps): bump lcobucci/jwt from 4.2.1 to 4.3.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/90
+- chore(deps-dev): bump friendsofphp/php-cs-fixer from 3.13.2 to 3.14.3 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/93
+- chore(deps-dev): bump phpunit/phpunit from 9.5.27 to 9.6.3 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/97
+- chore(deps-dev): bump vimeo/psalm from 5.4.0 to 5.6.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/99
+- chore(deps): bump nesbot/carbon from 2.65.0 to 2.66.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/101
+- chore(deps-dev): bump friendsofphp/php-cs-fixer from 3.14.3 to 3.14.4 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/102
+- chore(deps-dev): bump vimeo/psalm from 5.6.0 to 5.7.1 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/103
+- chore(deps-dev): bump vimeo/psalm from 5.7.1 to 5.7.7 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/104
+- chore(deps): bump symfony/process from 5.4.19 to 5.4.21 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/108
+- chore(deps): bump symfony/string from 5.4.19 to 5.4.21 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/105
+- chore(deps-dev): bump phpunit/phpunit from 9.6.3 to 9.6.4 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/106
+- chore(deps): bump symfony/stopwatch from 5.4.19 to 5.4.21 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/107
+- chore(deps): bump symfony/filesystem from 5.4.19 to 5.4.21 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/109
+- chore(deps-dev): bump friendsofphp/php-cs-fixer from 3.14.4 to 3.15.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/110
+- chore(deps): bump guzzlehttp/psr7 from 2.4.3 to 2.4.4 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/112
+- chore(deps-dev): bump vimeo/psalm from 5.7.7 to 5.8.0 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/111
+- chore(deps-dev): bump phpunit/phpunit from 9.6.4 to 9.6.5 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/113
+- chore(deps): bump myclabs/deep-copy from 1.11.0 to 1.11.1 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/114
+- chore(deps-dev): bump friendsofphp/php-cs-fixer from 3.15.0 to 3.15.1 by @dependabot in https://github.com/imdhemy/appstore-iap/pull/116
+- [1.x]: bump dependencies by @imdhemy in https://github.com/imdhemy/appstore-iap/pull/117
+
+**Full Changelog**: https://github.com/imdhemy/appstore-iap/compare/1.5.4...1.6.0
+
 ## 1.5.4 - 2022-12-11
 
 ### What's Changed
