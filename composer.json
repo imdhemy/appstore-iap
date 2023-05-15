@@ -13,7 +13,7 @@
     "ext-json": "*",
     "ext-sodium": "*",
     "ext-openssl": "*",
-    "guzzlehttp/guzzle": "^7.5.1",
+    "guzzlehttp/guzzle": "^7.6.0",
     "lcobucci/jwt": "^4.3",
     "nesbot/carbon": "^2.66"
   },
