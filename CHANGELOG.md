@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres
 to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.6.1 - 2024-03-27
+
+### What's Changed
+
+* Allow installation of nesbot/carbon 3 by @masterix21 in https://github.com/imdhemy/appstore-iap/pull/189
+
+### New Contributors
+
+* @masterix21 made their first contribution in https://github.com/imdhemy/appstore-iap/pull/189
+
+**Full Changelog**: https://github.com/imdhemy/appstore-iap/compare/1.6.0...1.6.1
+
 ## 1.6.0 - 2023-04-08
 
 ### What's Changed
