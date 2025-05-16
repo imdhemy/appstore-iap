@@ -26,6 +26,7 @@ class ServerNotification implements Arrayable
     public const PRICE_INCREASE_CONSENT = 'PRICE_INCREASE_CONSENT';
     public const REFUND = 'REFUND';
     public const REVOKE = 'REVOKE';
+    public const ONE_TIME_CHARGE = 'ONE_TIME_CHARGE';
 
     /**
      * @var ReceiptResponse|null

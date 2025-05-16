@@ -33,6 +33,7 @@ final class V2DecodedPayload implements Arrayable
     public const TYPE_RENEWAL_EXTENDED = 'RENEWAL_EXTENDED';
     public const TYPE_REVOKE = 'REVOKE';
     public const TYPE_SUBSCRIBED = 'SUBSCRIBED';
+    public const TYPE_ONE_TIME_CHARGE = 'ONE_TIME_CHARGE';
     public const TYPE_TEST = 'TEST';
 
     // Subtypes
