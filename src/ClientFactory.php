@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imdhemy\AppStore;
 
 use ArrayAccess;
@@ -15,11 +17,16 @@ class ClientFactory
 {
     public const BASE_URI = 'https://buy.itunes.apple.com';
     public const BASE_URI_SANDBOX = 'https://sandbox.itunes.apple.com';
+    public const STORE_KIT_PRODUCTION_URI = 'https://api.storekit.itunes.apple.com';
+    public const STORE_KIT_SANDBOX_URI = 'https://api.storekit-sandbox.itunes.apple.com';
 
     public static function create(bool $sandbox = false, array $options = []): ClientInterface
     {
         if ($sandbox) {
-            trigger_error('The $sandbox parameter is deprecated and will be removed in the next major version. Use createSandbox instead.', E_USER_DEPRECATED);
+            trigger_error(
+                'The $sandbox parameter is deprecated and will be removed in the next major version. Use createSandbox instead.',
+                E_USER_DEPRECATED
+            );
         }
 
         $options = array_merge(['base_uri' => $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI], $options);
@@ -52,7 +59,8 @@ class ClientFactory
      * Creates a client that returns the specified array of responses in queue order
      *
      * @param array<int, ResponseInterface|RequestExceptionInterface> $responseQueue
-     * @param array|ArrayAccess<int, array> $container Container to hold the history (by reference).
+     * @param array|ArrayAccess<int, array>                           $container Container to hold the history (by
+     *                                                                           reference).
      */
     public static function mockQueue(array $responseQueue, array|ArrayAccess &$container = []): ClientInterface
     {
@@ -68,8 +76,10 @@ class ClientFactory
      *
      * @param array|ArrayAccess<int, array> $container Container to hold the history (by reference).
      */
-    public static function mockError(RequestExceptionInterface $error, array|ArrayAccess &$container = []): ClientInterface
-    {
+    public static function mockError(
+        RequestExceptionInterface $error,
+        array|ArrayAccess &$container = []
+    ): ClientInterface {
         $mockHandler = new MockHandler([$error]);
         $handlerStack = HandlerStack::create($mockHandler);
         $handlerStack->push(Middleware::history($container));
