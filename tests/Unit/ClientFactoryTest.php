@@ -1,16 +1,71 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imdhemy\AppStore\Tests\Unit;
 
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Uri;
 use Imdhemy\AppStore\ClientFactory;
 use Imdhemy\AppStore\Tests\TestCase;
 use ReflectionClass;
 
 final class ClientFactoryTest extends TestCase
 {
+    /** @test */
+    public function create_for_store_kit(): void
+    {
+        $options = ['headers' => ['X-Custom-Header' => 'CustomValue']];
+
+        $storeKitClient = ClientFactory::createForStoreKit($options);
+
+        /** @var array{base_uri: Uri, headers: array} $config */
+        $config = $this->getPropertyByReflection($storeKitClient, 'config');
+        $this->assertSame('https://api.storekit.itunes.apple.com', (string)$config['base_uri']);
+        $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
+    }
+
+    /** @test */
+    public function create_for_store_kit_sandbox(): void
+    {
+        $options = ['headers' => ['X-Custom-Header' => 'CustomValue']];
+
+        $storeKitClient = ClientFactory::createForStoreKitSandbox($options);
+
+        /** @var array{base_uri: Uri, headers: array} $config */
+        $config = $this->getPropertyByReflection($storeKitClient, 'config');
+        $this->assertSame('https://api.storekit-sandbox.itunes.apple.com', (string)$config['base_uri']);
+        $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
+    }
+
+    /** @test */
+    public function create_for_i_tunes(): void
+    {
+        $options = ['headers' => ['X-Custom-Header' => 'CustomValue']];
+
+        $itunesClient = ClientFactory::createForITunes($options);
+
+        /** @var array{base_uri: Uri, headers: array} $config */
+        $config = $this->getPropertyByReflection($itunesClient, 'config');
+        $this->assertSame('https://buy.itunes.apple.com', (string)$config['base_uri']);
+        $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
+    }
+
+    /** @test */
+    public function create_for_i_tunes_sandbox(): void
+    {
+        $options = ['headers' => ['X-Custom-Header' => 'CustomValue']];
+
+        $itunesClient = ClientFactory::createForITunesSandbox($options);
+
+        /** @var array{base_uri: Uri, headers: array} $config */
+        $config = $this->getPropertyByReflection($itunesClient, 'config');
+        $this->assertSame('https://sandbox.itunes.apple.com', (string)$config['base_uri']);
+        $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
+    }
+
     /**
      * @test
      * @psalm-suppress MixedArrayAccess

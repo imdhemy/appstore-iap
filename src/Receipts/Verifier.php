@@ -39,8 +39,8 @@ class Verifier
      * Receipt constructor.
      *
      * @param ClientInterface $client
-     * @param string $receiptData
-     * @param string $password
+     * @param string          $receiptData
+     * @param string          $password
      */
     public function __construct(ClientInterface $client, string $receiptData, string $password)
     {
@@ -62,7 +62,7 @@ class Verifier
     }
 
     /**
-     * @param bool $excludeOldTransactions
+     * @param bool                 $excludeOldTransactions
      * @param ClientInterface|null $sandboxClient
      *
      * @return ReceiptResponse
@@ -80,7 +80,7 @@ class Verifier
         }
 
         if ($this->isFromTestEnv($status)) {
-            $sandboxClient = $sandboxClient ?? ClientFactory::createSandbox();
+            $sandboxClient = $sandboxClient ?? ClientFactory::createForITunesSandbox();
             $responseBody = $this->sendVerifyRequest($excludeOldTransactions, $sandboxClient);
         }
 
@@ -88,7 +88,7 @@ class Verifier
     }
 
     /**
-     * @param bool $excludeOldTransactions
+     * @param bool                 $excludeOldTransactions
      * @param ClientInterface|null $client
      *
      * @return array

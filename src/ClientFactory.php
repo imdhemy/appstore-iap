@@ -15,28 +15,35 @@ use Psr\Http\Message\ResponseInterface;
 
 class ClientFactory
 {
+    /**@deprecated use {@see self::ITUNES_PRODUCTION_URI} */
     public const BASE_URI = 'https://buy.itunes.apple.com';
+    /**@deprecated use {@see self::ITUNES_SANDBOX_URI} */
     public const BASE_URI_SANDBOX = 'https://sandbox.itunes.apple.com';
+
     public const STORE_KIT_PRODUCTION_URI = 'https://api.storekit.itunes.apple.com';
     public const STORE_KIT_SANDBOX_URI = 'https://api.storekit-sandbox.itunes.apple.com';
+    public const ITUNES_PRODUCTION_URI = 'https://buy.itunes.apple.com';
+    public const ITUNES_SANDBOX_URI = 'https://sandbox.itunes.apple.com';
 
+    /**
+     * @deprecated use specific create methods instead.
+     */
     public static function create(bool $sandbox = false, array $options = []): ClientInterface
     {
-        if ($sandbox) {
-            trigger_error(
-                'The $sandbox parameter is deprecated and will be removed in the next major version. Use createSandbox instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        $options = array_merge(['base_uri' => $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI], $options);
+        $options = array_merge(
+            ['base_uri' => $sandbox ? self::ITUNES_SANDBOX_URI : self::ITUNES_PRODUCTION_URI],
+            $options
+        );
 
         return new Client($options);
     }
 
+    /**
+     * @deprecated use specific create methods instead.
+     */
     public static function createSandbox(array $options = []): ClientInterface
     {
-        $options = array_merge(['base_uri' => self::BASE_URI_SANDBOX], $options);
+        $options = array_merge(['base_uri' => self::ITUNES_SANDBOX_URI], $options);
 
         return new Client($options);
     }
@@ -85,5 +92,32 @@ class ClientFactory
         $handlerStack->push(Middleware::history($container));
 
         return new Client(['handler' => $handlerStack]);
+    }
+
+    public static function createForStoreKit(array $options = []): ClientInterface
+    {
+        return self::createByURI(self::STORE_KIT_PRODUCTION_URI, $options);
+    }
+
+    public static function createForStoreKitSandbox(array $options = []): ClientInterface
+    {
+        return self::createByURI(self::STORE_KIT_SANDBOX_URI, $options);
+    }
+
+    public static function createForITunes(array $options = []): ClientInterface
+    {
+        return self::createByURI(self::ITUNES_PRODUCTION_URI, $options);
+    }
+
+    public static function createForITunesSandbox(array $options = []): ClientInterface
+    {
+        return self::createByURI(self::ITUNES_SANDBOX_URI, $options);
+    }
+
+    private static function createByURI(string $uri, array $options = []): ClientInterface
+    {
+        $options = array_merge(['base_uri' => $uri], $options);
+
+        return new Client($options);
     }
 }
