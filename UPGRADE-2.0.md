@@ -2,8 +2,8 @@
 
 ## Client Factory
 
-- The `$sandbox` parameter in the `ClientFactory::create()` method is removed, use the `ClientFactory::createSandbox()`
-  method instead.
+- The `ClientFactory::create()` & `ClientFactory:createSandbox()` methods are removed, use the specific factory methods
+  instead.
 
 ## Value objects
 

@@ -20,6 +20,9 @@ class ClientFactory
     public const STORE_KIT_PRODUCTION_URI = 'https://api.storekit.itunes.apple.com';
     public const STORE_KIT_SANDBOX_URI = 'https://api.storekit-sandbox.itunes.apple.com';
 
+    /**
+     * @deprecated use specific create methods instead.
+     */
     public static function create(bool $sandbox = false, array $options = []): ClientInterface
     {
         if ($sandbox) {
@@ -34,6 +37,9 @@ class ClientFactory
         return new Client($options);
     }
 
+    /**
+     * @deprecated use specific create methods instead.
+     */
     public static function createSandbox(array $options = []): ClientInterface
     {
         $options = array_merge(['base_uri' => self::BASE_URI_SANDBOX], $options);
@@ -102,7 +108,7 @@ class ClientFactory
         return self::createByURI(self::BASE_URI, $options);
     }
 
-    public static function createForITunesSandbox(array $options): ClientInterface
+    public static function createForITunesSandbox(array $options = []): ClientInterface
     {
         return self::createByURI(self::BASE_URI_SANDBOX, $options);
     }
