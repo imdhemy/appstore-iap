@@ -4,6 +4,8 @@
 
 - The `ClientFactory::create()` & `ClientFactory:createSandbox()` methods are removed, use the specific factory methods
   instead.
+- The `ClientFactory::BASE_URI` & `ClientFactory::SANDBOX_BASE_URI` constants are removed, use the specific constants
+  instead.
 
 ## Value objects
 
