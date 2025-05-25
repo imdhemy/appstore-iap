@@ -86,4 +86,31 @@ class ClientFactory
 
         return new Client(['handler' => $handlerStack]);
     }
+
+    public static function createForStoreKit(array $options = []): ClientInterface
+    {
+        return self::createByURI(self::STORE_KIT_PRODUCTION_URI, $options);
+    }
+
+    public static function createForStoreKitSandbox(array $options = []): ClientInterface
+    {
+        return self::createByURI(self::STORE_KIT_SANDBOX_URI, $options);
+    }
+
+    public static function createForITunes(array $options = []): ClientInterface
+    {
+        return self::createByURI(self::BASE_URI, $options);
+    }
+
+    public static function createForITunesSandbox(array $options): ClientInterface
+    {
+        return self::createByURI(self::BASE_URI_SANDBOX, $options);
+    }
+
+    private static function createByURI(string $uri, array $options = []): ClientInterface
+    {
+        $options = array_merge(['base_uri' => $uri], $options);
+
+        return new Client($options);
+    }
 }
