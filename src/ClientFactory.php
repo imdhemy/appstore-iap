@@ -25,13 +25,6 @@ class ClientFactory
      */
     public static function create(bool $sandbox = false, array $options = []): ClientInterface
     {
-        if ($sandbox) {
-            trigger_error(
-                'The $sandbox parameter is deprecated and will be removed in the next major version. Use createSandbox instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
         $options = array_merge(['base_uri' => $sandbox ? self::BASE_URI_SANDBOX : self::BASE_URI], $options);
 
         return new Client($options);
