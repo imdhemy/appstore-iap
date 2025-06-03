@@ -49,7 +49,6 @@ class ServerNotification implements Arrayable
     private array $rawData;
 
     /**
-     *
      * @deprecated Use ServerNotification::fromArray() instead
      */
     public function __construct(string $notificationType)
@@ -131,7 +130,6 @@ class ServerNotification implements Arrayable
 
     /**
      * Convert the object to its array representation.
-     *
      */
     public function toArray(): array
     {

@@ -38,7 +38,6 @@ class Verifier
     }
 
     /**
-     *
      * @throws GuzzleException|InvalidReceiptException
      * @deprecated Use verify() instead - this method will be removed in the next major release
      */
