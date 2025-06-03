@@ -16,9 +16,9 @@ use Imdhemy\AppStore\ValueObjects\Status;
  */
 class ReceiptResponse implements Arrayable
 {
-    public const ENV_SANDBOX = 'Sandbox';
+    public const string ENV_SANDBOX = 'Sandbox';
 
-    public const ENV_PRODUCTION = 'Production';
+    public const string ENV_PRODUCTION = 'Production';
 
     /**
      * The environment for which the receipt was generated.
@@ -72,14 +72,8 @@ class ReceiptResponse implements Arrayable
      */
     protected int $status;
 
-    /**
-     * @var bool
-     */
     private bool $parsedLatestReceiptInfo;
 
-    /**
-     * @var bool
-     */
     private bool $parsedPendingRenewalInfo;
 
     /**
@@ -103,10 +97,6 @@ class ReceiptResponse implements Arrayable
 
     /**
      * Static factory method
-     *
-     * @param array $body
-     *
-     * @return ReceiptResponse
      */
     public static function fromArray(array $body): self
     {
@@ -123,25 +113,16 @@ class ReceiptResponse implements Arrayable
         return $obj;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEnvironment(): ?string
     {
         return $this->environment;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getIsRetryable(): ?bool
     {
         return $this->isRetryable;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLatestReceipt(): ?string
     {
         return $this->latestReceipt;
@@ -152,7 +133,7 @@ class ReceiptResponse implements Arrayable
      */
     public function getLatestReceiptInfo(): ?array
     {
-        if (is_null($this->latestReceiptInfo)) {
+        if (null === $this->latestReceiptInfo) {
             return null;
         }
 
@@ -177,7 +158,7 @@ class ReceiptResponse implements Arrayable
      */
     public function getPendingRenewalInfo(): ?array
     {
-        if (is_null($this->pendingRenewalInfo)) {
+        if (null === $this->pendingRenewalInfo) {
             return null;
         }
 
@@ -196,9 +177,6 @@ class ReceiptResponse implements Arrayable
         return $this->pendingRenewalInfo;
     }
 
-    /**
-     * @return Receipt|null
-     */
     public function getReceipt(): ?Receipt
     {
         return
@@ -207,9 +185,6 @@ class ReceiptResponse implements Arrayable
                 null;
     }
 
-    /**
-     * @return Status
-     */
     public function getStatus(): Status
     {
         return new Status($this->status);

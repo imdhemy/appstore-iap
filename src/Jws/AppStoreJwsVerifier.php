@@ -5,6 +5,7 @@ namespace Imdhemy\AppStore\Jws;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use OpenSSLCertificate;
 
 /**
  * App Store JWS Verifier
@@ -12,7 +13,7 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
  */
 class AppStoreJwsVerifier implements JwsVerifier
 {
-    private const APPLE_CERTIFICATE_FINGERPRINTS = [
+    private const array APPLE_CERTIFICATE_FINGERPRINTS = [
         // Fingerprint of https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer
         '0be38bfe21fd434d8cc51cbe0e2bc7758ddbf97b',
         // Fingerprint of https://www.apple.com/certificateauthority/AppleRootCA-G3.cer
@@ -20,14 +21,10 @@ class AppStoreJwsVerifier implements JwsVerifier
 
     ];
 
-    private const CHAIN_LENGTH = 3;
+    private const int CHAIN_LENGTH = 3;
 
     /**
      * Verifies the JWS
-     *
-     * @param JsonWebSignature $jws
-     *
-     * @return bool
      */
     public function verify(JsonWebSignature $jws): bool
     {
@@ -64,8 +61,6 @@ class AppStoreJwsVerifier implements JwsVerifier
     }
 
     /**
-     * @param array $certificates
-     *
      * @return string[]
      */
     private function chain(array $certificates): array
@@ -73,22 +68,17 @@ class AppStoreJwsVerifier implements JwsVerifier
         $chain = [];
 
         foreach ($certificates as $certificate) {
-            $chain[] = $this->bas464DerToCert($certificate);
+            $chain[] = $this->base64DerToCert($certificate);
         }
 
         return $chain;
     }
 
-    /**
-     * @param string $certificate
-     *
-     * @return resource
-     */
-    private function bas464DerToCert(string $certificate)
+    private function base64DerToCert(string $certificate): OpenSSLCertificate
     {
         $contents =
-            '-----BEGIN CERTIFICATE-----' . PHP_EOL .
-            $certificate . PHP_EOL .
+            '-----BEGIN CERTIFICATE-----'.PHP_EOL.
+            $certificate.PHP_EOL.
             '-----END CERTIFICATE-----';
 
         return openssl_x509_read($contents);

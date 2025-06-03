@@ -7,16 +7,10 @@ namespace Imdhemy\AppStore\Jws;
  */
 class AppStoreJwsGenerator implements JwsGenerator
 {
-    public const AUDIENCE = 'appstoreconnect-v1';
+    public const string AUDIENCE = 'appstoreconnect-v1';
 
-    /**
-     * @var GeneratorConfig
-     */
     private GeneratorConfig $config;
 
-    /**
-     * @param GeneratorConfig $config
-     */
     public function __construct(GeneratorConfig $config)
     {
         $this->config = $config;
@@ -24,6 +18,7 @@ class AppStoreJwsGenerator implements JwsGenerator
 
     /**
      * Generate a JWT
+     *
      * @psalm-suppress ArgumentTypeCoercion
      */
     public function generate(array $claims = [], array $headers = []): JsonWebSignature
@@ -43,19 +38,11 @@ class AppStoreJwsGenerator implements JwsGenerator
         return Jws::fromJwtPlain($token);
     }
 
-    /**
-     * @return GeneratorConfig
-     */
     public function getConfig(): GeneratorConfig
     {
         return $this->config;
     }
 
-    /**
-     * @param GeneratorConfig $config
-     *
-     * @return AppStoreJwsGenerator
-     */
     public function setConfig(GeneratorConfig $config): AppStoreJwsGenerator
     {
         $this->config = $config;
