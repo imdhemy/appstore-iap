@@ -1,8 +1,8 @@
 start:
 	docker build -t imdhemy/liap .
 
-bash:
-	docker run -it --rm -v $(shell pwd):/app:cached imdhemy/liap bash
+run:
+	docker run -it --rm -d -v $(shell pwd):/var/www imdhemy/liap
 
 %:
 	@:
