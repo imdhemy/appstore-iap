@@ -1,3 +1,5 @@
+.PHONY: start run
+
 start:
 	docker build -t imdhemy/liap .
 
