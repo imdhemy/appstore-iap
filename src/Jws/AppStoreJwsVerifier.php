@@ -67,7 +67,7 @@ class AppStoreJwsVerifier implements JwsVerifier
         $chain = [];
 
         foreach ($certificates as $certificate) {
-            $chain[] = $this->bas464DerToCert($certificate);
+            $chain[] = $this->base64DerToCert($certificate);
         }
 
         return $chain;
@@ -76,7 +76,7 @@ class AppStoreJwsVerifier implements JwsVerifier
     /**
      * @return resource
      */
-    private function bas464DerToCert(string $certificate)
+    private function base64DerToCert(string $certificate)
     {
         $contents =
             '-----BEGIN CERTIFICATE-----'.PHP_EOL.
