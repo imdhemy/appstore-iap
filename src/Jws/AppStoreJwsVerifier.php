@@ -5,6 +5,7 @@ namespace Imdhemy\AppStore\Jws;
 use Lcobucci\JWT\Signer\Ecdsa\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use OpenSSLCertificate;
 
 /**
  * App Store JWS Verifier
@@ -73,10 +74,7 @@ class AppStoreJwsVerifier implements JwsVerifier
         return $chain;
     }
 
-    /**
-     * @return resource
-     */
-    private function base64DerToCert(string $certificate)
+    private function base64DerToCert(string $certificate): OpenSSLCertificate
     {
         $contents =
             '-----BEGIN CERTIFICATE-----'.PHP_EOL.

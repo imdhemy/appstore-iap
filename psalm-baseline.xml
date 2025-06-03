@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.25.0@01a8eb06b9e9cc6cfb6a320bf9fb14331919d505">
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
   <file src="src/Jws/AppStoreJwsVerifier.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$exportedCertificate]]></code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement>
       <code><![CDATA[$chain]]></code>
-      <code><![CDATA[openssl_x509_read($contents)]]></code>
     </InvalidReturnStatement>
     <InvalidReturnType>
-      <code><![CDATA[resource]]></code>
       <code><![CDATA[string[]]]></code>
     </InvalidReturnType>
     <MixedArgument>
