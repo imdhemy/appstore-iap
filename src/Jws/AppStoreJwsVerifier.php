@@ -12,7 +12,7 @@ use Lcobucci\JWT\Validation\Constraint\SignedWith;
  */
 class AppStoreJwsVerifier implements JwsVerifier
 {
-    private const APPLE_CERTIFICATE_FINGERPRINTS = [
+    private const array APPLE_CERTIFICATE_FINGERPRINTS = [
         // Fingerprint of https://www.apple.com/certificateauthority/AppleWWDRCAG6.cer
         '0be38bfe21fd434d8cc51cbe0e2bc7758ddbf97b',
         // Fingerprint of https://www.apple.com/certificateauthority/AppleRootCA-G3.cer
@@ -20,14 +20,10 @@ class AppStoreJwsVerifier implements JwsVerifier
 
     ];
 
-    private const CHAIN_LENGTH = 3;
+    private const int CHAIN_LENGTH = 3;
 
     /**
      * Verifies the JWS
-     *
-     * @param JsonWebSignature $jws
-     *
-     * @return bool
      */
     public function verify(JsonWebSignature $jws): bool
     {
@@ -64,8 +60,6 @@ class AppStoreJwsVerifier implements JwsVerifier
     }
 
     /**
-     * @param array $certificates
-     *
      * @return string[]
      */
     private function chain(array $certificates): array
@@ -80,15 +74,13 @@ class AppStoreJwsVerifier implements JwsVerifier
     }
 
     /**
-     * @param string $certificate
-     *
      * @return resource
      */
     private function bas464DerToCert(string $certificate)
     {
         $contents =
-            '-----BEGIN CERTIFICATE-----' . PHP_EOL .
-            $certificate . PHP_EOL .
+            '-----BEGIN CERTIFICATE-----'.PHP_EOL.
+            $certificate.PHP_EOL.
             '-----END CERTIFICATE-----';
 
         return openssl_x509_read($contents);
