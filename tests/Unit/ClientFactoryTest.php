@@ -139,7 +139,6 @@ final class ClientFactoryTest extends TestCase
         $error = new RequestException(
             $message,
             new Request('GET', '/admin'),
-            new Response(403, [], 'Forbidden')
         );
         $client = ClientFactory::mockError($error);
 
@@ -196,9 +195,8 @@ final class ClientFactoryTest extends TestCase
     {
         $transactions = [];
         $request = new Request('GET', '/admin');
-        $response = new Response(403, [], 'Forbidden');
 
-        $error = new RequestException('Something went wrong', $request, $response);
+        $error = new RequestException('Something went wrong', $request);
         $client = ClientFactory::mockError($error, $transactions);
 
         try {
