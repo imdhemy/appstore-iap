@@ -35,6 +35,7 @@ class ClientFactory
             $options
         );
 
+        /** @psalm-suppress MixedArgumentTypeCoercion Preserve the existing unrestricted options contract. */
         return new Client($options);
     }
 
@@ -45,6 +46,7 @@ class ClientFactory
     {
         $options = array_merge(['base_uri' => self::ITUNES_SANDBOX_URI], $options);
 
+        /** @psalm-suppress MixedArgumentTypeCoercion Preserve the existing unrestricted options contract. */
         return new Client($options);
     }
 
@@ -57,8 +59,10 @@ class ClientFactory
     {
         $mockHandler = new MockHandler([$responseMock]);
         $handlerStack = HandlerStack::create($mockHandler);
+        /** @psalm-suppress MixedArgumentTypeCoercion Preserve support for containers with existing entries. */
         $handlerStack->push(Middleware::history($container));
 
+        /** @psalm-suppress ReferenceConstraintViolation Preserve our broader by-reference container contract. */
         return new Client(['handler' => $handlerStack]);
     }
 
@@ -73,8 +77,10 @@ class ClientFactory
     {
         $mockHandler = new MockHandler($responseQueue);
         $handlerStack = HandlerStack::create($mockHandler);
+        /** @psalm-suppress MixedArgumentTypeCoercion Preserve support for containers with existing entries. */
         $handlerStack->push(Middleware::history($container));
 
+        /** @psalm-suppress ReferenceConstraintViolation Preserve our broader by-reference container contract. */
         return new Client(['handler' => $handlerStack]);
     }
 
@@ -89,8 +95,10 @@ class ClientFactory
     ): ClientInterface {
         $mockHandler = new MockHandler([$error]);
         $handlerStack = HandlerStack::create($mockHandler);
+        /** @psalm-suppress MixedArgumentTypeCoercion Preserve support for containers with existing entries. */
         $handlerStack->push(Middleware::history($container));
 
+        /** @psalm-suppress ReferenceConstraintViolation Preserve our broader by-reference container contract. */
         return new Client(['handler' => $handlerStack]);
     }
 
@@ -118,6 +126,7 @@ class ClientFactory
     {
         $options = array_merge(['base_uri' => $uri], $options);
 
+        /** @psalm-suppress MixedArgumentTypeCoercion Preserve the existing unrestricted options contract. */
         return new Client($options);
     }
 }
