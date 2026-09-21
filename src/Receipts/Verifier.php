@@ -77,7 +77,7 @@ class Verifier
     {
         $client = $client ?? $this->client;
         $options = $this->buildRequestOptions($excludeOldTransactions);
-        $response = $client->post(self::VERIFY_RECEIPT_PATH, $options);
+        $response = $client->request('POST', self::VERIFY_RECEIPT_PATH, $options);
 
         return json_decode((string)$response->getBody(), true);
     }

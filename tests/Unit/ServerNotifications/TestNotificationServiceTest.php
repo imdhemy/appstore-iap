@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Imdhemy\AppStore\Tests\Unit\ServerNotifications;
 
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Imdhemy\AppStore\ClientFactory;
 use Imdhemy\AppStore\Jws\AppStoreJwsGenerator;
@@ -28,7 +29,8 @@ class TestNotificationServiceTest extends TestCase
     {
         // Given
         $body = json_encode(['testNotificationToken' => $this->faker->uuid()], JSON_THROW_ON_ERROR);
-        $client = ClientFactory::mock(new Response(200, [], $body));
+        $transactions = [];
+        $client = ClientFactory::mock(new Response(200, [], $body), $transactions);
 
         $key = new Key('kid', InMemory::plainText($this->getEcdsaPrivateKey()));
         $signer = new Sha256();
@@ -46,5 +48,11 @@ class TestNotificationServiceTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $content = json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertArrayHasKey('testNotificationToken', $content);
+        $this->assertCount(1, $transactions);
+
+        /** @var Request $transactionRequest */
+        $transactionRequest = $transactions[0]['request'];
+        $this->assertEquals('POST', $transactionRequest->getMethod());
+        $this->assertEquals('/inApps/v1/notifications/test', $transactionRequest->getUri()->getPath());
     }
 }

@@ -44,7 +44,7 @@ final class TestNotificationService
     {
         $jws = $this->jwsGenerator->generate();
 
-        return $this->client->post('/inApps/v1/notifications/test', [
+        return $this->client->request('POST', '/inApps/v1/notifications/test', [
             'headers' => [
                 'Authorization' => sprintf("Bearer %s", $jws),
             ],
