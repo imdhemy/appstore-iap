@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\ServerNotifications;
 
+use DateTimeImmutable;
 use Imdhemy\AppStore\Contracts\Arrayable;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
 use Imdhemy\AppStore\ValueObjects\Time;
@@ -10,6 +11,7 @@ use Imdhemy\AppStore\ValueObjects\Time;
  * App Store Server Notifications
  *
  * @see https://developer.apple.com/documentation/appstoreservernotifications?changes=latest_minor
+ * @psalm-suppress DeprecatedClass Legacy Time storage is retained for backward compatibility until the next major release.
  */
 class ServerNotification implements Arrayable
 {
@@ -56,6 +58,9 @@ class ServerNotification implements Arrayable
         $this->notificationType = $notificationType;
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
+     */
     public static function fromArray(array $attributes = []): self
     {
         $obj = new self($attributes['notification_type']);
@@ -88,6 +93,21 @@ class ServerNotification implements Arrayable
         return $this->unifiedReceipt;
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getAutoRenewStatusChangedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getAutoRenewStatusChangeDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
+     * @deprecated Use {@see self::getAutoRenewStatusChangedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
+     */
     public function getAutoRenewStatusChangeDate(): ?Time
     {
         return $this->autoRenewStatusChangeDate;

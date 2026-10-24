@@ -2,6 +2,8 @@
 
 namespace Imdhemy\AppStore\ValueObjects;
 
+use DateTimeImmutable;
+
 /**
  * PendingRenewal Class
  * Refers to open or failed auto-renewable subscription renewals
@@ -167,7 +169,20 @@ final class PendingRenewal
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getGracePeriodExpiresAt(): ?DateTimeImmutable
+    {
+        $time = $this->getGracePeriodExpiresDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getGracePeriodExpiresAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getGracePeriodExpiresDate(): ?Time
     {

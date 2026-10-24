@@ -11,6 +11,7 @@ namespace Imdhemy\AppStore\ValueObjects;
  *
  * @deprecated
  * @see https://developer.apple.com/documentation/appstorereceipts/responsebody/latest_receipt_info
+ * @psalm-suppress DeprecatedClass Legacy Time signatures are retained for backward compatibility until the next major release.
  */
 final class Cancellation
 {

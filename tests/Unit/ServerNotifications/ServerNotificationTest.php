@@ -1,193 +1,63 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imdhemy\AppStore\Tests\Unit\ServerNotifications;
 
-use Exception;
+use DateTimeImmutable;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
 use Imdhemy\AppStore\ServerNotifications\ServerNotification;
+use Imdhemy\AppStore\ValueObjects\Time;
 use PHPUnit\Framework\TestCase;
 
-class ServerNotificationTest extends TestCase
+final class ServerNotificationTest extends TestCase
 {
     /**
      * @test
      */
-    public function unified_receipt(): void
+    public function it_reads_notification_details_from_an_array(): void
     {
-        $value = ['status' => 0];
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'unified_receipt' => $value,
-                'notification_type' => ServerNotification::CANCEL,
-            ]
-        );
+        $attributes = [
+            'unified_receipt' => ['status' => 0],
+            'environment' => ReceiptResponse::ENV_SANDBOX,
+            'bvrs' => '33',
+            'bid' => 'com.some.thing',
+            'password' => '******',
+            'auto_renew_product_id' => 'product',
+            'notification_type' => ServerNotification::PRICE_INCREASE_CONSENT,
+        ];
 
-        $this->assertEquals(0, $serverNotification->getUnifiedReceipt()->getStatus()->getValue());
+        $actual = ServerNotification::fromArray($attributes);
 
-        $missingData = ServerNotification::fromArray(['notification_type' => ServerNotification::CONSUMPTION_REQUEST]);
-        $this->assertNull($missingData->getUnifiedReceipt());
+        $this->assertSame(0, $actual->getUnifiedReceipt()->getStatus()->getValue());
+        $this->assertEquals($attributes['environment'], $actual->getEnvironment());
+        $this->assertEquals($attributes['bvrs'], $actual->getBvrs());
+        $this->assertEquals($attributes['bid'], $actual->getBid());
+        $this->assertEquals($attributes['password'], $actual->getPassword());
+        $this->assertEquals($attributes['auto_renew_product_id'], $actual->getAutoRenewProductId());
+        $this->assertEquals($attributes['notification_type'], $actual->getNotificationType());
     }
 
     /**
      * @test
-     * @throws Exception
+     * @dataProvider enabledStatusProvider
      */
-    public function auto_renew_status_change_date(): void
+    public function it_recognizes_enabled_auto_renewal(string|bool $status): void
     {
-        $value = "1606293002000";
+        $subject = ServerNotification::fromArray([
+            'notification_type' => ServerNotification::CANCEL,
+            'auto_renew_status' => $status,
+        ]);
 
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'notification_type' => ServerNotification::CANCEL,
-                'auto_renew_status_change_date_ms' => $value,
-            ]
-        );
+        $actual = $subject->getAutoRenewStatus();
 
-        $this->assertEquals(
-            $value,
-            $serverNotification->getAutoRenewStatusChangeDate()->getCarbon()->getTimestampMs()
-        );
-
-        $missingData = ServerNotification::fromArray(
-            ['notification_type' => ServerNotification::DID_CHANGE_RENEWAL_PREF]
-        );
-
-        $this->assertNull($missingData->getAutoRenewStatusChangeDate());
-    }
-
-    /**
-     * @test
-     */
-    public function environment(): void
-    {
-        $value = ReceiptResponse::ENV_SANDBOX;
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'notification_type' => ServerNotification::CANCEL,
-                'environment' => $value,
-            ]
-        );
-        $this->assertEquals($value, $serverNotification->getEnvironment());
-
-        $missingData = ServerNotification::fromArray(
-            ['notification_type' => ServerNotification::DID_CHANGE_RENEWAL_STATUS]
-        );
-        $this->assertNull($missingData->getEnvironment());
+        $this->assertTrue($actual);
     }
 
     /**
      * @test
      */
-    public function auto_renew_status(): void
-    {
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'notification_type' => ServerNotification::CANCEL,
-                'auto_renew_status' => "true",
-            ]
-        );
-        $this->assertTrue($serverNotification->getAutoRenewStatus());
-
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'notification_type' => ServerNotification::CANCEL,
-                'auto_renew_status' => true,
-            ]
-        );
-        $this->assertTrue($serverNotification->getAutoRenewStatus());
-
-        $missingData = ServerNotification::fromArray(['notification_type' => ServerNotification::DID_FAIL_TO_RENEW]);
-        $this->assertNull($missingData->getAutoRenewStatus());
-    }
-
-    /**
-     * @test
-     */
-    public function bvrs(): void
-    {
-        $value = "33";
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'notification_type' => ServerNotification::CANCEL,
-                'bvrs' => $value,
-            ]
-        );
-        $this->assertEquals($value, $serverNotification->getBvrs());
-
-        $missingData = ServerNotification::fromArray(['notification_type' => ServerNotification::DID_RECOVER]);
-        $this->assertNull($missingData->getBvrs());
-    }
-
-    /**
-     * @test
-     */
-    public function bid(): void
-    {
-        $value = "com.some.thing";
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'notification_type' => ServerNotification::CANCEL,
-                'bid' => $value,
-            ]
-        );
-        $this->assertEquals($value, $serverNotification->getBid());
-
-        $missingData = ServerNotification::fromArray(['notification_type' => ServerNotification::DID_RENEW]);
-        $this->assertNull($missingData->getBid());
-    }
-
-    /**
-     * @test
-     */
-    public function password(): void
-    {
-        $value = "******";
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'notification_type' => ServerNotification::CANCEL,
-                'password' => $value,
-            ]
-        );
-        $this->assertEquals($value, $serverNotification->getPassword());
-
-        $missingData = ServerNotification::fromArray(['notification_type' => ServerNotification::INITIAL_BUY]);
-        $this->assertNull($missingData->getPassword());
-    }
-
-    /**
-     * @test
-     */
-    public function auto_renew_production_id(): void
-    {
-        $value = "fake_product_id";
-        $serverNotification = ServerNotification::fromArray(
-            [
-                'notification_type' => ServerNotification::CANCEL,
-                'auto_renew_product_id' => $value,
-            ]
-        );
-        $this->assertEquals($value, $serverNotification->getAutoRenewProductId());
-
-        $missingData = ServerNotification::fromArray(['notification_type' => ServerNotification::INTERACTIVE_RENEWAL]);
-        $this->assertNull($missingData->getAutoRenewProductId());
-    }
-
-    /**
-     * @test
-     */
-    public function notification_type(): void
-    {
-        $value = ServerNotification::PRICE_INCREASE_CONSENT;
-        $serverNotification = ServerNotification::fromArray(
-            ['notification_type' => $value]
-        );
-        $this->assertEquals($value, $serverNotification->getNotificationType());
-    }
-
-    /**
-     * @test
-     */
-    public function to_array(): void
+    public function it_preserves_the_original_notification_payload(): void
     {
         $attributes = [
             'notification_type' => ServerNotification::CANCEL,
@@ -200,9 +70,88 @@ class ServerNotificationTest extends TestCase
             'auto_renew_status_change_date_ms' => "1606293002000",
             'unified_receipt' => ['status' => 0],
         ];
-
         $serverNotification = ServerNotification::fromArray($attributes);
 
-        $this->assertEquals($attributes, $serverNotification->toArray());
+        $actual = $serverNotification->toArray();
+
+        $this->assertEquals($attributes, $actual);
+    }
+
+    public static function enabledStatusProvider(): array
+    {
+        return [
+            'auto renewal is enabled as a string' => ['true'],
+            'auto renewal is enabled as a boolean' => [true],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider absentDateProvider
+     */
+    public function it_returns_null_for_absent_notification_details(array $dates): void
+    {
+        $attributes = ['notification_type' => ServerNotification::CANCEL] + $dates;
+
+        $actual = ServerNotification::fromArray($attributes);
+
+        $this->assertNull($actual->getUnifiedReceipt());
+        $this->assertNull($actual->getAutoRenewStatusChangeDate());
+        $this->assertNull($actual->getAutoRenewStatusChangedAt());
+        $this->assertNull($actual->getEnvironment());
+        $this->assertNull($actual->getAutoRenewStatus());
+        $this->assertNull($actual->getBvrs());
+        $this->assertNull($actual->getBid());
+        $this->assertNull($actual->getPassword());
+        $this->assertNull($actual->getAutoRenewProductId());
+    }
+
+    /**
+     * @test
+     * @dataProvider dateProvider
+     */
+    public function it_reads_notification_dates_without_losing_milliseconds(
+        int|string $timestamp,
+        DateTimeImmutable $expectedDate,
+        Time $expectedTime
+    ): void
+    {
+        $attributes = [
+            'notification_type' => ServerNotification::DID_CHANGE_RENEWAL_STATUS,
+            'auto_renew_status_change_date_ms' => $timestamp,
+        ];
+
+        $actual = ServerNotification::fromArray($attributes);
+
+        $this->assertEquals($expectedTime, $actual->getAutoRenewStatusChangeDate());
+        $this->assertEquals($expectedDate, $actual->getAutoRenewStatusChangedAt());
+    }
+
+    public static function dateProvider(): array
+    {
+        return [
+            'integer timestamps retain milliseconds' => [
+                1580000000123,
+                new DateTimeImmutable('@1580000000.123'),
+                new Time(1580000000123),
+            ],
+            'string timestamps retain milliseconds' => [
+                '1580000000123',
+                new DateTimeImmutable('@1580000000.123'),
+                new Time(1580000000123),
+            ],
+            'zero timestamps represent the Unix epoch' => [0, new DateTimeImmutable('@0.000'), new Time(0)],
+            'string zero timestamps represent the Unix epoch' => ['0', new DateTimeImmutable('@0.000'), new Time(0)],
+        ];
+    }
+
+    public static function absentDateProvider(): array
+    {
+        return [
+            'date fields are omitted' => [[]],
+            'date fields are null' => [[
+                'auto_renew_status_change_date_ms' => null,
+            ]],
+        ];
     }
 }
