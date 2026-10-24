@@ -1,10 +1,12 @@
-.PHONY: start run
+.PHONY: build bash start
 
-start:
-	docker build -t imdhemy/liap .
+start: build bash
 
-run:
-	docker run -it --rm -d -v $(shell pwd):/var/www imdhemy/liap
+build:
+	docker build -t imdhemy/appstore-iap .
+
+bash:
+	docker run --rm -it --name appstore-iap-container -v $(PWD):/var/www imdhemy/appstore-iap bash
 
 %:
 	@:
