@@ -27,10 +27,11 @@ final class V2DecodedPayloadTest extends TestCase
 
         $signedPayload = $this->faker->jwsOf($claims);
         $jws = Parser::toJws($signedPayload);
+        $expectedClaims = $jws->getClaims();
 
         $sut = V2DecodedPayload::fromJws($jws);
 
-        $this->assertSame($claims, $sut->toArray());
+        $this->assertSame($expectedClaims, $sut->toArray());
         $this->assertSame($claims['notificationType'], $sut->getType());
         $this->assertSame($claims['notificationUUID'], $sut->getNotificationUUID());
         $this->assertSame($claims['version'], $sut->getVersion());

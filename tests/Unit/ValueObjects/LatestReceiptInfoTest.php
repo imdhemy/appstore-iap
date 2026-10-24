@@ -132,7 +132,7 @@ final class LatestReceiptInfoTest extends TestCase
         $actual = $subject->getCancellation();
 
         $this->assertEquals($expectedTime, $actual->getTime());
-        $this->assertSame(LatestReceiptInfo::CANCELLATION_REASON_APP_ISSUE, $actual->getReason());
+        $this->assertSame(1, $actual->getReason());
     }
 
     /**
