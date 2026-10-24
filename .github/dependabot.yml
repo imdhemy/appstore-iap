@@ -7,7 +7,21 @@ updates:
     allow:
       - dependency-type: "direct"
     labels:
-      - "🧱 Dependencies"
+      - "dependencies"
     reviewers:
       - "imdhemy"
-    versioning-strategy: auto
+    versioning-strategy: increase
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "ci"
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "yearly"
+    labels:
+      - "dependencies"
+      - "ci"
