@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\ValueObjects;
 
+use DateTimeImmutable;
 use Imdhemy\AppStore\Jws\JsonWebSignature;
 use Imdhemy\AppStore\Jws\UnEncryptedTokenConcern;
 
@@ -109,7 +110,20 @@ final class JwsTransactionInfo implements JsonWebSignature
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getExpiresAt(): ?DateTimeImmutable
+    {
+        $time = $this->getExpiresDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getExpiresAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getExpiresDate(): ?Time
     {
@@ -153,7 +167,20 @@ final class JwsTransactionInfo implements JsonWebSignature
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getOriginallyPurchasedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getOriginalPurchaseDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getOriginallyPurchasedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getOriginalPurchaseDate(): ?Time
     {
@@ -181,7 +208,20 @@ final class JwsTransactionInfo implements JsonWebSignature
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getPurchasedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getPurchaseDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getPurchasedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getPurchaseDate(): ?Time
     {
@@ -201,7 +241,20 @@ final class JwsTransactionInfo implements JsonWebSignature
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getRevokedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getRevocationDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getRevokedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getRevocationDate(): ?Time
     {
@@ -221,7 +274,20 @@ final class JwsTransactionInfo implements JsonWebSignature
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getSignedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getSignedDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getSignedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getSignedDate(): ?Time
     {

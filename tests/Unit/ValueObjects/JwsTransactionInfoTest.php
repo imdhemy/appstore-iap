@@ -1,19 +1,65 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imdhemy\AppStore\Tests\Unit\ValueObjects;
 
+use DateTimeImmutable;
 use Imdhemy\AppStore\Jws\Parser;
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\JwsTransactionInfo;
 use Imdhemy\AppStore\ValueObjects\Time;
 
-class JwsTransactionInfoTest extends TestCase
+final class JwsTransactionInfoTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function it_reads_transaction_details_from_signed_claims(): void
+    {
+        $claims = [
+            'appAccountToken' => '00000000-0000-4000-8000-000000000001',
+            'bundleId' => 'com.example.app',
+            'environment' => JwsTransactionInfo::ENVIRONMENT_SANDBOX,
+            'inAppOwnershipType' => JwsTransactionInfo::OWNERSHIP_TYPE_FAMILY_SHARED,
+            'isUpgraded' => true,
+            'offerIdentifier' => 'offer-identifier',
+            'offerType' => JwsTransactionInfo::OFFER_TYPE_INTRODUCTORY,
+            'originalTransactionId' => 'original-transaction',
+            'productId' => 'product',
+            'quantity' => 2,
+            'revocationReason' => JwsTransactionInfo::REVOCATION_REASON_APP_ISSUE,
+            'subscriptionGroupIdentifier' => 'subscription-group',
+            'transactionId' => 'transaction',
+            'type' => JwsTransactionInfo::TYPE_AUTO_RENEWABLE,
+            'webOrderLineItemId' => 'web-order-line-item',
+        ];
+        $jws = Parser::toJws($this->faker->jwsOf($claims));
+
+        $actual = new JwsTransactionInfo($jws);
+
+        $this->assertEquals($claims['appAccountToken'], $actual->getAppAccountToken());
+        $this->assertEquals($claims['bundleId'], $actual->getBundleId());
+        $this->assertEquals($claims['environment'], $actual->getEnvironment());
+        $this->assertEquals($claims['inAppOwnershipType'], $actual->getInAppOwnershipType());
+        $this->assertEquals($claims['isUpgraded'], $actual->getIsUpgraded());
+        $this->assertEquals($claims['offerIdentifier'], $actual->getOfferIdentifier());
+        $this->assertEquals($claims['offerType'], $actual->getOfferType());
+        $this->assertEquals($claims['originalTransactionId'], $actual->getOriginalTransactionId());
+        $this->assertEquals($claims['productId'], $actual->getProductId());
+        $this->assertEquals($claims['quantity'], $actual->getQuantity());
+        $this->assertEquals($claims['revocationReason'], $actual->getRevocationReason());
+        $this->assertEquals($claims['subscriptionGroupIdentifier'], $actual->getSubscriptionGroupIdentifier());
+        $this->assertEquals($claims['transactionId'], $actual->getTransactionId());
+        $this->assertEquals($claims['type'], $actual->getType());
+        $this->assertEquals($claims['webOrderLineItemId'], $actual->getWebOrderLineItemId());
+    }
+
     /**
      * @test
      * @return JwsTransactionInfo
      */
-    public function jws_transaction_info_is_a_jws(): JwsTransactionInfo
+    public function it_preserves_the_original_transaction_signature_and_claims(): JwsTransactionInfo
     {
         $jws = Parser::toJws($this->faker->jwsOf([]));
 
@@ -29,316 +75,176 @@ class JwsTransactionInfoTest extends TestCase
 
     /**
      * @test
-     * @depends jws_transaction_info_is_a_jws
+     * @dataProvider absentDateProvider
      */
-    public function all_props_are_nullable(JwsTransactionInfo $sut): void
+    public function it_returns_null_for_absent_transaction_details(array $dates): void
     {
-        $props = [
-            'appAccountToken',
-            'bundleId',
-            'environment',
-            'expiresDate',
-            'inAppOwnershipType',
-            'isUpgraded',
-            'offerIdentifier',
-            'offerType',
-            'originalPurchaseDate',
-            'originalTransactionId',
-            'productId',
-            'purchaseDate',
-            'quantity',
-            'revocationDate',
-            'revocationReason',
-            'signedDate',
-            'subscriptionGroupIdentifier',
-            'transactionId',
-            'type',
-            'webOrderLineItemId',
+        $jws = Parser::toJws($this->faker->jwsOf($dates));
+
+        $actual = new JwsTransactionInfo($jws);
+
+        $this->assertNull($actual->getExpiresDate());
+        $this->assertNull($actual->getExpiresAt());
+        $this->assertNull($actual->getOriginalPurchaseDate());
+        $this->assertNull($actual->getOriginallyPurchasedAt());
+        $this->assertNull($actual->getPurchaseDate());
+        $this->assertNull($actual->getPurchasedAt());
+        $this->assertNull($actual->getRevocationDate());
+        $this->assertNull($actual->getRevokedAt());
+        $this->assertNull($actual->getSignedDate());
+        $this->assertNull($actual->getSignedAt());
+        $this->assertNull($actual->getAppAccountToken());
+        $this->assertNull($actual->getBundleId());
+        $this->assertNull($actual->getEnvironment());
+        $this->assertNull($actual->getInAppOwnershipType());
+        $this->assertNull($actual->getIsUpgraded());
+        $this->assertNull($actual->getOfferIdentifier());
+        $this->assertNull($actual->getOfferType());
+        $this->assertNull($actual->getOriginalTransactionId());
+        $this->assertNull($actual->getProductId());
+        $this->assertNull($actual->getQuantity());
+        $this->assertNull($actual->getRevocationReason());
+        $this->assertNull($actual->getSubscriptionGroupIdentifier());
+        $this->assertNull($actual->getTransactionId());
+        $this->assertNull($actual->getType());
+        $this->assertNull($actual->getWebOrderLineItemId());
+    }
+
+    /**
+     * @test
+     * @dataProvider dateProvider
+     */
+    public function it_reads_transaction_dates_without_losing_milliseconds(
+        array $dates,
+        array $expectedDates,
+        array $expectedTimes
+    ): void
+    {
+        $jws = Parser::toJws($this->faker->jwsOf($dates));
+
+        $actual = new JwsTransactionInfo($jws);
+
+        $this->assertEquals($expectedTimes[0], $actual->getExpiresDate());
+        $this->assertEquals($expectedDates[0], $actual->getExpiresAt());
+        $this->assertEquals($expectedTimes[1], $actual->getOriginalPurchaseDate());
+        $this->assertEquals($expectedDates[1], $actual->getOriginallyPurchasedAt());
+        $this->assertEquals($expectedTimes[2], $actual->getPurchaseDate());
+        $this->assertEquals($expectedDates[2], $actual->getPurchasedAt());
+        $this->assertEquals($expectedTimes[3], $actual->getRevocationDate());
+        $this->assertEquals($expectedDates[3], $actual->getRevokedAt());
+        $this->assertEquals($expectedTimes[4], $actual->getSignedDate());
+        $this->assertEquals($expectedDates[4], $actual->getSignedAt());
+    }
+
+    public static function dateProvider(): array
+    {
+        return [
+            'integer timestamps retain milliseconds' => [
+                [
+                    'expiresDate' => 1580000000123,
+                    'originalPurchaseDate' => 1580000001123,
+                    'purchaseDate' => 1580000002123,
+                    'revocationDate' => 1580000003123,
+                    'signedDate' => 1580000004123,
+                ],
+                [
+                    new DateTimeImmutable('@1580000000.123'),
+                    new DateTimeImmutable('@1580000001.123'),
+                    new DateTimeImmutable('@1580000002.123'),
+                    new DateTimeImmutable('@1580000003.123'),
+                    new DateTimeImmutable('@1580000004.123'),
+                ],
+                [
+                    new Time(1580000000123),
+                    new Time(1580000001123),
+                    new Time(1580000002123),
+                    new Time(1580000003123),
+                    new Time(1580000004123),
+                ],
+            ],
+            'string timestamps retain milliseconds' => [
+                [
+                    'expiresDate' => '1580000000123',
+                    'originalPurchaseDate' => '1580000001123',
+                    'purchaseDate' => '1580000002123',
+                    'revocationDate' => '1580000003123',
+                    'signedDate' => '1580000004123',
+                ],
+                [
+                    new DateTimeImmutable('@1580000000.123'),
+                    new DateTimeImmutable('@1580000001.123'),
+                    new DateTimeImmutable('@1580000002.123'),
+                    new DateTimeImmutable('@1580000003.123'),
+                    new DateTimeImmutable('@1580000004.123'),
+                ],
+                [
+                    new Time(1580000000123),
+                    new Time(1580000001123),
+                    new Time(1580000002123),
+                    new Time(1580000003123),
+                    new Time(1580000004123),
+                ],
+            ],
+            'zero timestamps represent the Unix epoch' => [
+                [
+                    'expiresDate' => 0,
+                    'originalPurchaseDate' => 0,
+                    'purchaseDate' => 0,
+                    'revocationDate' => 0,
+                    'signedDate' => 0,
+                ],
+                [
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                ],
+                [
+                    new Time(0),
+                    new Time(0),
+                    new Time(0),
+                    new Time(0),
+                    new Time(0),
+                ],
+            ],
+            'string zero timestamps represent the Unix epoch' => [
+                [
+                    'expiresDate' => '0',
+                    'originalPurchaseDate' => '0',
+                    'purchaseDate' => '0',
+                    'revocationDate' => '0',
+                    'signedDate' => '0',
+                ],
+                [
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                ],
+                [
+                    new Time(0),
+                    new Time(0),
+                    new Time(0),
+                    new Time(0),
+                    new Time(0),
+                ],
+            ],
         ];
-
-        foreach ($props as $prop) {
-            $getter = 'get' . ucfirst($prop);
-            $this->assertNull($sut->$getter());
-        }
     }
 
-    /**
-     * @test
-     */
-    public function app_account_token(): void
+    public static function absentDateProvider(): array
     {
-        $value = $this->faker->uuid();
-        $jws = Parser::toJws($this->faker->jwsOf(['appAccountToken' => $value]));
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getAppAccountToken());
-    }
-
-    /**
-     * @test
-     */
-    public function bundle_id(): void
-    {
-        $value = $this->faker->domainName();
-        $jws = Parser::toJws($this->faker->jwsOf(['bundleId' => $value]));
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getBundleId());
-    }
-
-    /**
-     * @test
-     */
-    public function environment(): void
-    {
-        $value = $this->faker->randomElement([
-            JwsTransactionInfo::ENVIRONMENT_PRODUCTION,
-            JwsTransactionInfo::ENVIRONMENT_SANDBOX,
-        ]);
-        $jws = Parser::toJws($this->faker->jwsOf(['environment' => $value]));
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getEnvironment());
-    }
-
-    /**
-     * @test
-     */
-    public function expires_date(): void
-    {
-        $expiresDate = $this->faker->unixTime() * 1000;
-        $time = new Time($expiresDate);
-        $jws = Parser::toJws($this->faker->jwsOf(['expiresDate' => $expiresDate]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertTrue($time->equals($sut->getExpiresDate()));
-    }
-
-    /**
-     * @test
-     */
-    public function in_app_ownership_type(): void
-    {
-        $value = $this->faker->randomElement([
-            JwsTransactionInfo::OWNERSHIP_TYPE_FAMILY_SHARED,
-            JwsTransactionInfo::OWNERSHIP_TYPE_PURCHASED,
-        ]);
-        $jws = Parser::toJws($this->faker->jwsOf(['inAppOwnershipType' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getInAppOwnershipType());
-    }
-
-    /**
-     * @test
-     */
-    public function is_upgraded(): void
-    {
-        $value = $this->faker->boolean();
-        $jws = Parser::toJws($this->faker->jwsOf(['isUpgraded' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getIsUpgraded());
-    }
-
-    /**
-     * @test
-     */
-    public function offer_identifier(): void
-    {
-        $value = $this->faker->uuid();
-        $jws = Parser::toJws($this->faker->jwsOf(['offerIdentifier' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getOfferIdentifier());
-    }
-
-    /**
-     * @test
-     */
-    public function offer_type(): void
-    {
-        $value = $this->faker->randomElement([
-            JwsTransactionInfo::OFFER_TYPE_INTRODUCTORY,
-            JwsTransactionInfo::OFFER_TYPE_PROMOTIONAL,
-            JwsTransactionInfo::OFFER_TYPE_SUBSCRIPTION,
-        ]);
-        $jws = Parser::toJws($this->faker->jwsOf(['offerType' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getOfferType());
-    }
-
-    /**
-     * @test
-     */
-    public function original_purchase_date(): void
-    {
-        $originalPurchaseDate = $this->faker->unixTime() * 1000;
-        $time = new Time($originalPurchaseDate);
-        $jws = Parser::toJws($this->faker->jwsOf(['originalPurchaseDate' => $originalPurchaseDate]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertTrue($time->equals($sut->getOriginalPurchaseDate()));
-    }
-
-    /**
-     * @test
-     */
-    public function original_transaction_id(): void
-    {
-        $value = $this->faker->uuid();
-        $jws = Parser::toJws($this->faker->jwsOf(['originalTransactionId' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getOriginalTransactionId());
-    }
-
-    /**
-     * @test
-     */
-    public function product_id(): void
-    {
-        $value = $this->faker->uuid();
-        $jws = Parser::toJws($this->faker->jwsOf(['productId' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getProductId());
-    }
-
-    /**
-     * @test
-     */
-    public function purchase_date(): void
-    {
-        $purchaseDate = $this->faker->unixTime() * 1000;
-        $time = new Time($purchaseDate);
-        $jws = Parser::toJws($this->faker->jwsOf(['purchaseDate' => $purchaseDate]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertTrue($time->equals($sut->getPurchaseDate()));
-    }
-
-    /**
-     * @test
-     */
-    public function quantity(): void
-    {
-        $value = $this->faker->randomNumber();
-        $jws = Parser::toJws($this->faker->jwsOf(['quantity' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getQuantity());
-    }
-
-    /**
-     * @test
-     */
-    public function revocation_date(): void
-    {
-        $revocationDate = $this->faker->unixTime() * 1000;
-        $time = new Time($revocationDate);
-        $jws = Parser::toJws($this->faker->jwsOf(['revocationDate' => $revocationDate]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertTrue($time->equals($sut->getRevocationDate()));
-    }
-
-    /**
-     * @test
-     */
-    public function revocation_reason(): void
-    {
-        $value = $this->faker->randomElement([
-            JwsTransactionInfo::REVOCATION_REASON_APP_ISSUE,
-            JwsTransactionInfo::REVOCATION_REASON_OTHER,
-        ]);
-        $jws = Parser::toJws($this->faker->jwsOf(['revocationReason' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getRevocationReason());
-    }
-
-    /**
-     * @test
-     */
-    public function signed_date(): void
-    {
-        $signedDate = $this->faker->unixTime() * 1000;
-        $time = new Time($signedDate);
-        $jws = Parser::toJws($this->faker->jwsOf(['signedDate' => $signedDate]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertTrue($time->equals($sut->getSignedDate()));
-    }
-
-    /**
-     * @test
-     */
-    public function subscription_group_identifier(): void
-    {
-        $value = $this->faker->uuid();
-        $jws = Parser::toJws($this->faker->jwsOf(['subscriptionGroupIdentifier' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getSubscriptionGroupIdentifier());
-    }
-
-    /**
-     * @test
-     */
-    public function transaction_id(): void
-    {
-        $value = $this->faker->uuid();
-        $jws = Parser::toJws($this->faker->jwsOf(['transactionId' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getTransactionId());
-    }
-
-    /**
-     * @test
-     */
-    public function type(): void
-    {
-        $value = $this->faker->randomElement([
-            JwsTransactionInfo::TYPE_AUTO_RENEWABLE,
-            JwsTransactionInfo::TYPE_NON_RENEWING_SUBSCRIPTION,
-            JwsTransactionInfo::TYPE_NON_CONSUMABLE,
-            JwsTransactionInfo::TYPE_CONSUMABLE,
-        ]);
-        $jws = Parser::toJws($this->faker->jwsOf(['type' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getType());
-    }
-
-    /**
-     * @test
-     */
-    public function web_order_line_item_id(): void
-    {
-        $value = $this->faker->uuid();
-        $jws = Parser::toJws($this->faker->jwsOf(['webOrderLineItemId' => $value]));
-
-        $sut = new JwsTransactionInfo($jws);
-
-        $this->assertEquals($value, $sut->getWebOrderLineItemId());
+        return [
+            'date fields are omitted' => [[]],
+            'date fields are null' => [[
+                'expiresDate' => null,
+                'originalPurchaseDate' => null,
+                'purchaseDate' => null,
+                'revocationDate' => null,
+                'signedDate' => null,
+            ]],
+        ];
     }
 }

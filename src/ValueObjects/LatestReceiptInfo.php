@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\ValueObjects;
 
+use DateTimeImmutable;
 use Imdhemy\AppStore\Contracts\Arrayable;
 use JsonSerializable;
 
@@ -232,7 +233,20 @@ final class LatestReceiptInfo implements Arrayable, JsonSerializable
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getExpiresAt(): ?DateTimeImmutable
+    {
+        $time = $this->getExpiresDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getExpiresAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getExpiresDate(): ?Time
     {
@@ -243,7 +257,20 @@ final class LatestReceiptInfo implements Arrayable, JsonSerializable
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getOriginallyPurchasedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getOriginalPurchaseDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getOriginallyPurchasedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getOriginalPurchaseDate(): ?Time
     {
@@ -270,7 +297,20 @@ final class LatestReceiptInfo implements Arrayable, JsonSerializable
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getPurchasedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getPurchaseDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getPurchasedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getPurchaseDate(): ?Time
     {
@@ -313,7 +353,20 @@ final class LatestReceiptInfo implements Arrayable, JsonSerializable
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getCancelledAt(): ?DateTimeImmutable
+    {
+        $time = $this->getCancellationDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getCancelledAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getCancellationDate(): ?Time
     {
@@ -350,9 +403,10 @@ final class LatestReceiptInfo implements Arrayable, JsonSerializable
     /**
      * @return Cancellation|null
      * @psalm-suppress PossiblyNullArgument
+     * @psalm-suppress DeprecatedMethod Retained for backward compatibility until the next major release.
      * @deprecated     use \Imdhemy\AppStore\ValueObjects\LatestReceiptInfo::getCancellationReason()
      *
-     * @deprecated     use \Imdhemy\AppStore\ValueObjects\LatestReceiptInfo::getCancellationDate()
+     * @deprecated     use \Imdhemy\AppStore\ValueObjects\LatestReceiptInfo::getCancelledAt()
      */
     public function getCancellation(): ?Cancellation
     {

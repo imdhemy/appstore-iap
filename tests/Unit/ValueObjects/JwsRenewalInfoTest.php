@@ -1,21 +1,58 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imdhemy\AppStore\Tests\Unit\ValueObjects;
 
+use DateTimeImmutable;
 use Imdhemy\AppStore\Jws\Parser;
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\JwsRenewalInfo;
 use Imdhemy\AppStore\ValueObjects\Time;
 
-class JwsRenewalInfoTest extends TestCase
+final class JwsRenewalInfoTest extends TestCase
 {
+    /**
+     * @test
+     */
+    public function it_reads_renewal_details_from_signed_claims(): void
+    {
+        $claims = [
+            'autoRenewProductId' => 'renewal-product',
+            'autoRenewStatus' => JwsRenewalInfo::AUTO_RENEW_STATUS_ON,
+            'environment' => JwsRenewalInfo::ENVIRONMENT_SANDBOX,
+            'expirationIntent' => JwsRenewalInfo::EXPIRATION_INTENT_BILLING_ERROR,
+            'isInBillingRetryPeriod' => true,
+            'offerIdentifier' => 'offer-identifier',
+            'offerType' => JwsRenewalInfo::OFFER_TYPE_INTRODUCTORY,
+            'originalTransactionId' => 'original-transaction',
+            'priceIncreaseStatus' => JwsRenewalInfo::PRICE_INCREASE_STATUS_CONSENT,
+            'productId' => 'product',
+        ];
+        $jws = Parser::toJws($this->faker->jwsOf($claims));
+
+        $actual = new JwsRenewalInfo($jws);
+
+        $this->assertEquals($claims['autoRenewProductId'], $actual->getAutoRenewProductId());
+        $this->assertEquals($claims['autoRenewStatus'], $actual->getAutoRenewStatus());
+        $this->assertEquals($claims['environment'], $actual->getEnvironment());
+        $this->assertEquals($claims['expirationIntent'], $actual->getExpirationIntent());
+        $this->assertEquals($claims['isInBillingRetryPeriod'], $actual->getIsInBillingRetryPeriod());
+        $this->assertEquals($claims['offerIdentifier'], $actual->getOfferIdentifier());
+        $this->assertEquals($claims['offerType'], $actual->getOfferType());
+        $this->assertEquals($claims['originalTransactionId'], $actual->getOriginalTransactionId());
+        $this->assertEquals($claims['priceIncreaseStatus'], $actual->getPriceIncreaseStatus());
+        $this->assertEquals($claims['productId'], $actual->getProductId());
+    }
+
     /**
      * @test
      * @return JwsRenewalInfo
      */
-    public function jws_renewal_info_is_a_jws(): JwsRenewalInfo
+    public function it_preserves_the_original_renewal_signature_and_claims(): JwsRenewalInfo
     {
         $jws = Parser::toJws($this->faker->jwsOf([]));
+
         $sut = new JwsRenewalInfo($jws);
 
         $this->assertEquals($jws->__toString(), $sut->__toString());
@@ -27,270 +64,138 @@ class JwsRenewalInfoTest extends TestCase
     }
 
     /**
-     * @depends jws_renewal_info_is_a_jws
      * @test
+     * @dataProvider absentDateProvider
      */
-    public function all_props_are_nullable(JwsRenewalInfo $sut): void
+    public function it_returns_null_for_absent_renewal_details(array $dates): void
     {
-        $props = [
-            'autoRenewProductId',
-            'autoRenewStatus',
-            'environment',
-            'expirationIntent',
-            'gracePeriodExpiresDate',
-            'isInBillingRetryPeriod',
-            'offerIdentifier',
-            'offerType',
-            'originalTransactionId',
-            'priceIncreaseStatus',
-            'productId',
-            'recentSubscriptionStartDate',
-            'signedDate',
+        $jws = Parser::toJws($this->faker->jwsOf($dates));
+
+        $actual = new JwsRenewalInfo($jws);
+
+        $this->assertNull($actual->getGracePeriodExpiresDate());
+        $this->assertNull($actual->getGracePeriodExpiresAt());
+        $this->assertNull($actual->getRecentSubscriptionStartDate());
+        $this->assertNull($actual->getRecentSubscriptionStartedAt());
+        $this->assertNull($actual->getSignedDate());
+        $this->assertNull($actual->getSignedAt());
+        $this->assertNull($actual->getAutoRenewProductId());
+        $this->assertNull($actual->getAutoRenewStatus());
+        $this->assertNull($actual->getEnvironment());
+        $this->assertNull($actual->getExpirationIntent());
+        $this->assertNull($actual->getIsInBillingRetryPeriod());
+        $this->assertNull($actual->getOfferIdentifier());
+        $this->assertNull($actual->getOfferType());
+        $this->assertNull($actual->getOriginalTransactionId());
+        $this->assertNull($actual->getPriceIncreaseStatus());
+        $this->assertNull($actual->getProductId());
+    }
+
+    /**
+     * @test
+     * @dataProvider dateProvider
+     */
+    public function it_reads_renewal_dates_without_losing_milliseconds(
+        array $dates,
+        array $expectedDates,
+        array $expectedTimes
+    ): void
+    {
+        $jws = Parser::toJws($this->faker->jwsOf($dates));
+
+        $actual = new JwsRenewalInfo($jws);
+
+        $this->assertEquals($expectedTimes[0], $actual->getGracePeriodExpiresDate());
+        $this->assertEquals($expectedDates[0], $actual->getGracePeriodExpiresAt());
+        $this->assertEquals($expectedTimes[1], $actual->getRecentSubscriptionStartDate());
+        $this->assertEquals($expectedDates[1], $actual->getRecentSubscriptionStartedAt());
+        $this->assertEquals($expectedTimes[2], $actual->getSignedDate());
+        $this->assertEquals($expectedDates[2], $actual->getSignedAt());
+    }
+
+    public static function dateProvider(): array
+    {
+        return [
+            'integer timestamps retain milliseconds' => [
+                [
+                    'gracePeriodExpiresDate' => 1580000000123,
+                    'recentSubscriptionStartDate' => 1580000001123,
+                    'signedDate' => 1580000002123,
+                ],
+                [
+                    new DateTimeImmutable('@1580000000.123'),
+                    new DateTimeImmutable('@1580000001.123'),
+                    new DateTimeImmutable('@1580000002.123'),
+                ],
+                [
+                    new Time(1580000000123),
+                    new Time(1580000001123),
+                    new Time(1580000002123),
+                ],
+            ],
+            'string timestamps retain milliseconds' => [
+                [
+                    'gracePeriodExpiresDate' => '1580000000123',
+                    'recentSubscriptionStartDate' => '1580000001123',
+                    'signedDate' => '1580000002123',
+                ],
+                [
+                    new DateTimeImmutable('@1580000000.123'),
+                    new DateTimeImmutable('@1580000001.123'),
+                    new DateTimeImmutable('@1580000002.123'),
+                ],
+                [
+                    new Time(1580000000123),
+                    new Time(1580000001123),
+                    new Time(1580000002123),
+                ],
+            ],
+            'zero timestamps represent the Unix epoch' => [
+                [
+                    'gracePeriodExpiresDate' => 0,
+                    'recentSubscriptionStartDate' => 0,
+                    'signedDate' => 0,
+                ],
+                [
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                ],
+                [
+                    new Time(0),
+                    new Time(0),
+                    new Time(0),
+                ],
+            ],
+            'string zero timestamps represent the Unix epoch' => [
+                [
+                    'gracePeriodExpiresDate' => '0',
+                    'recentSubscriptionStartDate' => '0',
+                    'signedDate' => '0',
+                ],
+                [
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                    new DateTimeImmutable('@0.000'),
+                ],
+                [
+                    new Time(0),
+                    new Time(0),
+                    new Time(0),
+                ],
+            ],
         ];
-
-        foreach ($props as $prop) {
-            $getter = 'get' . ucfirst($prop);
-            $this->assertNull($sut->$getter());
-        }
     }
 
-    /**
-     * @test
-     */
-    public function auto_renew_product_id(): void
+    public static function absentDateProvider(): array
     {
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'autoRenewProductId' => 'com.example.app.subscription.monthly',
-            ])
-        );
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals('com.example.app.subscription.monthly', $sut->getAutoRenewProductId());
-    }
-
-    /**
-     * @test
-     */
-    public function auto_renew_status(): void
-    {
-        $status = $this->faker->randomElement([
-            JwsRenewalInfo::AUTO_RENEW_STATUS_OFF,
-            JwsRenewalInfo::AUTO_RENEW_STATUS_ON,
-        ]);
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'autoRenewStatus' => $status,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($status, $sut->getAutoRenewStatus());
-    }
-
-    /**
-     * @test
-     */
-    public function environment(): void
-    {
-        $environment = $this->faker->randomElement([
-            JwsRenewalInfo::ENVIRONMENT_PRODUCTION,
-            JwsRenewalInfo::ENVIRONMENT_SANDBOX,
-        ]);
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'environment' => $environment,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($environment, $sut->getEnvironment());
-    }
-
-    /**
-     * @test
-     */
-    public function expiration_intent(): void
-    {
-        $expirationIntent = $this->faker->randomElement([
-            JwsRenewalInfo::EXPIRATION_INTENT_CANCEL,
-            JwsRenewalInfo::EXPIRATION_INTENT_BILLING_ERROR,
-            JwsRenewalInfo::EXPIRATION_INTENT_PRICE_INCREASE_CONSENT,
-            JwsRenewalInfo::EXPIRATION_INTENT_PRODUCT_NOT_AVAILABLE,
-        ]);
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'expirationIntent' => $expirationIntent,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($expirationIntent, $sut->getExpirationIntent());
-    }
-
-    /**
-     * @test
-     */
-    public function grace_period_expires_date(): void
-    {
-        $timestampMs = $this->faker->unixTime() * 1000;
-        $time = new Time($timestampMs);
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'gracePeriodExpiresDate' => $timestampMs,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertTrue($time->equals($sut->getGracePeriodExpiresDate()));
-    }
-
-    /**
-     * @test
-     */
-    public function is_in_billing_retry_period(): void
-    {
-        $isInBillingRetryPeriod = $this->faker->boolean();
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'isInBillingRetryPeriod' => $isInBillingRetryPeriod,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($isInBillingRetryPeriod, $sut->getIsInBillingRetryPeriod());
-    }
-
-    /**
-     * @test
-     */
-    public function offer_identifier(): void
-    {
-        $offerIdentifier = $this->faker->uuid();
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'offerIdentifier' => $offerIdentifier,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($offerIdentifier, $sut->getOfferIdentifier());
-    }
-
-    /**
-     * @test
-     */
-    public function offer_type(): void
-    {
-        $offerType = $this->faker->randomElement([
-            JwsRenewalInfo::OFFER_TYPE_INTRODUCTORY,
-            JwsRenewalInfo::OFFER_TYPE_PROMOTIONAL,
-            JwsRenewalInfo::OFFER_TYPE_OFFER_CODE,
-        ]);
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'offerType' => $offerType,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($offerType, $sut->getOfferType());
-    }
-
-    /**
-     * @test
-     */
-    public function original_transaction_id(): void
-    {
-        $originalTransactionId = $this->faker->uuid();
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'originalTransactionId' => $originalTransactionId,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($originalTransactionId, $sut->getOriginalTransactionId());
-    }
-
-    /**
-     * @test
-     */
-    public function price_increase_status(): void
-    {
-        $priceIncreaseStatus = $this->faker->randomElement([
-            JwsRenewalInfo::PRICE_INCREASE_STATUS_NOT_RESPONDED,
-            JwsRenewalInfo::PRICE_INCREASE_STATUS_CONSENT,
-        ]);
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'priceIncreaseStatus' => $priceIncreaseStatus,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($priceIncreaseStatus, $sut->getPriceIncreaseStatus());
-    }
-
-    /**
-     * @test
-     */
-    public function product_id(): void
-    {
-        $productId = 'com.example.app.subscription.monthly';
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'productId' => $productId,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertEquals($productId, $sut->getProductId());
-    }
-
-    /**
-     * @test
-     */
-    public function recent_subscription_start_date(): void
-    {
-        $recentSubscriptionStartDate = $this->faker->unixTime() * 1000;
-        $time = new Time($recentSubscriptionStartDate);
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'recentSubscriptionStartDate' => $recentSubscriptionStartDate,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertTrue($time->equals($sut->getRecentSubscriptionStartDate()));
-    }
-
-    /**
-     * @test
-     */
-    public function signed_date(): void
-    {
-        $signedDate = $this->faker->unixTime() * 1000;
-        $time = new Time($signedDate);
-        $jws = Parser::toJws(
-            $this->faker->jwsOf([
-                'signedDate' => $signedDate,
-            ])
-        );
-
-        $sut = new JwsRenewalInfo($jws);
-
-        $this->assertTrue($time->equals($sut->getSignedDate()));
+        return [
+            'date fields are omitted' => [[]],
+            'date fields are null' => [[
+                'gracePeriodExpiresDate' => null,
+                'recentSubscriptionStartDate' => null,
+                'signedDate' => null,
+            ]],
+        ];
     }
 }

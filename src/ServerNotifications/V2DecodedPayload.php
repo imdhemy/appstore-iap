@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\ServerNotifications;
 
+use DateTimeImmutable;
 use Imdhemy\AppStore\Contracts\Arrayable;
 use Imdhemy\AppStore\Jws\JsonWebSignature;
 use Imdhemy\AppStore\Jws\Parser;
@@ -139,9 +140,20 @@ final class V2DecodedPayload implements Arrayable
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getSignedAt(): DateTimeImmutable
+    {
+        return DateTimeImmutable::createFromInterface($this->getSignedDate()->toCarbon());
+    }
+
+    /**
      * Gets the notification signed date
      *
      * @return Time
+     * @deprecated Use {@see self::getSignedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getSignedDate(): Time
     {

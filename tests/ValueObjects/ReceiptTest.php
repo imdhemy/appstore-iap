@@ -1,206 +1,202 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
+use DateTimeImmutable;
 use Imdhemy\AppStore\Tests\TestCase;
-use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
 use Imdhemy\AppStore\ValueObjects\Receipt;
+use Imdhemy\AppStore\ValueObjects\Time;
 
-class ReceiptTest extends TestCase
+final class ReceiptTest extends TestCase
 {
     /**
      * @test
+     * @dataProvider dateProvider
      */
-    public function test_it_all_attributes_are_optional()
+    public function it_reads_receipt_details_from_an_array(
+        array $dates,
+        array $expectedDates,
+        array $expectedTimes
+    ): void
     {
-        $this->assertInstanceOf(Receipt::class, new Receipt());
-        $this->assertInstanceOf(Receipt::class, Receipt::fromArray([]));
+        $attributes = [
+            'adam_id' => 123456789,
+            'app_item_id' => 987654321,
+            'application_version' => '13',
+            'bundle_id' => 'com.some.thing',
+            'download_id' => 123456789,
+            'receipt_type' => Receipt::RECEIPT_TYPE_SANDBOX,
+            'version_external_identifier' => 1234567,
+            'original_application_version' => '1.0',
+        ] + $dates;
+
+        $actual = Receipt::fromArray($attributes);
+
+        $this->assertEquals($attributes['adam_id'], $actual->getAdamId());
+        $this->assertEquals($attributes['app_item_id'], $actual->getAppItemId());
+        $this->assertEquals($attributes['application_version'], $actual->getApplicationVersion());
+        $this->assertEquals($attributes['bundle_id'], $actual->getBundleId());
+        $this->assertEquals($attributes['download_id'], $actual->getDownloadId());
+        $this->assertEquals($attributes['receipt_type'], $actual->getReceiptType());
+        $this->assertEquals($attributes['version_external_identifier'], $actual->getVersionExternalIdentifier());
+        $this->assertEquals($attributes['original_application_version'], $actual->getOriginalApplicationVersion());
+        $this->assertEquals($expectedTimes[0], $actual->getOriginalPurchaseDate());
+        $this->assertEquals($expectedDates[0], $actual->getOriginallyPurchasedAt());
+        $this->assertEquals($expectedTimes[1], $actual->getReceiptCreationDate());
+        $this->assertEquals($expectedDates[1], $actual->getReceiptCreatedAt());
+        $this->assertEquals($expectedTimes[2], $actual->getRequestDate());
+        $this->assertEquals($expectedDates[2], $actual->getRequestedAt());
+        $this->assertEquals($expectedTimes[3], $actual->getExpirationDate());
+        $this->assertEquals($expectedDates[3], $actual->getExpiresAt());
+        $this->assertEquals($expectedTimes[4], $actual->getPreOrderDate());
+        $this->assertEquals($expectedDates[4], $actual->getPreOrderedAt());
     }
 
     /**
      * @test
      */
-    public function test_adam_id()
+    public function it_maps_in_app_purchases_to_receipt_details(): void
     {
-        $value = 123456789;
-        $receipt = Receipt::fromArray(['adam_id' => $value]);
-        $this->assertEquals($value, $receipt->getAdamId());
-        $missingData = Receipt::fromArray([]);
-        $this->assertNull($missingData->getAdamId());
+        $receipt = Receipt::fromArray([
+            'in_app' => [[
+                'original_transaction_id' => 'original_transaction_id',
+                'product_id' => 'product_id',
+                'quantity' => '1',
+                'transaction_id' => 'transaction_id',
+            ]],
+        ]);
+
+        $actual = $receipt->getInApp();
+
+        $this->assertCount(1, $actual);
+        $this->assertSame('original_transaction_id', $actual[0]->getOriginalTransactionId());
+        $this->assertSame('product_id', $actual[0]->getProductId());
+        $this->assertSame(1, $actual[0]->getQuantity());
+        $this->assertSame('transaction_id', $actual[0]->getTransactionId());
     }
 
     /**
      * @test
      */
-    public function test_app_item_id()
+    public function it_returns_an_empty_list_when_there_are_no_in_app_purchases(): void
     {
-        $value = 123456789;
-        $receipt = Receipt::fromArray(['app_item_id' => $value]);
-        $this->assertEquals($value, $receipt->getAppItemId());
-        $this->assertNull(Receipt::fromArray([])->getAppItemId());
+        $receipt = Receipt::fromArray(['in_app' => []]);
+
+        $actual = $receipt->getInApp();
+
+        $this->assertSame([], $actual);
     }
 
     /**
      * @test
+     * @dataProvider absentDateProvider
      */
-    public function test_application_version()
+    public function it_returns_null_for_absent_receipt_details(array $dates): void
     {
-        $value = "13";
-        $receipt = Receipt::fromArray(['application_version' => $value]);
-        $this->assertEquals($value, $receipt->getApplicationVersion());
-        $this->assertNull(Receipt::fromArray([])->getApplicationVersion());
+        $attributes = $dates;
+
+        $actual = Receipt::fromArray($attributes);
+
+        $this->assertNull($actual->getAdamId());
+        $this->assertNull($actual->getAppItemId());
+        $this->assertNull($actual->getApplicationVersion());
+        $this->assertNull($actual->getBundleId());
+        $this->assertNull($actual->getDownloadId());
+        $this->assertNull($actual->getInApp());
+        $this->assertNull($actual->getOriginalPurchaseDate());
+        $this->assertNull($actual->getOriginallyPurchasedAt());
+        $this->assertNull($actual->getReceiptCreationDate());
+        $this->assertNull($actual->getReceiptCreatedAt());
+        $this->assertNull($actual->getReceiptType());
+        $this->assertNull($actual->getRequestDate());
+        $this->assertNull($actual->getRequestedAt());
+        $this->assertNull($actual->getVersionExternalIdentifier());
+        $this->assertNull($actual->getOriginalApplicationVersion());
+        $this->assertNull($actual->getExpirationDate());
+        $this->assertNull($actual->getExpiresAt());
+        $this->assertNull($actual->getPreOrderDate());
+        $this->assertNull($actual->getPreOrderedAt());
     }
 
-    /**
-     * @test
-     */
-    public function test_bundle_id()
+    public static function dateProvider(): array
     {
-        $value = "com.some.thing";
-        $receipt = Receipt::fromArray(['bundle_id' => $value]);
-        $this->assertEquals($value, $receipt->getBundleId());
-        $this->assertNull(Receipt::fromArray([])->getBundleId());
-    }
-
-    /**
-     * @test
-     */
-    public function test_download_id()
-    {
-        $value = 123456789;
-        $receipt = Receipt::fromArray(['download_id' => $value]);
-        $this->assertEquals($value, $receipt->getDownloadId());
-        $this->assertNull(Receipt::fromArray([])->getDownloadId());
-    }
-
-    /**
-     * @test
-     */
-    public function test_in_app()
-    {
-        $this->assertIsArray(Receipt::fromArray(['in_app' => []])->getInApp());
-        $this->assertInstanceOf(
-            LatestReceiptInfo::class,
-            Receipt::fromArray([
-                                   'in_app' => [
-                                       [
-                                           'original_transaction_id' => 'original_transaction_id',
-                                           'product_id' => 'product_id',
-                                           'quantity' => '1',
-                                           'transaction_id' => 'transaction_id',
-                                       ],
-                                   ],
-                               ])->getInApp()[0]
-        );
-        $this->assertNull(Receipt::fromArray([])->getInApp());
-    }
-
-    /**
-     * @test
-     */
-    public function test_original_purchase_date()
-    {
-        $value = 1617375688000;
-        $receipt = Receipt::fromArray(['original_purchase_date_ms' => $value]);
-        $this->assertEquals(
-            $value,
-            $receipt->getOriginalPurchaseDate()->getCarbon()->getTimestampMs()
-        );
-        $this->assertNull(Receipt::fromArray([])->getOriginalPurchaseDate());
-    }
-
-    /**
-     * @test
-     */
-    public function test_receipt_creation_date()
-    {
-        $value = 1617375688000;
-        $receipt = Receipt::fromArray(['receipt_creation_date_ms' => $value]);
-        $this->assertEquals(
-            $value,
-            $receipt->getReceiptCreationDate()->getCarbon()->getTimestampMs()
-        );
-        $this->assertNull(Receipt::fromArray([])->getReceiptCreationDate());
-    }
-
-    /**
-     * @test
-     */
-    public function test_receipt_type()
-    {
-        $values = [
-            Receipt::RECEIPT_TYPE_PRODUCTION,
-            Receipt::RECEIPT_TYPE_PRODUCTION_VPP,
-            Receipt::RECEIPT_TYPE_PRODUCTION_VPP_SANDBOX,
-            Receipt::RECEIPT_TYPE_SANDBOX,
+        return [
+            'integer timestamps retain milliseconds' => [
+                [
+                    'original_purchase_date_ms' => 1580000000123,
+                    'receipt_creation_date_ms' => 1580000001123,
+                    'request_date_ms' => 1580000002123,
+                    'expiration_date_ms' => 1580000003123,
+                    'preorder_date_ms' => 1580000004123,
+                ],
+                [
+                    new DateTimeImmutable('@1580000000.123'),
+                    new DateTimeImmutable('@1580000001.123'),
+                    new DateTimeImmutable('@1580000002.123'),
+                    new DateTimeImmutable('@1580000003.123'),
+                    new DateTimeImmutable('@1580000004.123'),
+                ],
+                [
+                    new Time(1580000000123),
+                    new Time(1580000001123),
+                    new Time(1580000002123),
+                    new Time(1580000003123),
+                    new Time(1580000004123),
+                ],
+            ],
+            'string timestamps retain milliseconds' => [
+                [
+                    'original_purchase_date_ms' => '1580000000123',
+                    'receipt_creation_date_ms' => '1580000001123',
+                    'request_date_ms' => '1580000002123',
+                    'expiration_date_ms' => '1580000003123',
+                    'preorder_date_ms' => '1580000004123',
+                ],
+                [
+                    new DateTimeImmutable('@1580000000.123'),
+                    new DateTimeImmutable('@1580000001.123'),
+                    new DateTimeImmutable('@1580000002.123'),
+                    new DateTimeImmutable('@1580000003.123'),
+                    new DateTimeImmutable('@1580000004.123'),
+                ],
+                [
+                    new Time(1580000000123),
+                    new Time(1580000001123),
+                    new Time(1580000002123),
+                    new Time(1580000003123),
+                    new Time(1580000004123),
+                ],
+            ],
         ];
-        $value = $this->faker->randomElement($values);
-        $receipt = Receipt::fromArray(['receipt_type' => $value]);
-        $this->assertEquals($value, $receipt->getReceiptType());
-        $this->assertNull(Receipt::fromArray([])->getReceiptType());
     }
 
-    /**
-     * @test
-     */
-    public function test_request_date()
+    public static function absentDateProvider(): array
     {
-        $value = 1617375688000;
-        $receipt = Receipt::fromArray(['request_date_ms' => $value]);
-        $this->assertEquals(
-            $value,
-            $receipt->getRequestDate()->getCarbon()->getTimestampMs()
-        );
-        $this->assertNull(Receipt::fromArray([])->getRequestDate());
-    }
-
-    /**
-     * @test
-     */
-    public function test_version_external_identifier()
-    {
-        $value = 1234567;
-        $receipt = Receipt::fromArray(['version_external_identifier' => $value]);
-        $this->assertEquals($value, $receipt->getVersionExternalIdentifier());
-        $this->assertNull(Receipt::fromArray([])->getVersionExternalIdentifier());
-    }
-
-    /**
-     * @test
-     */
-    public function test_original_application_version()
-    {
-        $value = '1.0';
-        $receipt = Receipt::fromArray(['original_application_version' => $value]);
-        $this->assertEquals($value, $receipt->getOriginalApplicationVersion());
-        $this->assertNull(Receipt::fromArray([])->getOriginalApplicationVersion());
-    }
-
-    /**
-     * @test
-     */
-    public function test_expiration_date()
-    {
-        $value = 1617375688000;
-        $receipt = Receipt::fromArray(['expiration_date_ms' => $value]);
-        $this->assertEquals(
-            $value,
-            $receipt->getExpirationDate()->getCarbon()->getTimestampMs()
-        );
-        $this->assertNull(Receipt::fromArray([])->getExpirationDate());
-    }
-
-    /**
-     * @test
-     */
-    public function test_pre_order_date()
-    {
-        $value = 1617375688000;
-        $receipt = Receipt::fromArray(['preorder_date_ms' => $value]);
-        $this->assertEquals(
-            $value,
-            $receipt->getPreOrderDate()->getCarbon()->getTimestampMs()
-        );
-        $this->assertNull(Receipt::fromArray([])->getPreOrderDate());
+        return [
+            'date fields are omitted' => [[]],
+            'date fields are null' => [[
+                'original_purchase_date_ms' => null,
+                'receipt_creation_date_ms' => null,
+                'request_date_ms' => null,
+                'expiration_date_ms' => null,
+                'preorder_date_ms' => null,
+            ]],
+            'zero timestamps mean no date' => [[
+                'original_purchase_date_ms' => 0,
+                'receipt_creation_date_ms' => 0,
+                'request_date_ms' => 0,
+                'expiration_date_ms' => 0,
+                'preorder_date_ms' => 0,
+            ]],
+            'string zero timestamps mean no date' => [[
+                'original_purchase_date_ms' => '0',
+                'receipt_creation_date_ms' => '0',
+                'request_date_ms' => '0',
+                'expiration_date_ms' => '0',
+                'preorder_date_ms' => '0',
+            ]],
+        ];
     }
 }

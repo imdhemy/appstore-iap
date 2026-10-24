@@ -2,6 +2,8 @@
 
 namespace Imdhemy\AppStore\ValueObjects;
 
+use DateTimeImmutable;
+
 /**
  * Receipt Class
  * This class represents the decoded version of the encoded receipt data sent
@@ -184,7 +186,20 @@ final class Receipt
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getExpiresAt(): ?DateTimeImmutable
+    {
+        $time = $this->getExpirationDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getExpiresAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getExpirationDate(): ?Time
     {
@@ -223,7 +238,20 @@ final class Receipt
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getOriginallyPurchasedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getOriginalPurchaseDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getOriginallyPurchasedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getOriginalPurchaseDate(): ?Time
     {
@@ -234,7 +262,20 @@ final class Receipt
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getPreOrderedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getPreOrderDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getPreOrderedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getPreOrderDate(): ?Time
     {
@@ -245,7 +286,20 @@ final class Receipt
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getReceiptCreatedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getReceiptCreationDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getReceiptCreatedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getReceiptCreationDate(): ?Time
     {
@@ -264,7 +318,20 @@ final class Receipt
     }
 
     /**
+     * @psalm-suppress DeprecatedClass Retained as a compatibility bridge until the next major release.
+     * @psalm-suppress DeprecatedMethod Retained as a compatibility bridge until the next major release.
+     */
+    public function getRequestedAt(): ?DateTimeImmutable
+    {
+        $time = $this->getRequestDate();
+
+        return null === $time ? null : DateTimeImmutable::createFromInterface($time->toCarbon());
+    }
+
+    /**
      * @return Time|null
+     * @deprecated Use {@see self::getRequestedAt()} instead. Will be removed in the next major release.
+     * @psalm-suppress DeprecatedClass Retained for backward compatibility until the next major release.
      */
     public function getRequestDate(): ?Time
     {
