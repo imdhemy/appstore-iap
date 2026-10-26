@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         operating-system: [ ubuntu-latest, windows-latest, macos-latest ]
-        php-version: [ 8.4, 8.5 ]
+        php-version: [ "8.4", "8.5" ]
     steps:
 
       # --------- Setup steps ---------
@@ -31,6 +31,8 @@ jobs:
 
       - name: "Coding Style"
         run: "composer cs-fix"
+        if: matrix.php-version == '8.4'
 
       - name: "Static code analysis"
         run: "composer psalm"
+        if: matrix.php-version == '8.4'
