@@ -2,15 +2,14 @@
 
 namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
+use PHPUnit\Framework\Attributes\Test;
 use Imdhemy\AppStore\Jws\Key;
 use Imdhemy\AppStore\Tests\TestCase;
 use Lcobucci\JWT\Signer\Key\InMemory;
 
 class KeyTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function key(): void
     {
         $kid = $this->faker->uuid();

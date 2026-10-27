@@ -2,14 +2,13 @@
 
 namespace Imdhemy\AppStore\Tests\Unit\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\AppMetadata;
 
 class AppMetadataTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function app_meta_data(): void
     {
         $props = [

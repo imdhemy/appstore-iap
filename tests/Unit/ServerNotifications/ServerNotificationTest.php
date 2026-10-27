@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\Unit\ServerNotifications;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
 use Imdhemy\AppStore\ServerNotifications\ServerNotification;
@@ -12,9 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ServerNotificationTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_reads_notification_details_from_an_array(): void
     {
         $attributes = [
@@ -38,10 +38,8 @@ final class ServerNotificationTest extends TestCase
         $this->assertEquals($attributes['notification_type'], $actual->getNotificationType());
     }
 
-    /**
-     * @test
-     * @dataProvider enabledStatusProvider
-     */
+    #[DataProvider('enabledStatusProvider')]
+    #[Test]
     public function it_recognizes_enabled_auto_renewal(string|bool $status): void
     {
         $subject = ServerNotification::fromArray([
@@ -54,9 +52,7 @@ final class ServerNotificationTest extends TestCase
         $this->assertTrue($actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_preserves_the_original_notification_payload(): void
     {
         $attributes = [
@@ -85,10 +81,8 @@ final class ServerNotificationTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider absentDateProvider
-     */
+    #[DataProvider('absentDateProvider')]
+    #[Test]
     public function it_returns_null_for_absent_notification_details(array $dates): void
     {
         $attributes = ['notification_type' => ServerNotification::CANCEL] + $dates;
@@ -106,10 +100,8 @@ final class ServerNotificationTest extends TestCase
         $this->assertNull($actual->getAutoRenewProductId());
     }
 
-    /**
-     * @test
-     * @dataProvider dateProvider
-     */
+    #[DataProvider('dateProvider')]
+    #[Test]
     public function it_reads_notification_dates_without_losing_milliseconds(
         int|string $timestamp,
         DateTimeImmutable $expectedDate,

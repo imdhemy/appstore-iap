@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\Unit\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Jws\Parser;
 use Imdhemy\AppStore\Tests\TestCase;
@@ -12,9 +14,7 @@ use Imdhemy\AppStore\ValueObjects\Time;
 
 final class JwsRenewalInfoTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_reads_renewal_details_from_signed_claims(): void
     {
         $claims = [
@@ -46,9 +46,9 @@ final class JwsRenewalInfoTest extends TestCase
     }
 
     /**
-     * @test
      * @return JwsRenewalInfo
      */
+    #[Test]
     public function it_preserves_the_original_renewal_signature_and_claims(): JwsRenewalInfo
     {
         $jws = Parser::toJws($this->faker->jwsOf([]));
@@ -63,10 +63,8 @@ final class JwsRenewalInfoTest extends TestCase
         return $sut;
     }
 
-    /**
-     * @test
-     * @dataProvider absentDateProvider
-     */
+    #[DataProvider('absentDateProvider')]
+    #[Test]
     public function it_returns_null_for_absent_renewal_details(array $dates): void
     {
         $jws = Parser::toJws($this->faker->jwsOf($dates));
@@ -91,10 +89,8 @@ final class JwsRenewalInfoTest extends TestCase
         $this->assertNull($actual->getProductId());
     }
 
-    /**
-     * @test
-     * @dataProvider dateProvider
-     */
+    #[DataProvider('dateProvider')]
+    #[Test]
     public function it_reads_renewal_dates_without_losing_milliseconds(
         array $dates,
         array $expectedDates,

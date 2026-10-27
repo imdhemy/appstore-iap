@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\AutoRenewStatus;
@@ -32,9 +34,7 @@ final class PendingRenewalTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_reads_renewal_details_from_an_array(): void
     {
         $attributes = $this->commonAttributes + [
@@ -59,10 +59,8 @@ final class PendingRenewalTest extends TestCase
         $this->assertEquals($attributes['promotional_offer_id'], $actual->getPromotionalOfferId());
     }
 
-    /**
-     * @test
-     * @dataProvider absentDateProvider
-     */
+    #[DataProvider('absentDateProvider')]
+    #[Test]
     public function it_returns_null_for_absent_renewal_details(array $dates): void
     {
         $attributes = $this->commonAttributes + $dates;
@@ -79,10 +77,8 @@ final class PendingRenewalTest extends TestCase
         $this->assertNull($actual->getPromotionalOfferId());
     }
 
-    /**
-     * @test
-     * @dataProvider dateProvider
-     */
+    #[DataProvider('dateProvider')]
+    #[Test]
     public function it_reads_renewal_dates_without_losing_milliseconds(
         int|string $timestamp,
         DateTimeImmutable $expectedDate,

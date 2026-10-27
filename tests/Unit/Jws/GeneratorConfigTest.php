@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
+use PHPUnit\Framework\Attributes\Test;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Jws\GeneratorConfig;
 use Imdhemy\AppStore\Jws\Issuer;
@@ -13,9 +14,7 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 
 class GeneratorConfigTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function for_app_store(): void
     {
         $key = new Key('kid', InMemory::plainText($this->getEcdsaPrivateKey()));

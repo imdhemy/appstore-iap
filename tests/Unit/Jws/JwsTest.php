@@ -2,6 +2,8 @@
 
 namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Depends;
 use Imdhemy\AppStore\Jws\Jws;
 use Imdhemy\AppStore\Tests\TestCase;
 use Lcobucci\JWT\Configuration;
@@ -12,9 +14,9 @@ use Lcobucci\JWT\Token\Plain;
 class JwsTest extends TestCase
 {
     /**
-     * @test
      * @return array
      */
+    #[Test]
     public function from_jwt_plain(): array
     {
         $plain = $this->getPlain();
@@ -25,10 +27,8 @@ class JwsTest extends TestCase
         return [$sut, $plain];
     }
 
-    /**
-     * @test
-     * @depends from_jwt_plain
-     */
+    #[Depends('from_jwt_plain')]
+    #[Test]
     public function get_headers(array $args): void
     {
         /**
@@ -40,10 +40,8 @@ class JwsTest extends TestCase
         $this->assertSame($sut->getHeaders(), $plain->headers()->all());
     }
 
-    /**
-     * @test
-     * @depends from_jwt_plain
-     */
+    #[Depends('from_jwt_plain')]
+    #[Test]
     public function get_claims(array $args): void
     {
         /**
@@ -55,10 +53,8 @@ class JwsTest extends TestCase
         $this->assertSame($sut->getClaims(), $plain->claims()->all());
     }
 
-    /**
-     * @test
-     * @depends from_jwt_plain
-     */
+    #[Depends('from_jwt_plain')]
+    #[Test]
     public function get_signature(array $args): void
     {
         /**

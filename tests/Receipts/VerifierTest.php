@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Tests\Receipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -14,10 +15,10 @@ use Imdhemy\AppStore\Tests\TestCase;
 class VerifierTest extends TestCase
 {
     /**
-     * @test
      * @throws GuzzleException
      * @throws InvalidReceiptException
      */
+    #[Test]
     public function test_verify_subscription()
     {
         // Given
@@ -51,10 +52,10 @@ class VerifierTest extends TestCase
     }
 
     /**
-     * @test
      * @throws GuzzleException
      * @throws InvalidReceiptException
      */
+    #[Test]
     public function test_verify_subscription_on_test_environment()
     {
         // Given
@@ -91,9 +92,9 @@ class VerifierTest extends TestCase
     }
 
     /**
-     * @test
      * @throws GuzzleException
      */
+    #[Test]
     public function test_it_throws_exception_on_invalid_responses()
     {
         $this->expectException(InvalidReceiptException::class);

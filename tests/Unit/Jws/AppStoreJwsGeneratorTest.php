@@ -2,6 +2,8 @@
 
 namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Depends;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Jws\AppStoreJwsGenerator;
 use Imdhemy\AppStore\Jws\GeneratorConfig;
@@ -19,9 +21,7 @@ use Lcobucci\JWT\Validation\Constraint\PermittedFor;
 
 class AppStoreJwsGeneratorTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function app_store_jwt_generator(): AppStoreJwsGenerator
     {
         $config = $this->getConfig();
@@ -34,10 +34,8 @@ class AppStoreJwsGeneratorTest extends TestCase
         return $sut;
     }
 
-    /**
-     * @test
-     * @depends app_store_jwt_generator
-     */
+    #[Depends('app_store_jwt_generator')]
+    #[Test]
     public function generate(AppStoreJwsGenerator $sut): void
     {
         $generatorConfig = $sut->getConfig();

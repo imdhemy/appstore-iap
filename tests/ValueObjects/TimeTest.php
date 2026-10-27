@@ -2,6 +2,8 @@
 
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\Depends;
 use Carbon\Carbon;
 use DateTime;
 use Imdhemy\AppStore\Tests\TestCase;
@@ -10,9 +12,7 @@ use Stringable;
 
 class TimeTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_be_stringable(): void
     {
         $sut = new Time(0);
@@ -21,9 +21,7 @@ class TimeTest extends TestCase
         $this->assertEquals('1970-01-01 00:00:00', $sut->__toString());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_could_be_created_from_carbon(): void
     {
         $sut = Time::fromCarbon(new Carbon('1970-01-01 00:00:00'));
@@ -31,9 +29,7 @@ class TimeTest extends TestCase
         $this->assertEquals('1970-01-01 00:00:00', $sut);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_could_be_created_from_date_time(): void
     {
         $sut = Time::fromDateTime(new DateTime('1970-01-01 00:00:00'));
@@ -43,9 +39,9 @@ class TimeTest extends TestCase
 
 
     /**
-     * @test
      * @return Time
      */
+    #[Test]
     public function is_future_should_return_true_given_value_is_in_the_future(): Time
     {
         $sut = new Time(time() * 1000 + 5000);
@@ -56,9 +52,9 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @test
      * @return Time
      */
+    #[Test]
     public function is_future_should_return_false_give_value_is_passed(): Time
     {
         $sut = new Time(time() * 1000 - 5000);
@@ -68,11 +64,9 @@ class TimeTest extends TestCase
         return $sut;
     }
 
-    /**
-     * @test
-     * @depends is_future_should_return_true_given_value_is_in_the_future
-     * @depends is_future_should_return_false_give_value_is_passed
-     */
+    #[Depends('is_future_should_return_true_given_value_is_in_the_future')]
+    #[Depends('is_future_should_return_false_give_value_is_passed')]
+    #[Test]
     public function is_past_should_work_properly_with_is_future(Time $future, Time $past): void
     {
         $this->assertFalse($future->isPast());
@@ -80,9 +74,7 @@ class TimeTest extends TestCase
         $this->assertTrue($past->isPast());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_could_be_converted_into_carbon_instance(): void
     {
         $sut = new Time(0);
@@ -92,9 +84,7 @@ class TimeTest extends TestCase
         $this->assertEquals((string)$sut, (string)$carbon);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_could_be_converted_into_date_time_object(): void
     {
         $sut = new Time(0);
@@ -104,9 +94,7 @@ class TimeTest extends TestCase
         $this->assertEquals($dateTime, $dateTime);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_be_immutable(): void
     {
         $sut = new Time(0);
@@ -118,9 +106,7 @@ class TimeTest extends TestCase
         $this->assertEquals($strBefore, (string)$sut);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function equals(): void
     {
         $sut = new Time(0);

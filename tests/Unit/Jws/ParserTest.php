@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
+use PHPUnit\Framework\Attributes\Test;
 use Imdhemy\AppStore\Jws\Parser;
 use Imdhemy\AppStore\Tests\TestCase;
 use JsonException;
@@ -11,9 +12,9 @@ use Lcobucci\JWT\Token\Parser as JwtParser;
 class ParserTest extends TestCase
 {
     /**
-     * @test
      * @throws JsonException
      */
+    #[Test]
     public function parse(): void
     {
         $jwtParser = new JwtParser(new JoseEncoder());
@@ -27,9 +28,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @throws JsonException
      */
+    #[Test]
     public function toJws(): void
     {
         $signedPayload = $this->faker->signedPayload();
