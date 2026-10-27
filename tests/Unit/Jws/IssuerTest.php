@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Tests\Unit\Jws;
 
+use PHPUnit\Framework\Attributes\Test;
 use Imdhemy\AppStore\Jws\Issuer;
 use Imdhemy\AppStore\Jws\Key;
 use Imdhemy\AppStore\Tests\TestCase;
@@ -10,9 +11,7 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 class IssuerTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function issuer(): void
     {
         $id = $this->faker->uuid();

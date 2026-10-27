@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
 use Imdhemy\AppStore\ValueObjects\ExpirationIntent;
 use PHPUnit\Framework\TestCase;
 
@@ -29,9 +30,7 @@ class ExpirationIntentTest extends TestCase
         $this->assertEquals($reason, $expirationIntent->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_should_be_stringable(): void
     {
         $reason = self::REASONS[array_rand(self::REASONS)];

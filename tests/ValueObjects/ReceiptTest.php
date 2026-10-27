@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\Receipt;
@@ -11,10 +13,8 @@ use Imdhemy\AppStore\ValueObjects\Time;
 
 final class ReceiptTest extends TestCase
 {
-    /**
-     * @test
-     * @dataProvider dateProvider
-     */
+    #[DataProvider('dateProvider')]
+    #[Test]
     public function it_reads_receipt_details_from_an_array(
         array $dates,
         array $expectedDates,
@@ -54,9 +54,7 @@ final class ReceiptTest extends TestCase
         $this->assertEquals($expectedDates[4], $actual->getPreOrderedAt());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_maps_in_app_purchases_to_receipt_details(): void
     {
         $receipt = Receipt::fromArray([
@@ -77,9 +75,7 @@ final class ReceiptTest extends TestCase
         $this->assertSame('transaction_id', $actual[0]->getTransactionId());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_an_empty_list_when_there_are_no_in_app_purchases(): void
     {
         $receipt = Receipt::fromArray(['in_app' => []]);
@@ -89,10 +85,8 @@ final class ReceiptTest extends TestCase
         $this->assertSame([], $actual);
     }
 
-    /**
-     * @test
-     * @dataProvider absentDateProvider
-     */
+    #[DataProvider('absentDateProvider')]
+    #[Test]
     public function it_returns_null_for_absent_receipt_details(array $dates): void
     {
         $attributes = $dates;

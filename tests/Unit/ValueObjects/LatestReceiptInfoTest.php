@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\Unit\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
@@ -20,7 +22,7 @@ final class LatestReceiptInfoTest extends TestCase
     /**
      * @return array[<string, array>]
      */
-    public function trueOrNullDataProvider(): array
+    public static function trueOrNullDataProvider(): array
     {
         return [
             'the flag is enabled' => ['true', true],
@@ -43,9 +45,7 @@ final class LatestReceiptInfoTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_reads_purchase_details_from_an_array(): void
     {
         $attributes = $this->commonAttributes + [
@@ -71,10 +71,8 @@ final class LatestReceiptInfoTest extends TestCase
         $this->assertEquals($attributes['web_order_line_item_id'], $actual->getWebOrderLineItemId());
     }
 
-    /**
-     * @test
-     * @dataProvider trueOrNullDataProvider
-     */
+    #[DataProvider('trueOrNullDataProvider')]
+    #[Test]
     public function it_identifies_purchases_in_an_introductory_offer_period(
         ?string $value = null,
         ?bool $expected = null
@@ -88,10 +86,8 @@ final class LatestReceiptInfoTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     * @dataProvider trueOrNullDataProvider
-     */
+    #[DataProvider('trueOrNullDataProvider')]
+    #[Test]
     public function it_identifies_purchases_in_a_trial_period(?string $value = null, ?bool $expected = null): void
     {
         $attributes = array_merge($this->commonAttributes, ['is_trial_period' => $value]);
@@ -102,10 +98,8 @@ final class LatestReceiptInfoTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     * @dataProvider trueOrNullDataProvider
-     */
+    #[DataProvider('trueOrNullDataProvider')]
+    #[Test]
     public function it_identifies_upgraded_purchases(?string $value = null, ?bool $expected = null): void
     {
         $attributes = array_merge($this->commonAttributes, ['is_upgraded' => $value]);
@@ -116,9 +110,7 @@ final class LatestReceiptInfoTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_the_cancellation_date_and_reason(): void
     {
         $now = 1580000000123;
@@ -135,9 +127,7 @@ final class LatestReceiptInfoTest extends TestCase
         $this->assertSame(1, $actual->getReason());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_preserves_the_original_purchase_payload(): void
     {
         $attributes = array_merge($this->commonAttributes, [
@@ -152,9 +142,7 @@ final class LatestReceiptInfoTest extends TestCase
         $this->assertEquals($attributes, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_preserves_the_original_purchase_payload_for_json_serialization(): void
     {
         $attributes = array_merge($this->commonAttributes, [
@@ -169,10 +157,8 @@ final class LatestReceiptInfoTest extends TestCase
         $this->assertEquals($attributes, $actual);
     }
 
-    /**
-     * @test
-     * @dataProvider absentDateProvider
-     */
+    #[DataProvider('absentDateProvider')]
+    #[Test]
     public function it_returns_null_for_absent_purchase_details(array $dates): void
     {
         $attributes = $this->commonAttributes + $dates;
@@ -198,10 +184,8 @@ final class LatestReceiptInfoTest extends TestCase
         $this->assertNull($actual->getIsInIntroOfferPeriod());
     }
 
-    /**
-     * @test
-     * @dataProvider dateProvider
-     */
+    #[DataProvider('dateProvider')]
+    #[Test]
     public function it_reads_purchase_dates_without_losing_milliseconds(
         array $dates,
         array $expectedDates,

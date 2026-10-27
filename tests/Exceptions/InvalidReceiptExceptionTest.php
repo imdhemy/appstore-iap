@@ -2,14 +2,13 @@
 
 namespace Imdhemy\AppStore\Tests\Exceptions;
 
+use PHPUnit\Framework\Attributes\Test;
 use Imdhemy\AppStore\Exceptions\InvalidReceiptException;
 use PHPUnit\Framework\TestCase;
 
 class InvalidReceiptExceptionTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function test_create()
     {
         $errorStatusMap = InvalidReceiptException::ERROR_STATUS_MAP;

@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Tests\Receipts;
 
+use PHPUnit\Framework\Attributes\Test;
 use Exception;
 use Imdhemy\AppStore\Receipts\ReceiptResponse;
 use Imdhemy\AppStore\ValueObjects\LatestReceiptInfo;
@@ -11,9 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class ReceiptResponseTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function all_attributes_are_optional_except_status(): void
     {
         $this->expectNotToPerformAssertions();
@@ -21,9 +20,7 @@ class ReceiptResponseTest extends TestCase
         ReceiptResponse::fromArray(['status' => 0]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function environment_attribute(): void
     {
         $environments = [ReceiptResponse::ENV_PRODUCTION, ReceiptResponse::ENV_SANDBOX];
@@ -41,9 +38,9 @@ class ReceiptResponseTest extends TestCase
     }
 
     /**
-     * @test
      * @throws Exception
      */
+    #[Test]
     public function is_retryable(): void
     {
         $value = random_int(0, 1);
@@ -56,9 +53,7 @@ class ReceiptResponseTest extends TestCase
         $this->assertNull($missingData->getIsRetryable());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function latest_receipt(): void
     {
         $value = base64_decode("fake_receipt_content");
@@ -70,9 +65,7 @@ class ReceiptResponseTest extends TestCase
         $this->assertNull($missingData->getLatestReceipt());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function latest_receipt_info(): void
     {
         $value = [];
@@ -96,9 +89,7 @@ class ReceiptResponseTest extends TestCase
         $this->assertNull($missingData->getLatestReceiptInfo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function pending_renewal_info(): void
     {
         $value = [];
@@ -122,9 +113,7 @@ class ReceiptResponseTest extends TestCase
         $this->assertNull($missingData->getPendingRenewalInfo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function receipt(): void
     {
         $value = [];
@@ -136,10 +125,8 @@ class ReceiptResponseTest extends TestCase
         $this->assertNull($missingData->getReceipt());
     }
 
-    /**
-     * @test
-     */
-    public function status(): void
+    #[Test]
+    public function it_reads_the_status(): void
     {
         $statusList = array_merge([0], range(21000, 21010));
         $value = $statusList[array_rand($statusList)];
@@ -148,9 +135,7 @@ class ReceiptResponseTest extends TestCase
         $this->assertEquals($value, $response->getStatus()->getValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function to_array_should_return_all_attributes(): void
     {
         $body = [

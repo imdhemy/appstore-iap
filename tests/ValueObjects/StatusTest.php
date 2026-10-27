@@ -2,14 +2,13 @@
 
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
 use Imdhemy\AppStore\Tests\TestCase;
 use Imdhemy\AppStore\ValueObjects\Status;
 
 class StatusTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function test_basic_usage()
     {
         $values = range(
@@ -28,9 +27,7 @@ class StatusTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_valid_status()
     {
         $value = Status::STATUS_VALID;
@@ -39,9 +36,7 @@ class StatusTest extends TestCase
         $this->assertTrue($status->isValid());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function test_expired_status_is_valid()
     {
         $value = Status::STATUS_SUBSCRIPTION_EXPIRED;

@@ -2,6 +2,7 @@
 
 namespace Imdhemy\AppStore\Tests\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
 use Exception;
 use Imdhemy\AppStore\ValueObjects\AutoRenewStatus;
 use PHPUnit\Framework\TestCase;
@@ -19,9 +20,9 @@ class AutoRenewStatusTest extends TestCase
     }
 
     /**
-     * @test
      * @throws Exception
      */
+    #[Test]
     public function it_should_be_stringable(): void
     {
         $value = [AutoRenewStatus::TURNED_OFF, AutoRenewStatus::WILL_RENEW][random_int(0, 1)];

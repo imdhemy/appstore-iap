@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\Unit\ServerNotifications;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Jws\Parser;
 use Imdhemy\AppStore\ServerNotifications\V2DecodedPayload;
@@ -12,9 +14,7 @@ use Imdhemy\AppStore\ValueObjects\Time;
 
 final class V2DecodedPayloadTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_reads_notification_details_from_a_signed_payload(): void
     {
         $claims = [
@@ -38,9 +38,7 @@ final class V2DecodedPayloadTest extends TestCase
         $this->assertNull($sut->getSubType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_reads_notification_details_from_an_array(): void
     {
         $claims = [
@@ -60,9 +58,7 @@ final class V2DecodedPayloadTest extends TestCase
         $this->assertNull($sut->getSubType());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_reads_the_app_metadata_from_the_notification(): void
     {
         $appAppleId = $this->faker->randomNumber();
@@ -91,9 +87,7 @@ final class V2DecodedPayloadTest extends TestCase
         $this->assertEquals($environment, $actual->environment());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_decodes_the_signed_renewal_information(): void
     {
         $token = $this->faker->jwsOf([]);
@@ -111,9 +105,7 @@ final class V2DecodedPayloadTest extends TestCase
         $this->assertEquals($token, $actual);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_decodes_the_signed_transaction_information(): void
     {
         $token = $this->faker->jwsOf([]);
@@ -131,10 +123,8 @@ final class V2DecodedPayloadTest extends TestCase
         $this->assertEquals($token, $actual);
     }
 
-    /**
-     * @test
-     * @dataProvider dateProvider
-     */
+    #[DataProvider('dateProvider')]
+    #[Test]
     public function it_reads_notification_dates_without_losing_milliseconds(
         int|string $timestamp,
         DateTimeImmutable $expectedDate,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\Unit\ServerNotifications;
 
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Response;
 use Imdhemy\AppStore\ClientFactory;
@@ -20,10 +21,10 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 class TestNotificationServiceTest extends TestCase
 {
     /**
-     * @test
      * @throws GuzzleException
      * @throws JsonException
      */
+    #[Test]
     public function request(): void
     {
         // Given

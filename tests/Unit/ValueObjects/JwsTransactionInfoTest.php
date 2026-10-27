@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\Unit\ValueObjects;
 
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\DataProvider;
 use DateTimeImmutable;
 use Imdhemy\AppStore\Jws\Parser;
 use Imdhemy\AppStore\Tests\TestCase;
@@ -12,9 +14,7 @@ use Imdhemy\AppStore\ValueObjects\Time;
 
 final class JwsTransactionInfoTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_reads_transaction_details_from_signed_claims(): void
     {
         $claims = [
@@ -56,9 +56,9 @@ final class JwsTransactionInfoTest extends TestCase
     }
 
     /**
-     * @test
      * @return JwsTransactionInfo
      */
+    #[Test]
     public function it_preserves_the_original_transaction_signature_and_claims(): JwsTransactionInfo
     {
         $jws = Parser::toJws($this->faker->jwsOf([]));
@@ -73,10 +73,8 @@ final class JwsTransactionInfoTest extends TestCase
         return $sut;
     }
 
-    /**
-     * @test
-     * @dataProvider absentDateProvider
-     */
+    #[DataProvider('absentDateProvider')]
+    #[Test]
     public function it_returns_null_for_absent_transaction_details(array $dates): void
     {
         $jws = Parser::toJws($this->faker->jwsOf($dates));
@@ -110,10 +108,8 @@ final class JwsTransactionInfoTest extends TestCase
         $this->assertNull($actual->getWebOrderLineItemId());
     }
 
-    /**
-     * @test
-     * @dataProvider dateProvider
-     */
+    #[DataProvider('dateProvider')]
+    #[Test]
     public function it_reads_transaction_dates_without_losing_milliseconds(
         array $dates,
         array $expectedDates,

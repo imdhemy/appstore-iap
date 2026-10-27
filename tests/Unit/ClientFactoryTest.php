@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
@@ -14,7 +15,7 @@ use ReflectionClass;
 
 final class ClientFactoryTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function create_for_store_kit(): void
     {
         $options = ['headers' => ['X-Custom-Header' => 'CustomValue']];
@@ -27,7 +28,7 @@ final class ClientFactoryTest extends TestCase
         $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
     }
 
-    /** @test */
+    #[Test]
     public function create_for_store_kit_sandbox(): void
     {
         $options = ['headers' => ['X-Custom-Header' => 'CustomValue']];
@@ -40,7 +41,7 @@ final class ClientFactoryTest extends TestCase
         $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
     }
 
-    /** @test */
+    #[Test]
     public function create_for_i_tunes(): void
     {
         $options = ['headers' => ['X-Custom-Header' => 'CustomValue']];
@@ -53,7 +54,7 @@ final class ClientFactoryTest extends TestCase
         $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
     }
 
-    /** @test */
+    #[Test]
     public function create_for_i_tunes_sandbox(): void
     {
         $options = ['headers' => ['X-Custom-Header' => 'CustomValue']];
@@ -67,9 +68,9 @@ final class ClientFactoryTest extends TestCase
     }
 
     /**
-     * @test
      * @psalm-suppress MixedArrayAccess
      */
+    #[Test]
     public function create_client(): void
     {
         $client = ClientFactory::create();
@@ -79,9 +80,9 @@ final class ClientFactoryTest extends TestCase
     }
 
     /**
-     * @test
      * @psalm-suppress MixedArrayAccess
      */
+    #[Test]
     public function create_sandbox_client(): void
     {
         $client = ClientFactory::createSandbox();
@@ -90,9 +91,7 @@ final class ClientFactoryTest extends TestCase
         $this->assertSame('https://sandbox.itunes.apple.com', $baseUri);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function client_response_can_be_mocked(): void
     {
         $statusCode = 200;
@@ -106,9 +105,7 @@ final class ClientFactoryTest extends TestCase
         $this->assertEquals($body, (string)$response->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function a_queue_of_responses_can_be_mocked(): void
     {
         $mocks = [
@@ -126,9 +123,7 @@ final class ClientFactoryTest extends TestCase
         $this->assertEquals('second', (string)$secondResponse->getBody());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_mock_an_error_response(): void
     {
         $message = 'Something went wrong';
@@ -146,9 +141,9 @@ final class ClientFactoryTest extends TestCase
     }
 
     /**
-     * @test
      * @psalm-suppress MixedArrayAccess
      */
+    #[Test]
     public function mock_can_track_transactions(): void
     {
         $transactions = [];
@@ -162,9 +157,9 @@ final class ClientFactoryTest extends TestCase
     }
 
     /**
-     * @test
      * @psalm-suppress MixedArrayAccess
      */
+    #[Test]
     public function mock_queue_can_track_transactions(): void
     {
         $size = random_int(1, 10);
@@ -188,9 +183,7 @@ final class ClientFactoryTest extends TestCase
         }
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mock_error_can_track_transactions(): void
     {
         $transactions = [];

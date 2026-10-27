@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
+<files psalm-version="6.5.0@38fc8444edf0cebc9205296ee6e30e906ade783b">
   <file src="src/Jws/AppStoreJwsVerifier.php">
     <ArgumentTypeCoercion>
       <code><![CDATA[$exportedCertificate]]></code>
     </ArgumentTypeCoercion>
+    <FalsableReturnStatement>
+      <code><![CDATA[openssl_x509_read($contents)]]></code>
+    </FalsableReturnStatement>
+    <InvalidFalsableReturnType>
+      <code><![CDATA[OpenSSLCertificate]]></code>
+    </InvalidFalsableReturnType>
     <InvalidReturnStatement>
       <code><![CDATA[$chain]]></code>
     </InvalidReturnStatement>
@@ -34,20 +40,6 @@
     </MixedArgument>
   </file>
   <file src="src/Jws/UnEncryptedTokenConcern.php">
-    <MixedInferredReturnType>
-      <code><![CDATA[DataSet]]></code>
-      <code><![CDATA[DataSet]]></code>
-      <code><![CDATA[Signature]]></code>
-      <code><![CDATA[bool]]></code>
-      <code><![CDATA[bool]]></code>
-      <code><![CDATA[bool]]></code>
-      <code><![CDATA[bool]]></code>
-      <code><![CDATA[bool]]></code>
-      <code><![CDATA[bool]]></code>
-      <code><![CDATA[bool]]></code>
-      <code><![CDATA[string]]></code>
-      <code><![CDATA[string]]></code>
-    </MixedInferredReturnType>
     <MixedMethodCall>
       <code><![CDATA[claims]]></code>
       <code><![CDATA[hasBeenIssuedBefore]]></code>
@@ -122,9 +114,6 @@
       <code><![CDATA[$response]]></code>
       <code><![CDATA[$status]]></code>
     </MixedAssignment>
-    <MixedInferredReturnType>
-      <code><![CDATA[array]]></code>
-    </MixedInferredReturnType>
     <MixedMethodCall>
       <code><![CDATA[getBody]]></code>
     </MixedMethodCall>
@@ -161,9 +150,6 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/ServerNotifications/TestNotificationService.php">
-    <MixedInferredReturnType>
-      <code><![CDATA[ResponseInterface]]></code>
-    </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$this->client->post('/inApps/v1/notifications/test', [
             'headers' => [
@@ -184,12 +170,6 @@
       <code><![CDATA[$this->rawData['data']['signedRenewalInfo']]]></code>
       <code><![CDATA[$this->rawData['data']['signedTransactionInfo']]]></code>
     </MixedArrayAccess>
-    <MixedInferredReturnType>
-      <code><![CDATA[string]]></code>
-      <code><![CDATA[string]]></code>
-      <code><![CDATA[string]]></code>
-      <code><![CDATA[string|null]]></code>
-    </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$this->rawData['notificationType']]]></code>
       <code><![CDATA[$this->rawData['notificationUUID']]]></code>
@@ -199,12 +179,6 @@
     </MixedReturnStatement>
   </file>
   <file src="src/ValueObjects/AppMetadata.php">
-    <MixedInferredReturnType>
-      <code><![CDATA[string]]></code>
-      <code><![CDATA[string]]></code>
-      <code><![CDATA[string]]></code>
-      <code><![CDATA[string]]></code>
-    </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$this->data['appAppleId']]]></code>
       <code><![CDATA[$this->data['bundleId']]]></code>
@@ -224,18 +198,6 @@
       <code><![CDATA[$this->getClaims()['recentSubscriptionStartDate']]]></code>
       <code><![CDATA[$this->getClaims()['signedDate']]]></code>
     </MixedArgument>
-    <MixedInferredReturnType>
-      <code><![CDATA[bool|null]]></code>
-      <code><![CDATA[int|null]]></code>
-      <code><![CDATA[int|null]]></code>
-      <code><![CDATA[int|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-    </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$this->getClaims()['autoRenewProductId'] ?? null]]></code>
       <code><![CDATA[$this->getClaims()['autoRenewProductId'] ?? null]]></code>
@@ -267,23 +229,6 @@
       <code><![CDATA[$this->getClaims()['revocationDate']]]></code>
       <code><![CDATA[$this->getClaims()['signedDate']]]></code>
     </MixedArgument>
-    <MixedInferredReturnType>
-      <code><![CDATA[bool|null]]></code>
-      <code><![CDATA[int|null]]></code>
-      <code><![CDATA[int|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-      <code><![CDATA[string|null]]></code>
-    </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$this->getClaims()['appAccountToken'] ?? null]]></code>
       <code><![CDATA[$this->getClaims()['appAccountToken'] ?? null]]></code>
