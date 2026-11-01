@@ -14,7 +14,7 @@
     "ext-openssl": "*",
     "ext-sodium": "*",
     "guzzlehttp/guzzle": "^8.3.0",
-    "lcobucci/clock": "^3.0",
+    "lcobucci/clock": "^3.6",
     "lcobucci/jwt": "^5.6",
     "nesbot/carbon": "^2.66|^3.8"
   },
