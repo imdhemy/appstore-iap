@@ -20,8 +20,8 @@ class ClientFactory
     /**@deprecated use {@see self::ITUNES_SANDBOX_URI} */
     public const string BASE_URI_SANDBOX = 'https://sandbox.itunes.apple.com';
 
-    public const string STORE_KIT_PRODUCTION_URI = 'https://api.storekit.itunes.apple.com';
-    public const string STORE_KIT_SANDBOX_URI = 'https://api.storekit-sandbox.itunes.apple.com';
+    public const string STORE_KIT_PRODUCTION_URI = 'https://api.storekit.apple.com';
+    public const string STORE_KIT_SANDBOX_URI = 'https://api.storekit-sandbox.apple.com';
     public const string ITUNES_PRODUCTION_URI = 'https://buy.itunes.apple.com';
     public const string ITUNES_SANDBOX_URI = 'https://sandbox.itunes.apple.com';
 
