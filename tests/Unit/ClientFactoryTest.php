@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Imdhemy\AppStore\Tests\Unit;
 
-use PHPUnit\Framework\Attributes\Test;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Imdhemy\AppStore\ClientFactory;
 use Imdhemy\AppStore\Tests\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use ReflectionClass;
 
 final class ClientFactoryTest extends TestCase
@@ -24,7 +24,7 @@ final class ClientFactoryTest extends TestCase
 
         /** @var array{base_uri: Uri, headers: array} $config */
         $config = $this->getPropertyByReflection($storeKitClient, 'config');
-        $this->assertSame('https://api.storekit.itunes.apple.com', (string)$config['base_uri']);
+        $this->assertSame('https://api.storekit.apple.com', (string)$config['base_uri']);
         $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
     }
 
@@ -37,8 +37,30 @@ final class ClientFactoryTest extends TestCase
 
         /** @var array{base_uri: Uri, headers: array} $config */
         $config = $this->getPropertyByReflection($storeKitClient, 'config');
-        $this->assertSame('https://api.storekit-sandbox.itunes.apple.com', (string)$config['base_uri']);
+        $this->assertSame('https://api.storekit-sandbox.apple.com', (string)$config['base_uri']);
         $this->assertSame('CustomValue', $config['headers']['X-Custom-Header']);
+    }
+
+    #[Test]
+    public function store_kit_base_uri_can_be_overridden(): void
+    {
+        $baseUri = 'https://example.com';
+        $client = ClientFactory::createForStoreKit(['base_uri' => $baseUri]);
+
+        /** @var array{base_uri: Uri} $config */
+        $config = $this->getPropertyByReflection($client, 'config');
+        $this->assertSame($baseUri, (string)$config['base_uri']);
+    }
+
+    #[Test]
+    public function store_kit_sandbox_base_uri_can_be_overridden(): void
+    {
+        $baseUri = 'https://example.com';
+        $client = ClientFactory::createForStoreKitSandbox(['base_uri' => $baseUri]);
+
+        /** @var array{base_uri: Uri} $config */
+        $config = $this->getPropertyByReflection($client, 'config');
+        $this->assertSame($baseUri, (string)$config['base_uri']);
     }
 
     #[Test]
