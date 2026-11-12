@@ -3,8 +3,10 @@
 namespace Imdhemy\AppStore\ValueObjects;
 
 use DateTimeImmutable;
+use DateTimeInterface;
 use Imdhemy\AppStore\Jws\JsonWebSignature;
-use Imdhemy\AppStore\Jws\UnEncryptedTokenConcern;
+use Lcobucci\JWT\Token\DataSet;
+use Lcobucci\JWT\Token\Signature;
 
 /**
  * Class JwsTransactionInfo
@@ -14,8 +16,6 @@ use Imdhemy\AppStore\Jws\UnEncryptedTokenConcern;
  */
 final class JwsTransactionInfo implements JsonWebSignature
 {
-    use UnEncryptedTokenConcern;
-
     public const ENVIRONMENT_SANDBOX = 'Sandbox';
     public const ENVIRONMENT_PRODUCTION = 'Production';
 
@@ -83,6 +83,110 @@ final class JwsTransactionInfo implements JsonWebSignature
     public function getSignature(): string
     {
         return $this->jws->getSignature();
+    }
+
+    /**
+     * Returns the token headers
+     *
+     * The UnencryptedToken methods below delegate to the wrapped JWS. This
+     * class previously used UnEncryptedTokenConcern, whose methods read a
+     * $token property that only exists on the Jws class itself, so calling
+     * any of them here raised an "Undefined property" error.
+     */
+    public function headers(): DataSet
+    {
+        return $this->jws->headers();
+    }
+
+    /**
+     * Returns if the token is allowed to be used by the audience
+     * @param non-empty-string $audience
+     */
+    public function isPermittedFor(string $audience): bool
+    {
+        return $this->jws->isPermittedFor($audience);
+    }
+
+    /**
+     * Returns if the token has the given id
+     * @param non-empty-string $id
+     */
+    public function isIdentifiedBy(string $id): bool
+    {
+        return $this->jws->isIdentifiedBy($id);
+    }
+
+    /**
+     * Returns if the token has the given subject
+     * @param non-empty-string $subject
+     */
+    public function isRelatedTo(string $subject): bool
+    {
+        return $this->jws->isRelatedTo($subject);
+    }
+
+    /**
+     * Returns if the token was issued by any of given issuers
+     */
+    public function hasBeenIssuedBy(string ...$issuers): bool
+    {
+        return $this->jws->hasBeenIssuedBy(...$issuers);
+    }
+
+    /**
+     * Returns if the token was issued before of given time
+     */
+    public function hasBeenIssuedBefore(DateTimeInterface $now): bool
+    {
+        return $this->jws->hasBeenIssuedBefore($now);
+    }
+
+    /**
+     * Returns if the token minimum time is before than given time
+     */
+    public function isMinimumTimeBefore(DateTimeInterface $now): bool
+    {
+        return $this->jws->isMinimumTimeBefore($now);
+    }
+
+    /**
+     * Returns if the token is expired
+     */
+    public function isExpired(DateTimeInterface $now): bool
+    {
+        return $this->jws->isExpired($now);
+    }
+
+    /**
+     * Returns an encoded representation of the token
+     */
+    public function toString(): string
+    {
+        return $this->jws->toString();
+    }
+
+    /**
+     * Returns the token claims
+     */
+    public function claims(): DataSet
+    {
+        return $this->jws->claims();
+    }
+
+    /**
+     * Returns the token signature
+     */
+    public function signature(): Signature
+    {
+        return $this->jws->signature();
+    }
+
+    /**
+     * Returns the token payload
+     */
+    public function payload(): string
+    {
+        return $this->jws->payload();
     }
 
     /**
