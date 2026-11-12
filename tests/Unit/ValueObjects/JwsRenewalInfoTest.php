@@ -63,6 +63,27 @@ final class JwsRenewalInfoTest extends TestCase
         return $sut;
     }
 
+    #[Test]
+    public function it_exposes_the_wrapped_token_through_the_unencrypted_token_api(): void
+    {
+        $jws = Parser::toJws($this->faker->jwsOf(['environment' => JwsRenewalInfo::ENVIRONMENT_SANDBOX]));
+
+        $sut = new JwsRenewalInfo($jws);
+
+        // Regression test: these UnencryptedToken methods used to read a
+        // $token property that only exists on the Jws class, so every call
+        // raised "Undefined property: JwsRenewalInfo::$token".
+        $now = new DateTimeImmutable('@0');
+
+        $this->assertEquals($jws->claims(), $sut->claims());
+        $this->assertEquals($jws->headers(), $sut->headers());
+        $this->assertEquals($jws->signature(), $sut->signature());
+        $this->assertEquals($jws->payload(), $sut->payload());
+        $this->assertEquals($jws->toString(), $sut->toString());
+        $this->assertSame($jws->isExpired($now), $sut->isExpired($now));
+        $this->assertSame($jws->hasBeenIssuedBefore($now), $sut->hasBeenIssuedBefore($now));
+    }
+
     #[DataProvider('absentDateProvider')]
     #[Test]
     public function it_returns_null_for_absent_renewal_details(array $dates): void
